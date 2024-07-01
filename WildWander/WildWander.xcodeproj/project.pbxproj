@@ -58,17 +58,10 @@
 				876A7A582C335FC30022B85E /* Scenes */,
 				876A7A552C335F0B0022B85E /* Resources */,
 				876A7A562C335F1D0022B85E /* Supporting Files */,
-				876A7A612C3361D00022B85E /* Reusable Components */,
-				876A7A532C335EBA0022B85E /* Networking */,
+				876A7A622C3364740022B85E /* Reusable Components */,
+				876A7A632C3364970022B85E /* Networking */,
 			);
 			path = WildWander;
-			sourceTree = "<group>";
-		};
-		876A7A532C335EBA0022B85E /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 		876A7A542C335EE20022B85E /* App */ = {
@@ -177,11 +170,18 @@
 			path = "Sign Up Page";
 			sourceTree = "<group>";
 		};
-		876A7A612C3361D00022B85E /* Reusable Components */ = {
+		876A7A622C3364740022B85E /* Reusable Components */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = "Reusable Components";
+			sourceTree = "<group>";
+		};
+		876A7A632C3364970022B85E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
