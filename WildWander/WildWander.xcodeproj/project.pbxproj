@@ -101,14 +101,14 @@
 		876A7A582C335FC30022B85E /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				876A7A5E2C33606B0022B85E /* Launch Page */,
+				876A7A642C3365BD0022B85E /* Launch Page */,
 				876A7A5F2C3360B10022B85E /* Login Page */,
 				876A7A602C3360C30022B85E /* Sign Up Page */,
 				876A7A592C335FFD0022B85E /* Explore Page */,
-				876A7A5A2C3360160022B85E /* Navigate Page */,
-				876A7A5C2C3360420022B85E /* Saved Page */,
-				876A7A5B2C33602C0022B85E /* Profile Page */,
-				876A7A5D2C33605D0022B85E /* Settings Page */,
+				876A7A672C3365F20022B85E /* Navigate Page */,
+				876A7A6A2C33663B0022B85E /* Saved Page */,
+				876A7A682C3365FE0022B85E /* Profile Page */,
+				876A7A692C3366190022B85E /* Settings Page */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -121,53 +121,18 @@
 			path = "Explore Page";
 			sourceTree = "<group>";
 		};
-		876A7A5A2C3360160022B85E /* Navigate Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Navigate Page";
-			sourceTree = "<group>";
-		};
-		876A7A5B2C33602C0022B85E /* Profile Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Profile Page";
-			sourceTree = "<group>";
-		};
-		876A7A5C2C3360420022B85E /* Saved Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Saved Page";
-			sourceTree = "<group>";
-		};
-		876A7A5D2C33605D0022B85E /* Settings Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Settings Page";
-			sourceTree = "<group>";
-		};
-		876A7A5E2C33606B0022B85E /* Launch Page */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Launch Page";
-			sourceTree = "<group>";
-		};
 		876A7A5F2C3360B10022B85E /* Login Page */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Login Page";
+			name = "Login Page";
 			sourceTree = "<group>";
 		};
 		876A7A602C3360C30022B85E /* Sign Up Page */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "Sign Up Page";
+			name = "Sign Up Page";
 			sourceTree = "<group>";
 		};
 		876A7A622C3364740022B85E /* Reusable Components */ = {
@@ -182,6 +147,41 @@
 			children = (
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		876A7A642C3365BD0022B85E /* Launch Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Launch Page";
+			sourceTree = "<group>";
+		};
+		876A7A672C3365F20022B85E /* Navigate Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Navigate Page";
+			sourceTree = "<group>";
+		};
+		876A7A682C3365FE0022B85E /* Profile Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Profile Page";
+			sourceTree = "<group>";
+		};
+		876A7A692C3366190022B85E /* Settings Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Settings Page";
+			sourceTree = "<group>";
+		};
+		876A7A6A2C33663B0022B85E /* Saved Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Saved Page";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
