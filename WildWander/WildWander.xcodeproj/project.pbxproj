@@ -54,14 +54,134 @@
 		871C851D2C332FDE00F20612 /* WildWander */ = {
 			isa = PBXGroup;
 			children = (
-				871C851E2C332FDE00F20612 /* AppDelegate.swift */,
-				871C85202C332FDE00F20612 /* SceneDelegate.swift */,
-				871C85222C332FDE00F20612 /* ViewController.swift */,
-				871C85272C332FE000F20612 /* Assets.xcassets */,
-				871C85292C332FE000F20612 /* LaunchScreen.storyboard */,
-				871C852C2C332FE000F20612 /* Info.plist */,
+				876A7A542C335EE20022B85E /* App */,
+				876A7A582C335FC30022B85E /* Scenes */,
+				876A7A552C335F0B0022B85E /* Resources */,
+				876A7A562C335F1D0022B85E /* Supporting Files */,
+				876A7A612C3361D00022B85E /* Reusable Components */,
+				876A7A532C335EBA0022B85E /* Networking */,
 			);
 			path = WildWander;
+			sourceTree = "<group>";
+		};
+		876A7A532C335EBA0022B85E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		876A7A542C335EE20022B85E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				871C851E2C332FDE00F20612 /* AppDelegate.swift */,
+				871C85202C332FDE00F20612 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		876A7A552C335F0B0022B85E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				871C85272C332FE000F20612 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		876A7A562C335F1D0022B85E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				876A7A572C335F280022B85E /* Launch */,
+				871C852C2C332FE000F20612 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		876A7A572C335F280022B85E /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				871C85292C332FE000F20612 /* LaunchScreen.storyboard */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
+		876A7A582C335FC30022B85E /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				876A7A5E2C33606B0022B85E /* Launch Page */,
+				876A7A5F2C3360B10022B85E /* Login Page */,
+				876A7A602C3360C30022B85E /* Sign Up Page */,
+				876A7A592C335FFD0022B85E /* Explore Page */,
+				876A7A5A2C3360160022B85E /* Navigate Page */,
+				876A7A5C2C3360420022B85E /* Saved Page */,
+				876A7A5B2C33602C0022B85E /* Profile Page */,
+				876A7A5D2C33605D0022B85E /* Settings Page */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		876A7A592C335FFD0022B85E /* Explore Page */ = {
+			isa = PBXGroup;
+			children = (
+				871C85222C332FDE00F20612 /* ViewController.swift */,
+			);
+			path = "Explore Page";
+			sourceTree = "<group>";
+		};
+		876A7A5A2C3360160022B85E /* Navigate Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Navigate Page";
+			sourceTree = "<group>";
+		};
+		876A7A5B2C33602C0022B85E /* Profile Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Profile Page";
+			sourceTree = "<group>";
+		};
+		876A7A5C2C3360420022B85E /* Saved Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Saved Page";
+			sourceTree = "<group>";
+		};
+		876A7A5D2C33605D0022B85E /* Settings Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Settings Page";
+			sourceTree = "<group>";
+		};
+		876A7A5E2C33606B0022B85E /* Launch Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Launch Page";
+			sourceTree = "<group>";
+		};
+		876A7A5F2C3360B10022B85E /* Login Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Login Page";
+			sourceTree = "<group>";
+		};
+		876A7A602C3360C30022B85E /* Sign Up Page */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Sign Up Page";
+			sourceTree = "<group>";
+		};
+		876A7A612C3361D00022B85E /* Reusable Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Reusable Components";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,7 +402,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3AD552Z95A;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WildWander/Info.plist;
+				INFOPLIST_FILE = "WildWander/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -309,7 +429,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3AD552Z95A;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WildWander/Info.plist;
+				INFOPLIST_FILE = "WildWander/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
