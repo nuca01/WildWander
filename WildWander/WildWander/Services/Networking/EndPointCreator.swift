@@ -15,17 +15,13 @@ public protocol EndPoint {
     var method: String { get }
     var headers: [String: String]? { get }
     var body: Data? { get }
-    var queryParams: [String: String]? { get }
+    var queryItems: [URLQueryItem]? { get }
     var pathParams: [String: String]? { get }
 }
 
 extension EndPoint {
-    var scheme: String {
-        return "https"
-    }
-    var host: String {
-        return ""
-    }
+    var scheme: String { "https" }
+    var host: String { "" }
 }
 
 //MARK: - struct EndPointCreator
@@ -35,7 +31,7 @@ struct EndPointCreator: EndPoint {
     
     var path: String
     
-    var queryParams: [String: String]?
+    var queryItems: [URLQueryItem]?
     
     var method: String
     
@@ -54,14 +50,14 @@ struct EndPointCreator: EndPoint {
     init(
         pathParams: [String : String]? = nil,
         path: String,
-        queryParams: [String : String]? = nil,
+        queryItems: [URLQueryItem]? = nil,
         method: String,
         body: Data? = nil,
         accessToken: String
     ) {
         self.pathParams = pathParams
         self.path = path
-        self.queryParams = queryParams
+        self.queryItems = queryItems
         self.method = method
         self.body = body
         self.accessToken = accessToken
