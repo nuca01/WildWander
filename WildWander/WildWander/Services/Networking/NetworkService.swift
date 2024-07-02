@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: - enum NetworkError
 enum NetworkError: Error {
     case invalidURL
     case unexpectedStatusCode(String = "The status code returned was unexpected.")
@@ -14,6 +15,7 @@ enum NetworkError: Error {
     case decode
 }
 
+//MARK: - class NetworkService
 final class NetworkService {
     public static var shared = NetworkService()
     
@@ -47,6 +49,7 @@ final class NetworkService {
         urlTask.resume()
     }
     
+    //MARK: - private helper method
     private func createRequest(endPoint: EndPoint) -> URLRequest? {
         var urlComponents = URLComponents()
         urlComponents.scheme = endPoint.scheme

@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: - protocol Endpoint
 public protocol EndPoint {
     var host: String { get }
     var scheme: String { get }
@@ -27,6 +28,7 @@ extension EndPoint {
     }
 }
 
+//MARK: - struct EndPointCreator
 struct EndPointCreator: EndPoint {
     //MARK: - Properties
     var pathParams: [String : String]?
