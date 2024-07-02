@@ -12,8 +12,8 @@
 		871C85232C332FDE00F20612 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85222C332FDE00F20612 /* ViewController.swift */; };
 		871C85282C332FE000F20612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 871C85272C332FE000F20612 /* Assets.xcassets */; };
 		871C852B2C332FE000F20612 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 871C852A2C332FE000F20612 /* Base */; };
-		876A7A6C2C3367210022B85E /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6B2C3367210022B85E /* NetworkService.swift */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
+		876A7A722C3448250022B85E /* NetworkingService in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A712C3448250022B85E /* NetworkingService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,7 +24,6 @@
 		871C85272C332FE000F20612 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		871C852A2C332FE000F20612 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		871C852C2C332FE000F20612 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		876A7A6B2C3367210022B85E /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -33,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				876A7A722C3448250022B85E /* NetworkingService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +63,7 @@
 				876A7A552C335F0B0022B85E /* Resources */,
 				876A7A562C335F1D0022B85E /* Supporting Files */,
 				876A7A622C3364740022B85E /* Reusable Components */,
-				876A7A6D2C3434270022B85E /* Services */,
+				876A7A632C3364970022B85E /* Networking */,
 			);
 			path = WildWander;
 			sourceTree = "<group>";
@@ -149,7 +149,6 @@
 		876A7A632C3364970022B85E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				876A7A6B2C3367210022B85E /* NetworkService.swift */,
 				876A7A6E2C3434A30022B85E /* EndPointCreator.swift */,
 			);
 			path = Networking;
@@ -190,14 +189,6 @@
 			path = "Saved Page";
 			sourceTree = "<group>";
 		};
-		876A7A6D2C3434270022B85E /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				876A7A632C3364970022B85E /* Networking */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -214,6 +205,9 @@
 			dependencies = (
 			);
 			name = WildWander;
+			packageProductDependencies = (
+				876A7A712C3448250022B85E /* NetworkingService */,
+			);
 			productName = WildWander;
 			productReference = 871C851B2C332FDE00F20612 /* WildWander.app */;
 			productType = "com.apple.product-type.application";
@@ -242,6 +236,9 @@
 				Base,
 			);
 			mainGroup = 871C85122C332FDE00F20612;
+			packageReferences = (
+				876A7A702C3448250022B85E /* XCRemoteSwiftPackageReference "NetworkingService" */,
+			);
 			productRefGroup = 871C851C2C332FDE00F20612 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -271,7 +268,6 @@
 				871C85232C332FDE00F20612 /* ViewController.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
-				876A7A6C2C3367210022B85E /* NetworkService.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,6 +481,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		876A7A702C3448250022B85E /* XCRemoteSwiftPackageReference "NetworkingService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nuca01/NetworkingService";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		876A7A712C3448250022B85E /* NetworkingService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 876A7A702C3448250022B85E /* XCRemoteSwiftPackageReference "NetworkingService" */;
+			productName = NetworkingService;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 871C85132C332FDE00F20612 /* Project object */;
 }

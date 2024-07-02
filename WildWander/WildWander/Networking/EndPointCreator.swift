@@ -6,25 +6,8 @@
 //
 
 import Foundation
+import NetworkingService
 
-//MARK: - protocol Endpoint
-public protocol EndPoint {
-    var host: String { get }
-    var scheme: String { get }
-    var path: String { get }
-    var method: String { get }
-    var headers: [String: String]? { get }
-    var body: Data? { get }
-    var queryItems: [URLQueryItem]? { get }
-    var pathParams: [String: String]? { get }
-}
-
-extension EndPoint {
-    var scheme: String { "https" }
-    var host: String { "" }
-}
-
-//MARK: - struct EndPointCreator
 struct EndPointCreator: EndPoint {
     //MARK: - Properties
     var pathParams: [String : String]?
