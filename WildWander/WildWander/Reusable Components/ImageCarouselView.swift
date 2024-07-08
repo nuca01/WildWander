@@ -17,6 +17,7 @@ class ImageCarouselView: UIView {
         
         return scrollView
     }()
+    
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl(frame: CGRect(x: 0, y: frame.height - 50, width: frame.width, height: 50))
         pageControl.numberOfPages = images.count
@@ -28,7 +29,7 @@ class ImageCarouselView: UIView {
         return pageControl
     }()
     
-    private let images: [String]
+    private let images: [String] 
     
     //MARK: - Initializers
     init(frame: CGRect, images: [String]) {
