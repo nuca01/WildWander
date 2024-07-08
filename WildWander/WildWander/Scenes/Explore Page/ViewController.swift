@@ -6,35 +6,24 @@
 //
 
 import UIKit
-class ViewController: UIViewController {
-    
-//    private var mapView = WildWanderMapView()
-    private var searchBar = SearchBarView()
 
+class ViewController: UIViewController {
+    // example of using  ImageCarouselView
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.addSubview(searchBar)
+        
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width / 3, height: view.frame.height / 3)
+        let imageNames = ["image1", "image2", "image3"]
+        let pagedImageView = ImageCarouselView(frame: frame, images: imageNames)
+        
+        pagedImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(pagedImageView)
         
         NSLayoutConstraint.activate([
-            searchBar.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -40),
-            searchBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            searchBar.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            pagedImageView.heightAnchor.constraint(equalToConstant: view.frame.height / 3),
+            pagedImageView.widthAnchor.constraint(equalToConstant: view.frame.width / 3),
+            pagedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            pagedImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-        
-//        mapView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(mapView)
-//        
-//        NSLayoutConstraint.activate([
-//            mapView.heightAnchor.constraint(equalTo: view.heightAnchor),
-//            mapView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            mapView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            mapView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-//        ])
-//        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) {
-//            print("did it")
-//            self.mapView.cameraOptions.bearing = 60
-//        }
     }
 }
-
