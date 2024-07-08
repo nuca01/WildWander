@@ -20,6 +20,7 @@
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
+		87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CA3AE92C3C884D00640C58 /* UIImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
+		87CA3AE92C3C884D00640C58 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				87BF718D2C3C31F500D120C0 /* UIColor.swift */,
+				87CA3AE92C3C884D00640C58 /* UIImageView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				871C85232C332FDE00F20612 /* ViewController.swift in Sources */,
+				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* MapView.swift in Sources */,
