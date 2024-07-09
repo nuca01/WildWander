@@ -6,24 +6,39 @@
 //
 
 import UIKit
+import MapboxMaps
 
+//example of using WildWanderMapView
 class ViewController: UIViewController {
-    // example of using  ImageCarouselView
+    private lazy var mapView: WildWanderMapView = {
+        let mapView = WildWanderMapView(frame: view.bounds)
+        mapView.delegate = self
+        
+        return mapView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width / 3, height: view.frame.height / 3)
-        let imageNames = ["image1", "image2", "image3"]
-        let pagedImageView = ImageCarouselView(frame: frame, images: imageNames)
+        view.addSubview(mapView)
+    }
+}
+
+extension ViewController: WildWanderMapViewDelegate {
+    func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
+        let mapStyleViewController = MapStylePageViewController(mapStyle: mapView.mapStyle) { [weak self] changedMapStyle in
+            self?.mapView.mapStyle = changedMapStyle
+        }
         
-        pagedImageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(pagedImageView)
+        if let sheet = mapStyleViewController.sheetPresentationController {
+            let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
+            let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
+                return 180
+            }
+            
+            sheet.detents = [smallDetent]
+        }
         
-        NSLayoutConstraint.activate([
-            pagedImageView.heightAnchor.constraint(equalToConstant: view.frame.height / 3),
-            pagedImageView.widthAnchor.constraint(equalToConstant: view.frame.width / 3),
-            pagedImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pagedImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
+        present(mapStyleViewController, animated: true)
     }
 }
