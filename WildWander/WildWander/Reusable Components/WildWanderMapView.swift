@@ -57,25 +57,27 @@ final class WildWanderMapView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setUpView()
+        setUpViews()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setUpView()
+        setUpViews()
     }
     
-    private func setUpView() {
+    private func setUpViews() {
         addSubview(mapView)
         addSubview(mapStyleButton)
         
+        constrainMapStyleButton()
+    }
+    
+    private func constrainMapStyleButton() {
         NSLayoutConstraint.activate([
             mapStyleButton.heightAnchor.constraint(equalToConstant: 52),
             mapStyleButton.widthAnchor.constraint(equalToConstant: 52),
             mapStyleButton.topAnchor.constraint(equalTo: topAnchor, constant: 200),
             mapStyleButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
-        
-        mapStyle = .satellite
     }
 }
