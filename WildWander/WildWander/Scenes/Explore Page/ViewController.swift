@@ -7,6 +7,7 @@
 
 import UIKit
 import MapboxMaps
+import CoreLocation
 
 //example of using WildWanderMapView
 class ViewController: UIViewController {
@@ -21,6 +22,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(mapView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        mapView.didLoad()
     }
 }
 
