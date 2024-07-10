@@ -13,6 +13,7 @@ protocol WildWanderMapViewDelegate {
 }
 
 final class WildWanderMapView: UIView {
+    //MARK: - Properties
     private lazy var mapView: MapView = {
         let options = MapInitOptions(cameraOptions: cameraOptions)
         let mapView = MapView(frame: bounds, mapInitOptions: options)
@@ -55,6 +56,7 @@ final class WildWanderMapView: UIView {
     
     var delegate: WildWanderMapViewDelegate?
     
+    //MARK: - Initializers
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpViews()
@@ -65,6 +67,7 @@ final class WildWanderMapView: UIView {
         setUpViews()
     }
     
+    //MARK: - Methods
     private func setUpViews() {
         addSubview(mapView)
         addSubview(mapStyleButton)
