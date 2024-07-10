@@ -11,7 +11,7 @@ protocol SearchBarViewDelegate: AnyObject {
     func magnifyingGlassPressed()
 }
 
-class SearchBarView: UITextField {
+final class SearchBarView: UITextField {
     weak var searchBarDelegate: SearchBarViewDelegate?
     
     //MARK: - Initializers

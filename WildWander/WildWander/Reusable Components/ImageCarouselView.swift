@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCarouselView: UIView {
+final class ImageCarouselView: UIView {
     //MARK: - Properties
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: bounds)
