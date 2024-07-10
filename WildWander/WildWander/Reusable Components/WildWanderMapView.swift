@@ -68,7 +68,6 @@ final class WildWanderMapView: UIView {
     private func setUpViews() {
         addSubview(mapView)
         addSubview(mapStyleButton)
-        
         constrainMapStyleButton()
     }
     
@@ -76,7 +75,7 @@ final class WildWanderMapView: UIView {
         NSLayoutConstraint.activate([
             mapStyleButton.heightAnchor.constraint(equalToConstant: 52),
             mapStyleButton.widthAnchor.constraint(equalToConstant: 52),
-            mapStyleButton.topAnchor.constraint(equalTo: topAnchor, constant: 200),
+            mapStyleButton.topAnchor.constraint(equalTo: topAnchor, constant: bounds.height / 4),
             mapStyleButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
     }

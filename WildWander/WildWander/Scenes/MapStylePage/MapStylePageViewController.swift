@@ -42,7 +42,10 @@ final class MapStylePageViewController: UIViewController {
     }()
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [changeToOutdoorsButton, changeToSatelliteButton])
+        let stackView = UIStackView(arrangedSubviews: [
+            titleAndButtonStackView(from: changeToOutdoorsButton),
+            titleAndButtonStackView(from: changeToSatelliteButton)
+        ])
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,6 +102,19 @@ final class MapStylePageViewController: UIViewController {
                 button.heightAnchor.constraint(equalToConstant: 140)
             ])
         }
+    }
+    
+    private func titleAndButtonStackView(from button: UIButton) -> UIStackView {
+        let label = UILabel()
+        label.text = button === changeToOutdoorsButton ? "Outdoors": "Satellite"
+        label.font = .systemFont(ofSize: 15, weight: .bold)
+        
+        let stackView = UIStackView(arrangedSubviews: [button, label])
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .center
+        
+        return stackView
     }
 
     //MARK: - Initializers
