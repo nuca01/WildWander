@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>In order to diplay your location on the map or to use navigation app needs access to your location</string>
 	<key>MBXAccessToken</key>
 	<string>pk.eyJ1IjoibnVjYTAxIiwiYSI6ImNseHczZjVubTExc3AyaXNkaDlzdndjdDcifQ.kYmHpUikG7Dnnm0msvEycQ</string>
 	<key>UIApplicationSceneManifest</key>

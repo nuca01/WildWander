@@ -27,9 +27,9 @@ final class WildWanderMapView: UIView {
         firstButtonTitle: "Go To Settings",
         dismissButtonTitle: "Maybe Later"
     )
-    private var allowsDynamicPointAnnotations: Bool = false
-    
     private var pointAnnotationManager: PointAnnotationManager?
+    private var allowsDynamicPointAnnotations: Bool = false
+    private var annotations: [PointAnnotation] = []
     
     private lazy var mapView: NavigationMapView = {
         let randomLocation = CLLocationCoordinate2D(latitude: 41.879, longitude: -87.635)
@@ -124,12 +124,31 @@ final class WildWanderMapView: UIView {
     convenience init(frame: CGRect, allowsDynamicPointAnnotations: Bool) {
         self.init(frame: frame)
         self.allowsDynamicPointAnnotations = allowsDynamicPointAnnotations
-        
         if allowsDynamicPointAnnotations {
             pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
             pointAnnotationManager?.delegate = self
-            setupExample()
+            setupAnnotationsIcons()
+            setupDynamicAnnotationsGesture()
         }
+    }
+    
+    convenience init(
+        frame: CGRect,
+        allowsStaticPointAnnotations: Bool,
+        coordinates: [CLLocationCoordinate2D]
+    ) {
+        self.init(frame: frame)
+        
+        if allowsStaticPointAnnotations {
+            pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
+            pointAnnotationManager?.delegate = self
+            setupAnnotationsIcons()
+        }
+        
+        pointAnnotationManager?.annotations = coordinates.map { coordinate in
+            PointAnnotation(coordinate: coordinate)
+        }
+        drawRoute()
     }
     
     //MARK: - LifeCycle
@@ -208,64 +227,93 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         didTapOnAnnotation?(annotationTapped)
     }
     
-    private func setupExample() {
+    private func setupAnnotationsIcons() {
         try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "redMarker")!, id: "redMarker")
         try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "blueMarker")!, id: "blueMarker")
+    }
+    
+    private func setupDynamicAnnotationsGesture() {
         let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
         mapView.addGestureRecognizer(tapGesture)
     }
     
-    func changeActiveAnnotationIndex(to index: Int) {
-        let arrayCount = viewModel?.annotationIds.count ?? 0
-    
-        if index > arrayCount {
-            return
-        }
-        
-        changeOldActiveAnnotationMarker()
-        
-        if index == arrayCount {
-            viewModel?.activeAnnotationsId = ""
-        } else {
-            let futureActiveAnnotation = pointAnnotationManager?.annotations.first(where: { annotation in
-                annotation.id == viewModel?.annotationIds[index]
-            })
+    func changeActiveAnnotationIndex(to index: Int) -> Bool {
+        if allowsDynamicPointAnnotations {
+            let arrayCount = self.annotations.count
             
-            let futureActiveAnnotationIndex = pointAnnotationManager?.annotations.firstIndex(where: { annotation in
-                annotation.id == viewModel?.annotationIds[index]
-            })
+            if index > arrayCount {
+                return false
+            }
             
-            pointAnnotationManager?.annotations[futureActiveAnnotationIndex!].iconImage = "redMarker"
-            viewModel?.activeAnnotationsId = futureActiveAnnotation!.id
+            changeOldActiveAnnotationMarker()
+            
+            if index == arrayCount {
+                viewModel?.activeAnnotationsId = ""
+            } else {
+                changeMarkerOfFutureActiveAnnotation(of: index)
+                viewModel?.activeAnnotationsId = self.annotations[index].id
+            }
+            return true
         }
+        return false
     }
     
     private func changeOldActiveAnnotationMarker() {
         if let activeAnnotationsId = viewModel?.activeAnnotationsId
         {
-            let activeAnnotationIndex = pointAnnotationManager?.annotations.firstIndex(where: { annotation in
-                annotation.id == activeAnnotationsId
-            }) ?? 0
-            pointAnnotationManager?.annotations[activeAnnotationIndex].iconImage = "blueMarker"
+            pointAnnotationManager?.annotations = pointAnnotationManager!.annotations.map({ annotation in
+                var newAnnotation = annotation
+                if annotation.id == activeAnnotationsId  {
+                    newAnnotation.iconImage = "blueMarker"
+                }
+                return newAnnotation
+            })
         }
     }
     
+    private func changeMarkerOfFutureActiveAnnotation(of index: Int) {
+        pointAnnotationManager?.annotations = pointAnnotationManager!.annotations.map({ annotation in
+            var newAnnotation = annotation
+            if annotation.id == self.annotations[index].id  {
+                newAnnotation.iconImage = "redMarker"
+            }
+            return newAnnotation
+        })
+    }
+    
     func deleteAnnotationOf(index: Int) -> Int? {
-        let annotationsCount = viewModel?.activeAnnotationsId.count ?? 0
-        if index >= annotationsCount {
-            return nil
+        if allowsDynamicPointAnnotations {
+            let annotationsCount = annotations.count
+            if index > annotationsCount {
+                return nil
+            } else if index == annotationsCount {
+                changeToFutureActiveAnnotation()
+                return self.annotations.firstIndex { value in
+                    value.id == viewModel?.activeAnnotationsId
+                }
+            }
+            
+            if annotationsCount > 1 {
+                changeToFutureActiveAnnotation()
+            }
+            
+            removeAnnotationEverywhere(of: self.annotations[index].id)
+            
+            return self.annotations.firstIndex { value in
+                value.id == viewModel?.activeAnnotationsId
+            }
         }
-        
-        if viewModel?.annotationIds[index] == viewModel?.activeAnnotationsId && annotationsCount > 1 {
-            changeToFutureActiveAnnotation()
-        }
-        
+        return nil
+    }
+    
+    private func removeAnnotationEverywhere(of id: String) {
         pointAnnotationManager?.annotations.removeAll(where: { annotation in
-            annotation.id == viewModel?.annotationIds[index]
+            annotation.id == id
         })
         
-        viewModel?.annotationIds.remove(at: index)
-        return viewModel?.annotationIds.firstIndex(of: viewModel?.activeAnnotationsId ?? "")
+        self.annotations.removeAll (where: { annotation in
+            annotation.id == id
+        })
     }
     
     private func changeToFutureActiveAnnotation() {
@@ -296,14 +344,16 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         if let activeAnnotationId = viewModel?.activeAnnotationsId, let pointAnnotationManager, activeAnnotationExists(in: pointAnnotationManager)
         {
             pointAnnotationManager.annotations = renewedAnnotations(in: pointAnnotationManager, with: annotation)
-            let currentActiveAnnotationIndexInVM = viewModel?.annotationIds.firstIndex(of: activeAnnotationId)
+            let currentActiveAnnotationIndexInContainer = self.annotations.firstIndex { value in
+                value.id == viewModel?.activeAnnotationsId
+            }
             
-            viewModel?.annotationIds[currentActiveAnnotationIndexInVM!] = annotation.id
+            self.annotations[currentActiveAnnotationIndexInContainer!] = annotation
             viewModel?.activeAnnotationsId = annotation.id
         } else {
-            viewModel?.annotationIds.append(annotation.id)
             viewModel?.activeAnnotationsId = annotation.id
             pointAnnotationManager?.annotations.append(annotation)
+            self.annotations.append(annotation)
         }
     }
     
@@ -320,6 +370,26 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
             }
             return value
         })
+    }
+    
+    func drawRoute() {
+        if annotations.count < 2 {
+            return
+        }
+        var waypoints: [Waypoint] = []
+            for annotation in self.annotations {
+                let coordinate = annotation.point.coordinates
+                waypoints.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)))
+            }
+        let routeOptions = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        Directions.shared.calculate(routeOptions) { session, result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let response):
+                self.mapView.showcase(response.routes ?? [])
+            }
+        }
     }
     
     @objc public func longPress(_ sender: UILongPressGestureRecognizer) {

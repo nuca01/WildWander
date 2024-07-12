@@ -12,6 +12,7 @@ final class MapStylePageViewController: UIViewController {
     //MARK: - Properties
     private var mapStyle: MapboxMaps.StyleURI
     private var didChangeStyleTo: (_ style: MapboxMaps.StyleURI) -> Void
+    private var sheetDidDisappear: () -> Void
     
     private lazy var changeToSatelliteButton: UIButton = {
         let button = generateButton(for: .satellite)
@@ -59,6 +60,9 @@ final class MapStylePageViewController: UIViewController {
         setUpViews()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        sheetDidDisappear()
+    }
     //MARK: - Methods
     private func generateButton(for style: MapboxMaps.StyleURI) -> UIButton {
         let button = UIButton()
@@ -118,12 +122,18 @@ final class MapStylePageViewController: UIViewController {
     }
 
     //MARK: - Initializers
-    init(mapStyle: MapboxMaps.StyleURI, didChangeStyleTo: @escaping (MapboxMaps.StyleURI) -> Void) {
+    init(
+        mapStyle: MapboxMaps.StyleURI,
+        didChangeStyleTo: @escaping (MapboxMaps.StyleURI) -> Void,
+        sheetDidDisappear: @escaping () -> Void
+    ) {
         self.mapStyle = mapStyle
         self.didChangeStyleTo = didChangeStyleTo
-
+        self.sheetDidDisappear = sheetDidDisappear
+        
         super.init(nibName: nil, bundle: nil)
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
