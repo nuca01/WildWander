@@ -1,5 +1,5 @@
 //
-//  MakeCustomTrailView.swift
+//  MakeCustomTrailViewController.swift
 //  WildWander
 //
 //  Created by nuca on 12.07.24.

@@ -24,6 +24,8 @@
 		87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED802C3DCE9A0092A756 /* MapStylePageViewController.swift */; };
 		87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED822C3F3E650092A756 /* WildWanderMapViewModel.swift */; };
 		87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */; };
+		87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */; };
+		87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		87F0ED802C3DCE9A0092A756 /* MapStylePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylePageViewController.swift; sourceTree = "<group>"; };
 		87F0ED822C3F3E650092A756 /* WildWanderMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapViewModel.swift; sourceTree = "<group>"; };
 		87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderAlertView.swift; sourceTree = "<group>"; };
+		87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCustomTrailViewController.swift; sourceTree = "<group>"; };
+		87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatePageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +194,8 @@
 		876A7A672C3365F20022B85E /* Navigate Page */ = {
 			isa = PBXGroup;
 			children = (
+				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
+				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
 			);
 			path = "Navigate Page";
 			sourceTree = "<group>";
@@ -322,6 +328,7 @@
 			files = (
 				871C85232C332FDE00F20612 /* ViewController.swift in Sources */,
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
+				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
@@ -329,6 +336,7 @@
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
 				87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
+				87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
@@ -478,10 +486,11 @@
 				DEVELOPMENT_TEAM = 3AD552Z95A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WildWander/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to diplay your location on the map or to use navigation app needs access to your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -505,10 +514,11 @@
 				DEVELOPMENT_TEAM = 3AD552Z95A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "WildWander/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "In order to diplay your location on the map or to use navigation app needs access to your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
