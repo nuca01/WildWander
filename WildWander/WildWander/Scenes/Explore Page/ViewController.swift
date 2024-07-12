@@ -12,7 +12,7 @@ import CoreLocation
 //example of using WildWanderMapView
 class ViewController: UIViewController {
     private lazy var mapView: WildWanderMapView = {
-        let mapView = WildWanderMapView(frame: view.bounds)
+        let mapView = WildWanderMapView(frame: view.bounds, allowsDynamicPointAnnotations: true)
         mapView.delegate = self
         
         return mapView
