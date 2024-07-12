@@ -12,7 +12,12 @@ import CoreLocation
 //example of using WildWanderMapView and MakeCustomTrailViewController
 class NavigatePageViewController: UIViewController {
     private lazy var mapView: WildWanderMapView = {
-        let mapView = WildWanderMapView(frame: view.bounds, allowsDynamicPointAnnotations: true)
+        let mapView = WildWanderMapView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: view.bounds.width,
+            height: view.bounds.height - 300
+        ), allowsDynamicPointAnnotations: false)
         mapView.delegate = self
         
         return mapView
@@ -24,13 +29,24 @@ class NavigatePageViewController: UIViewController {
     } didDeleteCheckpoint: { [weak self] index in
         self?.mapView.deleteAnnotationOf(index: index) ?? 0
     } didTapOnFinishButton: { [weak self] in
+        self?.mapView.allowsDynamicPointAnnotations = false
         self?.mapView.drawRoute()
+    } didTapOnCancelButton: { [weak self] in
+        self?.mapView.allowsDynamicPointAnnotations = false
+        self?.mapView.deleteAllAnnotations()
+        self?.mapView.removeRoutes()
+    } willAddCustomTrail: { [weak self] in
+        self?.mapView.allowsDynamicPointAnnotations = true
+    } didTapStartNavigation: { [weak self] in
+        self?.mapView.allowsDynamicPointAnnotations = true
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(mapView)
+        
+        view.backgroundColor = .white
         
         sheetNavigationController = UINavigationController(rootViewController: controller)
         
@@ -88,7 +104,7 @@ extension NavigatePageViewController: WildWanderMapViewDelegate {
          if let sheet = mapStyleViewController.sheetPresentationController {
              let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
              let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
-                 return 180
+                 return 300
              }
              
              sheet.detents = [smallDetent]

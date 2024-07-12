@@ -28,7 +28,7 @@ final class WildWanderMapView: UIView {
         dismissButtonTitle: "Maybe Later"
     )
     private var pointAnnotationManager: PointAnnotationManager?
-    private var allowsDynamicPointAnnotations: Bool = false
+    var allowsDynamicPointAnnotations: Bool = false
     private var annotations: [PointAnnotation] = []
     
     private lazy var mapView: NavigationMapView = {
@@ -124,12 +124,10 @@ final class WildWanderMapView: UIView {
     convenience init(frame: CGRect, allowsDynamicPointAnnotations: Bool) {
         self.init(frame: frame)
         self.allowsDynamicPointAnnotations = allowsDynamicPointAnnotations
-        if allowsDynamicPointAnnotations {
-            pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
-            pointAnnotationManager?.delegate = self
-            setupAnnotationsIcons()
-            setupDynamicAnnotationsGesture()
-        }
+        pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
+        pointAnnotationManager?.delegate = self
+        setupAnnotationsIcons()
+        setupDynamicAnnotationsGesture()
     }
     
     convenience init(
@@ -335,9 +333,6 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         var annotation = PointAnnotation(point: Point(coordinate))
         annotation.iconImage = "redMarker"
         appendAnnotationsArray(with: annotation)
-        
-        let camera = CameraOptions(center: coordinate)
-        mapView.mapView.camera.ease(to: camera, duration: 0.5)
     }
     
     private func appendAnnotationsArray(with annotation: PointAnnotation) {
@@ -382,22 +377,36 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
                 waypoints.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)))
             }
         let routeOptions = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
-        Directions.shared.calculate(routeOptions) { session, result in
+        Directions.shared.calculate(routeOptions) {[weak self] session, result in
             switch result {
             case .failure(let error):
                 print(error)
             case .success(let response):
-                self.mapView.showcase(response.routes ?? [])
+                self?.mapView.showcase(response.routes ?? [])
             }
         }
     }
     
+    func removeRoutes() {
+        // Check if the route layer and source exist on the map view
+        self.mapView.removeRoutes()
+        self.mapView.removeWaypoints()
+    }
+    
+    func deleteAllAnnotations() {
+        annotations.removeAll()
+        pointAnnotationManager?.annotations.removeAll()
+        viewModel?.activeAnnotationsId = ""
+    }
+    
     @objc public func longPress(_ sender: UILongPressGestureRecognizer) {
-        switch sender.state {
-        case .began:
-            longPressBegan(at: sender.location(in: mapView.mapView))
-        default:
-            break
+        if allowsDynamicPointAnnotations {
+            switch sender.state {
+            case .began:
+                longPressBegan(at: sender.location(in: mapView.mapView))
+            default:
+                break
+            }
         }
     }
 }
