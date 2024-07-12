@@ -194,8 +194,8 @@
 		876A7A672C3365F20022B85E /* Navigate Page */ = {
 			isa = PBXGroup;
 			children = (
-				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
 				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
+				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
 			);
 			path = "Navigate Page";
 			sourceTree = "<group>";

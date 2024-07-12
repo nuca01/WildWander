@@ -8,13 +8,37 @@
 import UIKit
 
 class MakeCustomTrailViewController: UIViewController {
+    //MARK: - Properties
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    private lazy var stackView: UIStackView = {
+    //MARK: - addTrailAndChooseTrailStackView
+    private lazy var addTrailAndChooseTrailStackView: UIStackView = {
+        generateMainButtonsStackView()
+    }()
+    
+    private lazy var addTrailButton: UIButton = {
+        let button = generateRightButton(with: "Add Trail")
+        button.addAction(UIAction { [weak self] _ in
+            
+        }, for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var chooseTrailButton: UIButton = {
+        let button = generateLeftButton(with: "Choose Trail")
+        button.addAction(UIAction { [weak self] _ in
+            self?.addTrailAndChooseTrailStackView.removeFromSuperview()
+            self?.configureCustomTrailView()
+        }, for: .touchUpInside)
+        return button
+    }()
+    
+    //MARK: - customTrailStackView
+    private lazy var customTrailStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .trailing
@@ -62,19 +86,72 @@ class MakeCustomTrailViewController: UIViewController {
     }()
     
     private lazy var finishButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 0.2, green: 0.4, blue: 0.1, alpha: 1)
-        button.setTitle("Finish", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
+        let button = generateRightButton(with: "Finish")
         button.addAction(UIAction { [weak self] _ in
-            self?.didTapOnFinishButton()
+            guard let self else {return}
+            self.customTrailStackView.removeFromSuperview()
+            self.configureButtonsView(for: self.customTrailNavigationStackView, and: [self.editTrailButton, self.startTrailButton])
+            self.didTapOnFinishButton()
         }, for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
         return button
     }()
     
+    private lazy var cancelButton: UIButton = {
+        let button = generateLeftButton(with: "Cancel")
+        button.addAction(UIAction { [weak self] _ in
+            guard let self else {return}
+            self.customTrailStackView.removeFromSuperview()
+            self.configureButtonsView(for: self.addTrailAndChooseTrailStackView, and: [self.addTrailButton, self.chooseTrailButton])
+            self.didTapOnCancelButton()
+        }, for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var cancelAndFinishStackView: UIStackView = {
+        generateMainButtonsStackView()
+    }()
+    
+    //MARK: - customTrailNavigationStackView
+    private lazy var customTrailNavigationStackView: UIStackView = {
+        generateMainButtonsStackView()
+    }()
+    
+    private lazy var editTrailButton: UIButton = {
+        let button = generateRightButton(with: "Edit Trail")
+        button.addAction(UIAction { [weak self] _ in
+            self?.customTrailNavigationStackView.removeFromSuperview()
+            self?.configureCustomTrailView()
+        }, for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var startTrailButton: UIButton = {
+        let button = generateLeftButton(with: "Start Trail")
+        button.addAction(UIAction { [weak self] _ in
+            self?.addTrailAndChooseTrailStackView.removeFromSuperview()
+            self?.didTapStartNavigation()
+        }, for: .touchUpInside)
+        return button
+    }()
+    
+    //MARK: - SearchBar
+    private lazy var searchBar: SearchBarView = {
+        let searchBar = SearchBarView()
+        searchBar.delegate = self
+        searchBar.searchBarDelegate = self
+        
+        return searchBar
+    }()
+//    private lazy var customTrailStackView: UIStackView = {
+//        let stackView = UIStackView()
+//        stackView.axis = .vertical
+//        stackView.alignment = .trailing
+//        stackView.distribution = .fill
+//        stackView.spacing = 20
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        return stackView
+//    }()
+//    
     private var activeButtonIndex: Int? {
         didSet {
             if let activeButtonIndex {
@@ -91,10 +168,27 @@ class MakeCustomTrailViewController: UIViewController {
     
     var didTapOnFinishButton: () -> Void
     
-    init(didTapOnChooseOnTheMap: (@escaping (_: Int) -> Bool), didDeleteCheckpoint: (@escaping (_: Int) -> Int), didTapOnFinishButton: @escaping () -> Void) {
+    var didTapOnCancelButton: () -> Void
+    
+    var willAddCustomTrail: () -> Void
+    
+    var didTapStartNavigation: () -> Void
+    
+    //MARK: - Initializers
+    init(didTapOnChooseOnTheMap: (
+        @escaping (_: Int) -> Bool),
+         didDeleteCheckpoint: (@escaping (_: Int) -> Int),
+         didTapOnFinishButton: @escaping () -> Void,
+         didTapOnCancelButton: @escaping () -> Void,
+         willAddCustomTrail: @escaping () -> Void,
+         didTapStartNavigation: @escaping () -> Void
+    ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap
         self.didDeleteCheckpoint = didDeleteCheckpoint
         self.didTapOnFinishButton = didTapOnFinishButton
+        self.didTapOnCancelButton = didTapOnCancelButton
+        self.willAddCustomTrail = willAddCustomTrail
+        self.didTapStartNavigation = didTapStartNavigation
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -103,39 +197,59 @@ class MakeCustomTrailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubviews()
+        view.addSubview(scrollView)
         view.backgroundColor = .white
-        setUpConstraints()
-        addCheckPoint()
-        addCheckPoint()
+        constrainScrollView()
+        configureButtonsView(for: addTrailAndChooseTrailStackView, and: [addTrailButton, chooseTrailButton])
     }
     
+    //MARK: - Methods
     private func addSubviews() {
         view.addSubview(scrollView)
+    }
+    
+    private func configureButtonsView(for stackView: UIStackView, and buttons: [UIButton]) {
         scrollView.addSubview(stackView)
-        
-        [checkPointsStackView, addRemoveStackView, finishButton].forEach { view in
+        buttons.forEach { view in
             stackView.addArrangedSubview(view)
+        }
+        constrainToScrollView(stackView)
+        constrainMainButtonsOf(stackView)
+    }
+    
+    private func configureCustomTrailView() {
+        willAddCustomTrail()
+        scrollView.addSubview(customTrailStackView)
+        [checkPointsStackView, addRemoveStackView, cancelAndFinishStackView].forEach { view in
+            customTrailStackView.addArrangedSubview(view)
         }
         
         [addButton, removeButton].forEach { view in
             addRemoveStackView.addArrangedSubview(view)
         }
         
-    }
-    
-    private func setUpConstraints() {
-        constrainScrollView()
-        constrainStackView()
+        [finishButton, cancelButton].forEach { view in
+            cancelAndFinishStackView.addArrangedSubview(view)
+        }
+        
+        constrainToScrollView(customTrailStackView)
         constrainCheckPointsStackView()
         constrainAddAndRemoveButtons()
         
+        constrainMainButtonsOf(cancelAndFinishStackView)
+        
         NSLayoutConstraint.activate([
-            finishButton.heightAnchor.constraint(equalToConstant: 50),
-            finishButton.widthAnchor.constraint(equalTo: finishButton.titleLabel!.widthAnchor, constant: 20)
+            cancelAndFinishStackView.leadingAnchor.constraint(equalTo: customTrailStackView.leadingAnchor),
+            cancelAndFinishStackView.trailingAnchor.constraint(equalTo: customTrailStackView.trailingAnchor),
         ])
+        
+        if checkPointsStackView.subviews.count < 2 {
+            addCheckPoint()
+            addCheckPoint()
+        }
     }
     
     private func constrainScrollView() {
@@ -147,20 +261,28 @@ class MakeCustomTrailViewController: UIViewController {
         ])
     }
     
-    private func constrainStackView() {
+    private func constrainToScrollView(_ view: UIView) {
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
+            view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            view.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
+            view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
         ])
+    }
+    
+    private func constrainMainButtonsOf(_ stackView: UIStackView) {
+        stackView.subviews.forEach { button in
+            NSLayoutConstraint.activate([
+                button.heightAnchor.constraint(equalToConstant: 50),
+            ])
+        }
     }
     
     private func constrainCheckPointsStackView() {
         NSLayoutConstraint.activate([
-            checkPointsStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            checkPointsStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            checkPointsStackView.leadingAnchor.constraint(equalTo: customTrailStackView.leadingAnchor),
+            checkPointsStackView.trailingAnchor.constraint(equalTo: customTrailStackView.trailingAnchor),
         ])
     }
     
@@ -222,7 +344,7 @@ class MakeCustomTrailViewController: UIViewController {
         button.addAction(UIAction { [weak self] _ in
             guard let self = self else { return }
             
-            var checkPointNumber: Int = getCheckPointNumber(for: button)
+            let checkPointNumber: Int = getCheckPointNumber(for: button)
             
             let didChangeCheckpoint = self.didTapOnChooseOnTheMap(checkPointNumber)
             
@@ -290,5 +412,49 @@ class MakeCustomTrailViewController: UIViewController {
             buttonImage.heightAnchor.constraint(equalToConstant: 50),
             buttonImage.widthAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    private func generateRightButton(with title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.with(red: 238, green: 238, blue: 235, alpha: 100)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(UIColor(red: 0.2, green: 0.4, blue: 0.1, alpha: 1), for: .normal)
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }
+    
+    private func generateLeftButton(with title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor(red: 0.2, green: 0.4, blue: 0.1, alpha: 1)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }
+    
+    private func generateMainButtonsStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }
+}
+
+extension MakeCustomTrailViewController: SearchBarViewDelegate {
+    func magnifyingGlassPressed() {
+        
+    }
+}
+
+extension MakeCustomTrailViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
