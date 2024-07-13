@@ -134,10 +134,7 @@ final class WildWanderMapView: UIView {
         pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
         pointAnnotationManager?.delegate = self
         setupAnnotationsIcons()
-        
-        if allowsDynamicPointAnnotations {
-            setupDynamicAnnotationsGesture()
-        }
+        setupDynamicAnnotationsGesture()
     }
     
 //    convenience init(

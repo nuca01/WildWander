@@ -88,7 +88,9 @@ final class ImageCarouselView: UIView {
 //MARK: - UIScrollViewDelegate
 extension ImageCarouselView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = round(scrollView.contentOffset.x / frame.width)
-        pageControl.currentPage = Int(pageIndex)
+        let pageIndex = Int(round(scrollView.contentOffset.x / frame.width))
+        if pageIndex <= imageURLs.count && pageIndex > 0 {
+            pageControl.currentPage = pageIndex
+        }
     }
 }
