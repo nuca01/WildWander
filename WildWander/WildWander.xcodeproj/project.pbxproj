@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C851E2C332FDE00F20612 /* AppDelegate.swift */; };
 		871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85202C332FDE00F20612 /* SceneDelegate.swift */; };
-		871C85232C332FDE00F20612 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85222C332FDE00F20612 /* ViewController.swift */; };
+		871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85222C332FDE00F20612 /* ExplorePageViewController.swift */; };
 		871C85282C332FE000F20612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 871C85272C332FE000F20612 /* Assets.xcassets */; };
 		871C852B2C332FE000F20612 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 871C852A2C332FE000F20612 /* Base */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
@@ -17,6 +17,7 @@
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
 		876A7A792C3468120022B85E /* MapboxNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A782C3468120022B85E /* MapboxNavigation */; };
 		876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */; };
+		87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DD72C42F8CE00B439E7 /* Bounds.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -26,18 +27,24 @@
 		87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */; };
 		87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */; };
 		87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */; };
+		87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED8D2C41F9F60092A756 /* Trail.swift */; };
+		87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */; };
+		87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED922C41FC2B0092A756 /* TrailsView.swift */; };
+		87F0ED952C41FFE30092A756 /* TrailsViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */; };
+		87F0ED972C4283350092A756 /* TrailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED962C4283350092A756 /* TrailsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		871C851B2C332FDE00F20612 /* WildWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		871C851E2C332FDE00F20612 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		871C85202C332FDE00F20612 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		871C85222C332FDE00F20612 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		871C85222C332FDE00F20612 /* ExplorePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePageViewController.swift; sourceTree = "<group>"; };
 		871C85272C332FE000F20612 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		871C852A2C332FE000F20612 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		871C852C2C332FE000F20612 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
+		87876DD72C42F8CE00B439E7 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -47,6 +54,11 @@
 		87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderAlertView.swift; sourceTree = "<group>"; };
 		87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCustomTrailViewController.swift; sourceTree = "<group>"; };
 		87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatePageViewController.swift; sourceTree = "<group>"; };
+		87F0ED8D2C41F9F60092A756 /* Trail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trail.swift; sourceTree = "<group>"; };
+		87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePageViewModel.swift; sourceTree = "<group>"; };
+		87F0ED922C41FC2B0092A756 /* TrailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsView.swift; sourceTree = "<group>"; };
+		87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsViewViewModel.swift; sourceTree = "<group>"; };
+		87F0ED962C4283350092A756 /* TrailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +96,7 @@
 			children = (
 				876A7A542C335EE20022B85E /* App */,
 				876A7A582C335FC30022B85E /* Scenes */,
+				87F0ED8C2C41F9C90092A756 /* Models */,
 				876A7A552C335F0B0022B85E /* Resources */,
 				876A7A562C335F1D0022B85E /* Supporting Files */,
 				876A7A622C3364740022B85E /* Reusable Components */,
@@ -146,7 +159,12 @@
 		876A7A592C335FFD0022B85E /* Explore Page */ = {
 			isa = PBXGroup;
 			children = (
-				871C85222C332FDE00F20612 /* ViewController.swift */,
+				871C85222C332FDE00F20612 /* ExplorePageViewController.swift */,
+				87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */,
+				87F0ED962C4283350092A756 /* TrailsCell.swift */,
+				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
+				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
+				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
 			);
 			path = "Explore Page";
 			sourceTree = "<group>";
@@ -194,7 +212,6 @@
 		876A7A672C3365F20022B85E /* Navigate Page */ = {
 			isa = PBXGroup;
 			children = (
-				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
 				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
 			);
 			path = "Navigate Page";
@@ -245,6 +262,15 @@
 				87F0ED822C3F3E650092A756 /* WildWanderMapViewModel.swift */,
 			);
 			path = WildWanderMap;
+			sourceTree = "<group>";
+		};
+		87F0ED8C2C41F9C90092A756 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				87F0ED8D2C41F9F60092A756 /* Trail.swift */,
+				87876DD72C42F8CE00B439E7 /* Bounds.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,10 +352,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				871C85232C332FDE00F20612 /* ViewController.swift in Sources */,
+				871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */,
+				87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */,
+				87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */,
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
+				87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
@@ -338,7 +367,10 @@
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
 				87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
+				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,
+				87F0ED972C4283350092A756 /* TrailsCell.swift in Sources */,
+				87F0ED952C41FFE30092A756 /* TrailsViewViewModel.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

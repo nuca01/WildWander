@@ -24,7 +24,7 @@ class NavigatePageViewController: UIViewController {
     }()
     var sheetNavigationController: UINavigationController?
     
-    private lazy var controller = MakeCustomTrailViewController { [weak self] index in
+    private lazy var makeCustomTrailViewController = MakeCustomTrailViewController { [weak self] index in
         return self?.mapView.changeActiveAnnotationIndex(to: index) ?? false
     } didDeleteCheckpoint: { [weak self] index in
         self?.mapView.deleteAnnotationOf(index: index) ?? 0
@@ -48,7 +48,7 @@ class NavigatePageViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        sheetNavigationController = UINavigationController(rootViewController: controller)
+        sheetNavigationController = UINavigationController(rootViewController: makeCustomTrailViewController)
         
         sheetNavigationController?.modalPresentationStyle = .pageSheet
         
@@ -85,7 +85,7 @@ class NavigatePageViewController: UIViewController {
 extension NavigatePageViewController: WildWanderMapViewDelegate {
     func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
          if let presentedViewController = presentedViewController {
-             // If a view controller is already presented, dismiss it before presenting a new one
+             
              presentedViewController.dismiss(animated: true) { [weak self] in
                  self?.presentMapStyleViewController(currentMapStyle: currentMapStyle)
              }
@@ -100,19 +100,9 @@ extension NavigatePageViewController: WildWanderMapViewDelegate {
          } sheetDidDisappear: { [weak self] in
              self?.presentMakeCustomTrailView()
          }
-
-         if let sheet = mapStyleViewController.sheetPresentationController {
-             let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
-             let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
-                 return 300
-             }
-             
-             sheet.detents = [smallDetent]
-             sheet.prefersGrabberVisible = true
-         }
          
-         present(mapStyleViewController, animated: true) { [weak self] in
-             self?.presentMakeCustomTrailView()
+         DispatchQueue.main.async { [weak self] in
+             self?.present(mapStyleViewController, animated: true)
          }
      }
 }
