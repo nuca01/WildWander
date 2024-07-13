@@ -19,4 +19,10 @@ extension UISheetPresentationController.Detent {
             return context.maximumDetentValue - 0.1
         }
     }
+    
+    class func smallThanMedium() -> UISheetPresentationController.Detent {
+        return UISheetPresentationController.Detent.custom(identifier: .smallThanMedium) { context in
+            return 300
+        }
+    }
 }

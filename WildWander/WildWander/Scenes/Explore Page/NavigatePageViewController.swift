@@ -50,7 +50,9 @@ class NavigatePageViewController: UIViewController {
         
         sheetNavigationController = UINavigationController(rootViewController: makeCustomTrailViewController)
         
-        sheetNavigationController?.modalPresentationStyle = .pageSheet
+        sheetNavigationController?.modalPresentationStyle = .custom
+        
+        sheetNavigationController?.transitioningDelegate = self
         
         sheetNavigationController?.isModalInPresentation = true
     }
@@ -59,18 +61,13 @@ class NavigatePageViewController: UIViewController {
         presentMakeCustomTrailView()
     }
     
-    private func presentMakeCustomTrailView() {
-        if let sheet = sheetNavigationController?.sheetPresentationController {
-            let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
-            let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
-                return 300
-            }
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.detents = [smallDetent]
-            sheet.prefersGrabberVisible = true
-            sheet.largestUndimmedDetentIdentifier = smallDetentId
+    override func viewWillDisappear(_ animated: Bool) {
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true)
         }
-        
+    }
+    
+    private func presentMakeCustomTrailView() {
         DispatchQueue.main.async { [weak self] in
             guard let self, let nav = self.sheetNavigationController  else { return }
             self.present(nav, animated: true)
@@ -79,6 +76,22 @@ class NavigatePageViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         mapView.didLoad()
+    }
+}
+
+extension NavigatePageViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
+        tabSheetPresentationController.detents = [
+            .smallThanMedium(),
+        ]
+        tabSheetPresentationController.largestUndimmedDetentIdentifier = .smallThanMedium
+        tabSheetPresentationController.prefersGrabberVisible = true
+        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+        tabSheetPresentationController.selectedDetentIdentifier = .medium
+
+        return tabSheetPresentationController
     }
 }
 
