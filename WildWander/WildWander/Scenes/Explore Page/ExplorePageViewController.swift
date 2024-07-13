@@ -62,9 +62,17 @@ class ExplorePageViewController: UIViewController {
         
         sheetNavigationController = UINavigationController(rootViewController: trailsView)
         
-        sheetNavigationController?.modalPresentationStyle = .pageSheet
+        sheetNavigationController?.modalPresentationStyle = .custom
+        
+        sheetNavigationController?.transitioningDelegate = self
         
         sheetNavigationController?.isModalInPresentation = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,23 +80,30 @@ class ExplorePageViewController: UIViewController {
     }
     
     private func presentTrailsView() {
-        if let sheet = sheetNavigationController?.sheetPresentationController {
-            let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
-            let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
-                return 100
-            }
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.detents = [smallDetent, .medium(), .large()]
-            sheet.prefersGrabberVisible = true
-            sheet.largestUndimmedDetentIdentifier = smallDetentId
-        }
-        
         DispatchQueue.main.async { [weak self] in
             guard let self, let nav = self.sheetNavigationController  else { return }
-            self.present(nav, animated: true)
+            tabBarController?.present(nav, animated: true)
         }
     }
     
+}
+
+extension ExplorePageViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
+        tabSheetPresentationController.detents = [
+            .small(),
+            .medium(),
+            .myLarge(),
+        ]
+        tabSheetPresentationController.largestUndimmedDetentIdentifier = .myLarge
+        tabSheetPresentationController.prefersGrabberVisible = true
+        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+        tabSheetPresentationController.selectedDetentIdentifier = .medium
+
+        return tabSheetPresentationController
+    }
 }
 
 extension ExplorePageViewController: WildWanderMapViewDelegate {

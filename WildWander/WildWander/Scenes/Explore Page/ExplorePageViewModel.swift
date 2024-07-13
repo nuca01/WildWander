@@ -11,7 +11,6 @@ import NetworkingService
 class ExplorePageViewModel {
     private var trails: [Trail] = []
     private var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: "")
-    
     var trailsDidChange: ((_: [Trail]) -> Void)?
     
     init(viewController: ExplorePageViewController, currentBounds: Bounds) {

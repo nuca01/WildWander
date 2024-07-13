@@ -230,23 +230,31 @@ final class WildWanderMapView: UIView {
     }
     
     func updateStaticAnnotations(with trails: [Trail]) {
-        pointAnnotationManager?.annotations.removeAll()
-        removeRoutes()
-        
-        trails.forEach { trail in
-            let startCoordinate = CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0.0, longitude: trail.startLongitude ?? 0.0)
-            var annotation = PointAnnotation(point: Point(startCoordinate))
-            annotation.iconImage = "redMarker"
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
             
-            if annotation.userInfo == nil {
-                annotation.userInfo = [:]
+            var newAnnotations: [PointAnnotation] = []
+            
+            trails.forEach { trail in
+                let startCoordinate = CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0.0, longitude: trail.startLongitude ?? 0.0)
+                var annotation = PointAnnotation(point: Point(startCoordinate))
+                annotation.iconImage = "redMarker"
+                
+                if annotation.userInfo == nil {
+                    annotation.userInfo = [:]
+                }
+                
+                annotation.userInfo?["routeGeometry"] = trail.routeGeometry
+                annotation.userInfo?["id"] = trail.id
+                
+                newAnnotations.append(annotation)
             }
             
-            annotation.userInfo?["routeGeometry"] = trail.routeGeometry
-            annotation.userInfo?["id"] = trail.id
-            
-            pointAnnotationManager?.annotations.append(annotation)
-            self.annotations.append(annotation)
+            DispatchQueue.main.async {
+                self.pointAnnotationManager?.annotations = newAnnotations
+                self.annotations = newAnnotations
+                self.removeRoutes()
+            }
         }
     }
 }
@@ -456,10 +464,7 @@ extension WildWanderMapView: GestureManagerDelegate {
     
     func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
         if gestureType != .singleTap {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                self.mapDidChangeFrameTo?(visibleBounds)
-            }
+            mapDidChangeFrameTo?(visibleBounds)
         }
     }
 }

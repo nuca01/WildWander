@@ -62,10 +62,8 @@ final class ImageCarouselView: UIView {
     private func setupImages() {
         for (index, url) in imageURLs.enumerated() {
             let imageView = UIImageView()
-            DispatchQueue.main.async {
-                if let url {
-                    imageView.load(url: url)
-                }
+            if let url {
+                imageView.load(url: url)
             }
             imageView.contentMode = .scaleToFill
             imageView.frame = CGRect(x: CGFloat(index) * frame.width, y: 0, width: frame.width, height: frame.height)

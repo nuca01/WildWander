@@ -174,10 +174,7 @@ class TrailsCell: UITableViewCell {
     }
     
     private func updateImagesCarouselViewImages(with imageURLs: [URL?]) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.imagesCarouselView.imageURLs = imageURLs
-        }
+        self.imagesCarouselView.imageURLs = imageURLs
     }
     
     private func formatInformationTextLabelWith(rating: Double, difficulty: String, length: Double) {
@@ -196,13 +193,16 @@ class TrailsCell: UITableViewCell {
         difficulty: String,
         length: Double
     ) {
-        updateImagesCarouselViewImages(with: imageUrls)
-        titleLabel.text = trailTitle
-        locationLabel.text = address
-        formatInformationTextLabelWith(
-            rating: rating,
-            difficulty: difficulty,
-            length: length
-        )
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.updateImagesCarouselViewImages(with: imageUrls)
+            self?.titleLabel.text = trailTitle
+            self?.locationLabel.text = address
+            self?.formatInformationTextLabelWith(
+                rating: rating,
+                difficulty: difficulty,
+                length: length
+            )
+        }
     }
 }
