@@ -319,26 +319,25 @@ class MakeCustomTrailViewController: UIViewController {
     }
     
     private func generateCheckPointButton() -> UIButton {
-        let greenColor = UIColor(red: 71/255, green: 92/255, blue: 55/255, alpha: 1)
         let checkPointNumber = self.checkPointsStackView.subviews.count
         
-        let button = generateButton(with: greenColor)
+        let button = generateButton()
         
-        addLabel(color: greenColor, checkPointNumber: checkPointNumber, superView: button)
+        addLabel(checkPointNumber: checkPointNumber, superView: button)
         
-        addImage(color: greenColor, checkPointNumber: checkPointNumber, superView: button)
+        addImage(checkPointNumber: checkPointNumber, superView: button)
         
         return button
     }
     
-    private func generateButton(with color: UIColor) -> UIButton {
+    private func generateButton() -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.layer.borderWidth = 3
-        button.layer.borderColor = color.cgColor
+        button.layer.borderColor =  UIColor.wildWanderGreen.cgColor
         button.backgroundColor = .white
         
         button.addAction(UIAction { [weak self] _ in
@@ -349,7 +348,7 @@ class MakeCustomTrailViewController: UIViewController {
             let didChangeCheckpoint = self.didTapOnChooseOnTheMap(checkPointNumber)
             
             if didChangeCheckpoint {
-                changeBorderColor(for: button, colorForNotSelected: color)
+                changeBorderColor(for: button)
             }
         }, for: .touchUpInside)
         
@@ -373,9 +372,9 @@ class MakeCustomTrailViewController: UIViewController {
         return checkPointNumber
     }
     
-    private func changeBorderColor(for button: UIButton, colorForNotSelected: UIColor) {
+    private func changeBorderColor(for button: UIButton) {
         if let activeButtonIndex {
-            self.checkPointsStackView.subviews[activeButtonIndex].layer.borderColor = colorForNotSelected.cgColor
+            self.checkPointsStackView.subviews[activeButtonIndex].layer.borderColor =  UIColor.wildWanderGreen.cgColor
         }
         
         self.checkPointsStackView.subviews.enumerated().forEach{[weak self] (index, view) in
@@ -385,10 +384,10 @@ class MakeCustomTrailViewController: UIViewController {
         }
     }
     
-    private func addLabel(color: UIColor, checkPointNumber: Int, superView: UIView) {
+    private func addLabel(checkPointNumber: Int, superView: UIView) {
         let label = UILabel()
         label.text = "CheckPoint \(checkPointNumber + 1)"
-        label.textColor = color
+        label.textColor = .wildWanderGreen
         label.translatesAutoresizingMaskIntoConstraints = false
         labels.append(label)
         superView.addSubview(label)
@@ -399,9 +398,9 @@ class MakeCustomTrailViewController: UIViewController {
         ])
     }
     
-    private func addImage(color: UIColor, checkPointNumber: Int, superView: UIView) {
+    private func addImage(checkPointNumber: Int, superView: UIView) {
         let buttonImage = UIImageView()
-        buttonImage.image = UIImage(named: "chooseOnMap")?.withTintColor(color)
+        buttonImage.image = UIImage(named: "chooseOnMap")?.withTintColor(UIColor.wildWanderGreen)
         buttonImage.translatesAutoresizingMaskIntoConstraints = false
         superView.addSubview(buttonImage)
         
@@ -418,7 +417,7 @@ class MakeCustomTrailViewController: UIViewController {
         let button = UIButton(type: .system)
         button.backgroundColor = UIColor.with(red: 238, green: 238, blue: 235, alpha: 100)
         button.setTitle(title, for: .normal)
-        button.setTitleColor(UIColor(red: 0.2, green: 0.4, blue: 0.1, alpha: 1), for: .normal)
+        button.setTitleColor(.wildWanderGreen, for: .normal)
         button.layer.cornerRadius = 8
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -427,7 +426,7 @@ class MakeCustomTrailViewController: UIViewController {
     
     private func generateLeftButton(with title: String) -> UIButton {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 0.2, green: 0.4, blue: 0.1, alpha: 1)
+        button.backgroundColor = .wildWanderGreen
         button.setTitle(title, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8

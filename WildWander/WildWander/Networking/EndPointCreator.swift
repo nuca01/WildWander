@@ -20,14 +20,15 @@ struct EndPointCreator: EndPoint {
     
     var headers: [String : String]? {
         [
-            "Content-Type": "application/json",
-            "Authorization": "Bearer \(accessToken)"
+            "Content-Type": "application/json"
         ]
     }
     
     var body: Data?
     
-    private let accessToken: String
+    var host: String = "hikingapp20240711084758.azurewebsites.net"
+    
+    private let accessToken: String?
     
     //MARK: - Intializer
     init(
@@ -43,6 +44,6 @@ struct EndPointCreator: EndPoint {
         self.queryItems = queryItems
         self.method = method
         self.body = body
-        self.accessToken = accessToken
+        self.accessToken = nil
     }
 }

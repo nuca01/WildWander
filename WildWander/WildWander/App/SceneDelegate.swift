@@ -14,7 +14,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = NavigatePageViewController()
+        let tabBarController = UITabBarController()
+        
+        let firstViewController = ExplorePageViewController()
+        let secondViewController = NavigatePageViewController()
+        
+        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        
+        tabBarController.viewControllers = [firstViewController, secondViewController]
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
 

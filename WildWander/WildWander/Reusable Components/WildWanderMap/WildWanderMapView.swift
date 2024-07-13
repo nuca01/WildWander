@@ -20,7 +20,9 @@ final class WildWanderMapView: UIView {
     weak var delegate: WildWanderMapViewDelegate?
     var viewModel: WildWanderMapViewModel?
     var willAccessUsersLocation: (() -> Void)?
-    var didTapOnAnnotation: ((_: PointAnnotation?) -> Void)?
+    var didTapOnAnnotation: ((_: Int?) -> Void)?
+    var mapDidChangeFrameTo: ((CoordinateBounds) -> Void)?
+    
     let locationDisabledAlert = WildWanderAlertView(
         title: "share your location",
         message: "in order to access your location you need to grant app the location permission",
@@ -30,6 +32,11 @@ final class WildWanderMapView: UIView {
     private var pointAnnotationManager: PointAnnotationManager?
     var allowsDynamicPointAnnotations: Bool = false
     private var annotations: [PointAnnotation] = []
+    private var trails: [String: Int] = [:]
+    
+    var visibleBounds: CoordinateBounds {
+        mapView.mapView.mapboxMap.coordinateBounds(for: mapView.bounds)
+    }
     
     private lazy var mapView: NavigationMapView = {
         let randomLocation = CLLocationCoordinate2D(latitude: 41.879, longitude: -87.635)
@@ -39,8 +46,8 @@ final class WildWanderMapView: UIView {
             bearing: 12,
             pitch: 0
         )
-        let options = MapInitOptions(cameraOptions: cameraOptions)
         
+        let options = MapInitOptions(cameraOptions: cameraOptions)
         let mapView = MapView(frame: bounds, mapInitOptions: options)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.mapboxMap.loadStyleURI(mapStyle)
@@ -49,7 +56,7 @@ final class WildWanderMapView: UIView {
         let configuration = Puck2DConfiguration.makeDefault(showBearing: true)
         
         mapView.location.options.puckType = .puck2D(configuration)
-        
+        mapView.gestures.delegate = self
         return NavigationMapView(frame: bounds, mapView: mapView)
     }()
     
@@ -127,27 +134,30 @@ final class WildWanderMapView: UIView {
         pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
         pointAnnotationManager?.delegate = self
         setupAnnotationsIcons()
-        setupDynamicAnnotationsGesture()
+        
+        if allowsDynamicPointAnnotations {
+            setupDynamicAnnotationsGesture()
+        }
     }
     
-    convenience init(
-        frame: CGRect,
-        allowsStaticPointAnnotations: Bool,
-        coordinates: [CLLocationCoordinate2D]
-    ) {
-        self.init(frame: frame)
-        
-        if allowsStaticPointAnnotations {
-            pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
-            pointAnnotationManager?.delegate = self
-            setupAnnotationsIcons()
-        }
-        
-        pointAnnotationManager?.annotations = coordinates.map { coordinate in
-            PointAnnotation(coordinate: coordinate)
-        }
-        drawRoute()
-    }
+//    convenience init(
+//        frame: CGRect,
+//        allowsStaticPointAnnotations: Bool,
+//        coordinates: [CLLocationCoordinate2D]
+//    ) {
+//        self.init(frame: frame)
+//        
+//        if allowsStaticPointAnnotations {
+//            pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
+//            pointAnnotationManager?.delegate = self
+//            setupAnnotationsIcons()
+//        }
+//        
+//        pointAnnotationManager?.annotations = coordinates.map { coordinate in
+//            PointAnnotation(coordinate: coordinate)
+//        }
+//        drawRoute()
+//    }
     
     //MARK: - LifeCycle
     func didLoad() {
@@ -197,6 +207,11 @@ final class WildWanderMapView: UIView {
             bearing: bearing,
             pitch: pitch
         ), duration: 1.0)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) { [weak self] in
+            guard let self else { return }
+            self.mapDidChangeFrameTo?(visibleBounds)
+        }
     }
     
     private func centerMapOnUserLocation() {
@@ -213,16 +228,45 @@ final class WildWanderMapView: UIView {
         }
         locationDisabledAlert.show(in: self)
     }
+    
+    func updateStaticAnnotations(with trails: [Trail]) {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            
+            var newAnnotations: [PointAnnotation] = []
+            
+            trails.forEach { trail in
+                let startCoordinate = CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0.0, longitude: trail.startLongitude ?? 0.0)
+                var annotation = PointAnnotation(point: Point(startCoordinate))
+                annotation.iconImage = "redMarker"
+                
+                if annotation.userInfo == nil {
+                    annotation.userInfo = [:]
+                }
+                
+                annotation.userInfo?["routeGeometry"] = trail.routeGeometry
+                annotation.userInfo?["id"] = trail.id
+                
+                newAnnotations.append(annotation)
+            }
+            
+            DispatchQueue.main.async {
+                self.pointAnnotationManager?.annotations = newAnnotations
+                self.annotations = newAnnotations
+                self.removeRoutes()
+            }
+        }
+    }
 }
 
 //MARK: - Annotations
 extension WildWanderMapView: AnnotationInteractionDelegate {
     func annotationManager(_ manager: any MapboxMaps.AnnotationManager, didDetectTappedAnnotations annotations: [any MapboxMaps.Annotation]) {
-        let annotationTapped = pointAnnotationManager!.annotations.first(where: { value in
-            value.id == annotations.last?.id
-        })
-        
-        didTapOnAnnotation?(annotationTapped)
+        if !allowsDynamicPointAnnotations {
+            if let id = annotations.last?.userInfo?["id"] as? Int {
+                didTapOnAnnotation?(id)
+            }
+        }
     }
     
     private func setupAnnotationsIcons() {
@@ -331,6 +375,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         let coordinate = mapView.mapView.mapboxMap.coordinate(for: location)
         
         var annotation = PointAnnotation(point: Point(coordinate))
+        
         annotation.iconImage = "redMarker"
         appendAnnotationsArray(with: annotation)
     }
@@ -388,7 +433,6 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
     }
     
     func removeRoutes() {
-        // Check if the route layer and source exist on the map view
         self.mapView.removeRoutes()
         self.mapView.removeWaypoints()
     }
@@ -407,6 +451,20 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
             default:
                 break
             }
+        }
+    }
+}
+
+extension WildWanderMapView: GestureManagerDelegate {
+    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didBegin gestureType: MapboxMaps.GestureType) {
+    }
+    
+    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEnd gestureType: MapboxMaps.GestureType, willAnimate: Bool) {
+    }
+    
+    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
+        if gestureType != .singleTap {
+            mapDidChangeFrameTo?(visibleBounds)
         }
     }
 }

@@ -20,7 +20,7 @@ final class ImageCarouselView: UIView {
     
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl(frame: CGRect(x: 0, y: frame.height - 50, width: frame.width, height: 50))
-        pageControl.numberOfPages = images.count
+        pageControl.numberOfPages = imageURLs.count
         pageControl.currentPage = 0
         pageControl.pageIndicatorTintColor = .lightGray
         pageControl.currentPageIndicatorTintColor = .black
@@ -29,11 +29,15 @@ final class ImageCarouselView: UIView {
         return pageControl
     }()
     
-    private let images: [String] 
+    var imageURLs: [URL?] {
+        didSet {
+            setupImages()
+        }
+    }
     
     //MARK: - Initializers
-    init(frame: CGRect, images: [String]) {
-        self.images = images
+    init(frame: CGRect, imageURLs: [URL?]) {
+        self.imageURLs = imageURLs
         super.init(frame: frame)
         setupScrollView()
         setupPageControl()
@@ -47,22 +51,34 @@ final class ImageCarouselView: UIView {
     //MARK: - Methods
     private func setupScrollView() {
         addSubview(scrollView)
+        scrollView.frame = bounds
     }
     
     private func setupPageControl() {
         addSubview(pageControl)
+        pageControl.frame = CGRect(x: 0, y: frame.height - 50, width: frame.width, height: 50)
     }
     
     private func setupImages() {
-        for (index, imageName) in images.enumerated() {
-            let imageView = UIImageView(image: UIImage(named: imageName))
-            imageView.contentMode = .scaleAspectFill
+        for (index, url) in imageURLs.enumerated() {
+            let imageView = UIImageView()
+            if let url {
+                imageView.load(url: url)
+            }
+            imageView.contentMode = .scaleToFill
             imageView.frame = CGRect(x: CGFloat(index) * frame.width, y: 0, width: frame.width, height: frame.height)
             scrollView.addSubview(imageView)
         }
         
-        scrollView.contentSize = CGSize(width: frame.width * CGFloat(images.count), height: frame.height)
+        scrollView.contentSize = CGSize(width: frame.width * CGFloat(imageURLs.count), height: frame.height)
+        pageControl.numberOfPages = imageURLs.count
     }
+    
+    override func layoutSubviews() {
+            super.layoutSubviews()
+            scrollView.frame = bounds
+            pageControl.frame = CGRect(x: 0, y: bounds.height - 50, width: bounds.width, height: 50)
+        }
     
     @objc private func pageControlValueChanged(_ sender: UIPageControl) {
         scrollView.contentOffset.x = frame.width * CGFloat(integerLiteral: sender.currentPage)

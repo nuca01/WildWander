@@ -54,6 +54,17 @@ final class MapStylePageViewController: UIViewController {
     }()
     
     //MARK: - LifeCycle
+    override func viewWillAppear(_ animated: Bool) {
+        if let sheet = sheetPresentationController {
+            let smallDetentId = UISheetPresentationController.Detent.Identifier("small")
+            let smallDetent = UISheetPresentationController.Detent.custom(identifier: smallDetentId) { context in
+                return 300
+            }
+            
+            sheet.detents = [smallDetent]
+            sheet.prefersGrabberVisible = true
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
