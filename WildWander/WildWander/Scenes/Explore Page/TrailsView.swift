@@ -17,16 +17,30 @@ class TrailsView: UIViewController {
         tableview.estimatedRowHeight = 500
         tableview.dataSource = self
         tableview.delegate = self
+        tableview.tableHeaderView = headerLabel
         return tableview
     }()
+    
+    lazy var headerLabel: UILabel = {
+        let label = UILabel()
+        label.text = " Trails: \(viewModel.trailCount)"
+        label.textColor = .wildWanderGreen
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 30)
+        return label
+    }()
+    
+    var didTapOnCell: ((_: Trail) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNewsTableView()
         viewModel.trailsDidChange = { [weak self] in
+            guard let self else { return }
             DispatchQueue.main.async {
-                self?.trailsTableView.reloadData()
+                self.trailsTableView.reloadData()
+                self.headerLabel.text = " Trails: \(self.viewModel.trailCount)"
             }
         }
     }
@@ -44,7 +58,7 @@ class TrailsView: UIViewController {
         view.addSubview(trailsTableView)
         
         NSLayoutConstraint.activate([
-            trailsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: -40),
             trailsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
@@ -89,6 +103,6 @@ extension TrailsView: UITableViewDataSource {
 extension TrailsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        didTapOnCell?(viewModel.trailOf(index: indexPath.row))
     }
 }

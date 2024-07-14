@@ -17,12 +17,12 @@ class NavigatePageViewController: UIViewController {
             y: 0,
             width: view.bounds.width,
             height: view.bounds.height - 300
-        ), allowsDynamicPointAnnotations: false)
+        ), allowsDynamicPointAnnotations: true)
         mapView.delegate = self
         
         return mapView
     }()
-    var sheetNavigationController: UINavigationController?
+    private var sheetNavigationController: UINavigationController?
     
     private lazy var makeCustomTrailViewController = MakeCustomTrailViewController { [weak self] index in
         return self?.mapView.changeActiveAnnotationIndex(to: index) ?? false
@@ -39,8 +39,14 @@ class NavigatePageViewController: UIViewController {
         self?.mapView.allowsDynamicPointAnnotations = true
     } didTapStartNavigation: { [weak self] in
         self?.mapView.allowsDynamicPointAnnotations = true
+    } didTapAddTrail: { [weak self] in
+        DispatchQueue.main.async { [weak self] in
+            self?.tabBarController?.selectedIndex = 0
+        }
     }
-
+    
+    private var trailToDraw: Trail?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,27 +61,33 @@ class NavigatePageViewController: UIViewController {
         sheetNavigationController?.transitioningDelegate = self
         
         sheetNavigationController?.isModalInPresentation = true
+    
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         presentMakeCustomTrailView()
+        if let trailToDraw {
+            mapView.drawStaticAnnotationRoute(with: trailToDraw)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         if let presentedViewController = presentedViewController {
             presentedViewController.dismiss(animated: true)
         }
+        trailToDraw = nil
     }
     
     private func presentMakeCustomTrailView() {
         DispatchQueue.main.async { [weak self] in
             guard let self, let nav = self.sheetNavigationController  else { return }
-            self.present(nav, animated: true)
+            tabBarController?.present(nav, animated: true)
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        mapView.didLoad()
+    func addTrail(_ trail: Trail) {
+        trailToDraw = trail
     }
 }
 

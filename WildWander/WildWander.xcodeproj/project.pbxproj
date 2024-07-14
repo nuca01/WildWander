@@ -169,7 +169,6 @@
 				87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */,
 				87F0ED962C4283350092A756 /* TrailsCell.swift */,
 				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
-				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
 				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
 			);
 			path = "Explore Page";
@@ -219,6 +218,7 @@
 		876A7A672C3365F20022B85E /* Navigate Page */ = {
 			isa = PBXGroup;
 			children = (
+				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
 				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
 			);
 			path = "Navigate Page";

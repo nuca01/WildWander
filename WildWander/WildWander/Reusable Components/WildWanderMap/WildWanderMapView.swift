@@ -30,6 +30,7 @@ final class WildWanderMapView: UIView {
         dismissButtonTitle: "Maybe Later"
     )
     private var pointAnnotationManager: PointAnnotationManager?
+    private lazy var polylineAnnotationManager = mapView.mapView.annotations.makePolylineAnnotationManager()
     var allowsDynamicPointAnnotations: Bool = false
     private var annotations: [PointAnnotation] = []
     private var trails: [String: Int] = [:]
@@ -130,36 +131,13 @@ final class WildWanderMapView: UIView {
     
     convenience init(frame: CGRect, allowsDynamicPointAnnotations: Bool) {
         self.init(frame: frame)
-        self.allowsDynamicPointAnnotations = allowsDynamicPointAnnotations
         pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
         pointAnnotationManager?.delegate = self
         setupAnnotationsIcons()
-        setupDynamicAnnotationsGesture()
-    }
-    
-//    convenience init(
-//        frame: CGRect,
-//        allowsStaticPointAnnotations: Bool,
-//        coordinates: [CLLocationCoordinate2D]
-//    ) {
-//        self.init(frame: frame)
-//        
-//        if allowsStaticPointAnnotations {
-//            pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
-//            pointAnnotationManager?.delegate = self
-//            setupAnnotationsIcons()
-//        }
-//        
-//        pointAnnotationManager?.annotations = coordinates.map { coordinate in
-//            PointAnnotation(coordinate: coordinate)
-//        }
-//        drawRoute()
-//    }
-    
-    //MARK: - LifeCycle
-    func didLoad() {
-        if viewModel!.userLocationIsEnabled {
-            centerMapOnUserLocation()
+        
+        if allowsDynamicPointAnnotations {
+            setupDynamicAnnotationsGesture()
+            self.allowsDynamicPointAnnotations = false
         }
     }
     
@@ -188,7 +166,7 @@ final class WildWanderMapView: UIView {
     }
     
     //MARK: - Helper Methods
-    private func changeCameraOptions(
+    func changeCameraOptions(
         center: CLLocationCoordinate2D? = nil,
         padding: UIEdgeInsets? = nil,
         anchor: CGPoint? = nil,
@@ -214,7 +192,7 @@ final class WildWanderMapView: UIView {
     private func centerMapOnUserLocation() {
         willAccessUsersLocation?()
         guard let location = mapView.mapView.location.latestLocation else { return }
-        changeCameraOptions(center: location.coordinate, zoom: 16)
+        changeCameraOptions(center: location.coordinate, zoom: 11)
     }
     
     private func showLocationDisabledAlert() {
@@ -227,9 +205,8 @@ final class WildWanderMapView: UIView {
     }
     
     func updateStaticAnnotations(with trails: [Trail]) {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self else { return }
-            
+//            guard let self = self else { return }
+            self.removeRoutes()
             var newAnnotations: [PointAnnotation] = []
             
             trails.forEach { trail in
@@ -247,13 +224,80 @@ final class WildWanderMapView: UIView {
                 newAnnotations.append(annotation)
             }
             
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 self.pointAnnotationManager?.annotations = newAnnotations
                 self.annotations = newAnnotations
-                self.removeRoutes()
-            }
-        }
+//            }
     }
+    
+    func drawStaticAnnotationRoute(with trail: Trail) {
+        removeRoutes()
+        guard let polyLine = trail.routeGeometry else { return }
+        
+        // Decode polyline to coordinates
+        let coordinates = self.decodePolyline(polyLine)
+        
+        var polylineAnnotation = PolylineAnnotation(lineCoordinates: coordinates ?? [])
+        polylineAnnotation.lineColor = StyleColor(.green)
+        polylineAnnotation.lineWidth = 10
+        // Add annotation to map
+        polylineAnnotationManager.annotations = [polylineAnnotation]
+        
+        DispatchQueue.main.async {
+            self.mapView.mapView.camera.ease(to: CameraOptions(
+                center: CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0, longitude: trail.startLongitude ?? 0)
+            ), duration: 0.0)
+        }
+        
+//        self.changeCameraOptions(center: CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0, longitude: trail.startLongitude ?? 0), zoom: 14)
+        
+    }
+    
+    func decodePolyline(_ encodedPolyline: String) -> [CLLocationCoordinate2D]? {
+        var coordinates: [CLLocationCoordinate2D] = []
+        let data = encodedPolyline.data(using: .utf8)!
+        let byteArray = [UInt8](data)
+        var index = 0
+        let length = byteArray.count
+        var latitude = 0
+        var longitude = 0
+
+        while index < length {
+            var b = 0
+            var shift = 0
+            var result = 0
+
+            repeat {
+                b = Int(byteArray[index]) - 63
+                index += 1
+                result |= (b & 0x1f) << shift
+                shift += 5
+            } while b >= 0x20
+
+            let deltaLatitude = (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
+            latitude += deltaLatitude
+
+            shift = 0
+            result = 0
+
+            repeat {
+                b = Int(byteArray[index]) - 63
+                index += 1
+                result |= (b & 0x1f) << shift
+                shift += 5
+            } while b >= 0x20
+
+            let deltaLongitude = (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
+            longitude += deltaLongitude
+
+            let coordinate = CLLocationCoordinate2D(latitude: Double(latitude) / 1e5, longitude: Double(longitude) / 1e5)
+            coordinates.append(coordinate)
+        }
+
+        return coordinates
+    }
+    
+    
 }
 
 //MARK: - Annotations
@@ -345,6 +389,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         return nil
     }
     
+    
     private func removeAnnotationEverywhere(of id: String) {
         pointAnnotationManager?.annotations.removeAll(where: { annotation in
             annotation.id == id
@@ -432,6 +477,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
     func removeRoutes() {
         self.mapView.removeRoutes()
         self.mapView.removeWaypoints()
+        polylineAnnotationManager.annotations = []
     }
     
     func deleteAllAnnotations() {

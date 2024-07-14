@@ -23,7 +23,7 @@ class MakeCustomTrailViewController: UIViewController {
     private lazy var addTrailButton: UIButton = {
         let button = generateRightButton(with: "Add Trail")
         button.addAction(UIAction { [weak self] _ in
-            
+            self?.didTapAddTrail()
         }, for: .touchUpInside)
         return button
     }()
@@ -174,6 +174,8 @@ class MakeCustomTrailViewController: UIViewController {
     
     var didTapStartNavigation: () -> Void
     
+    var didTapAddTrail: () -> Void
+    
     //MARK: - Initializers
     init(didTapOnChooseOnTheMap: (
         @escaping (_: Int) -> Bool),
@@ -181,7 +183,8 @@ class MakeCustomTrailViewController: UIViewController {
          didTapOnFinishButton: @escaping () -> Void,
          didTapOnCancelButton: @escaping () -> Void,
          willAddCustomTrail: @escaping () -> Void,
-         didTapStartNavigation: @escaping () -> Void
+         didTapStartNavigation: @escaping () -> Void,
+         didTapAddTrail: @escaping () -> Void
     ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap
         self.didDeleteCheckpoint = didDeleteCheckpoint
@@ -189,6 +192,7 @@ class MakeCustomTrailViewController: UIViewController {
         self.didTapOnCancelButton = didTapOnCancelButton
         self.willAddCustomTrail = willAddCustomTrail
         self.didTapStartNavigation = didTapStartNavigation
+        self.didTapAddTrail = didTapAddTrail
         
         super.init(nibName: nil, bundle: nil)
     }

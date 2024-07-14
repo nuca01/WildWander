@@ -35,7 +35,17 @@ class ExplorePageViewController: UIViewController {
             let lowerLatitude = visibleBounds.southeast.latitude
             self?.didChangeMapBounds?(upperLongitude, upperLatitude, lowerLongitude, lowerLatitude)
         }
-        return TrailsView(viewModel: trailsViewViewModel)
+        let trailsView = TrailsView(viewModel: trailsViewViewModel)
+        
+        trailsView.didTapOnCell = { [weak self] trail in
+            guard let self else { return }
+            let navigatePage = self.tabBarController?.viewControllers?[1] as! NavigatePageViewController
+            navigatePage.addTrail(trail)
+            self.tabBarController?.selectedIndex = 1
+            
+        }
+        
+        return trailsView
     }()
     
     private lazy var viewModel: ExplorePageViewModel = {
@@ -47,6 +57,12 @@ class ExplorePageViewController: UIViewController {
             lowerLatitude: mapViewVisibleBounds.southeast.latitude
         )
         return ExplorePageViewModel(viewController: self, currentBounds: bounds)
+    }()
+    
+    private var searchBar: SearchBarView = {
+        let searchBarView = SearchBarView()
+        
+        return searchBarView
     }()
     
     var didChangeMapBounds: ((Double, Double, Double, Double) -> Void)?
@@ -77,6 +93,11 @@ class ExplorePageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         presentTrailsView()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        mapView.changeCameraOptions(zoom: 5)
     }
     
     private func presentTrailsView() {

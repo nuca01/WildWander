@@ -60,6 +60,12 @@ final class ImageCarouselView: UIView {
     }
     
     private func setupImages() {
+        scrollView.subviews.forEach {
+            if $0 != pageControl {
+                $0.removeFromSuperview()
+            }
+        }
+        
         for (index, url) in imageURLs.enumerated() {
             let imageView = UIImageView()
             if let url {
@@ -70,27 +76,47 @@ final class ImageCarouselView: UIView {
             scrollView.addSubview(imageView)
         }
         
-        scrollView.contentSize = CGSize(width: frame.width * CGFloat(imageURLs.count), height: frame.height)
-        pageControl.numberOfPages = imageURLs.count
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.scrollView.contentSize = CGSize(width: frame.width * CGFloat(imageURLs.count), height: frame.height)
+            self.pageControl.numberOfPages = imageURLs.count
+        }
     }
     
     override func layoutSubviews() {
-            super.layoutSubviews()
-            scrollView.frame = bounds
-            pageControl.frame = CGRect(x: 0, y: bounds.height - 50, width: bounds.width, height: 50)
-        }
+        super.layoutSubviews()
+        scrollView.frame = bounds
+        pageControl.frame = CGRect(x: 0, y: bounds.height - 50, width: bounds.width, height: 50)
+    }
     
     @objc private func pageControlValueChanged(_ sender: UIPageControl) {
-        scrollView.contentOffset.x = frame.width * CGFloat(integerLiteral: sender.currentPage)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if sender.currentPage >= sender.numberOfPages
+            {
+                sender.currentPage -= 1
+                return
+            }
+            
+            if sender.currentPage < 0
+            {
+                sender.currentPage += 1
+                return
+            }
+            self.scrollView.contentOffset.x = frame.width * CGFloat(integerLiteral: sender.currentPage)
+        }
     }
 }
 
 //MARK: - UIScrollViewDelegate
 extension ImageCarouselView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = Int(round(scrollView.contentOffset.x / frame.width))
-        if pageIndex <= imageURLs.count && pageIndex > 0 {
-            pageControl.currentPage = pageIndex
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let pageIndex = Int(round(scrollView.contentOffset.x / frame.width))
+            if pageIndex < imageURLs.count && pageIndex >= 0 {
+                pageControl.currentPage = pageIndex
+            }
         }
     }
 }
