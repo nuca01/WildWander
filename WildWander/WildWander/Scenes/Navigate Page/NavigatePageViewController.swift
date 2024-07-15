@@ -38,7 +38,8 @@ class NavigatePageViewController: UIViewController {
     } willAddCustomTrail: { [weak self] in
         self?.mapView.allowsDynamicPointAnnotations = true
     } didTapStartNavigation: { [weak self] in
-        self?.mapView.allowsDynamicPointAnnotations = true
+        guard let self else { return false }
+        return self.mapView.startNavigation()
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0

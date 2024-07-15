@@ -102,16 +102,7 @@ final class WildWanderMapView: UIView {
     private lazy var userLocationButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "userLocation"), for: .normal)
-        button.addAction(
-            UIAction { [weak self] _ in
-                guard let self = self else { return }
-                if self.viewModel!.userLocationIsEnabled {
-                    self.centerMapOnUserLocation()
-                } else {
-                    self.showLocationDisabledAlert()
-                }
-            }, for: .touchUpInside
-        )
+        button.addAction(userLocationAction, for: .touchUpInside)
         
         button.isUserInteractionEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -128,6 +119,10 @@ final class WildWanderMapView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    
+    private lazy var userLocationAction: UIAction = UIAction { [weak self] _ in
+        self?.centerUserLocation()
+    }
     
     //MARK: - Initializers
     required init?(coder aDecoder: NSCoder) {
@@ -160,6 +155,7 @@ final class WildWanderMapView: UIView {
         addSubview(buttonsStackView)
         constrainButtons()
         constrainButtonsStackView()
+        
     }
     
     private func constrainButtons() {
@@ -246,7 +242,7 @@ final class WildWanderMapView: UIView {
         
         var coordinates: [CLLocationCoordinate2D] = routeCoordinates ?? []
         if let routeGeometry {
-            coordinates = self.decodePolyline(routeGeometry) ?? []
+            coordinates = routeGeometry.decodePolyline() ?? []
         }
         var polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
         
@@ -275,51 +271,13 @@ final class WildWanderMapView: UIView {
         polyLineAnnotationManagers[polyLineAnnotationManagerIndexInContainer].annotations = [annotation]
     }
     
-    func decodePolyline(_ encodedPolyline: String) -> [CLLocationCoordinate2D]? {
-        var coordinates: [CLLocationCoordinate2D] = []
-        let data = encodedPolyline.data(using: .utf8)!
-        let byteArray = [UInt8](data)
-        var index = 0
-        let length = byteArray.count
-        var latitude = 0
-        var longitude = 0
-
-        while index < length {
-            var b = 0
-            var shift = 0
-            var result = 0
-
-            repeat {
-                b = Int(byteArray[index]) - 63
-                index += 1
-                result |= (b & 0x1f) << shift
-                shift += 5
-            } while b >= 0x20
-
-            let deltaLatitude = (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
-            latitude += deltaLatitude
-
-            shift = 0
-            result = 0
-
-            repeat {
-                b = Int(byteArray[index]) - 63
-                index += 1
-                result |= (b & 0x1f) << shift
-                shift += 5
-            } while b >= 0x20
-
-            let deltaLongitude = (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
-            longitude += deltaLongitude
-
-            let coordinate = CLLocationCoordinate2D(latitude: Double(latitude) / 1e5, longitude: Double(longitude) / 1e5)
-            coordinates.append(coordinate)
+    private func centerUserLocation() {
+        if self.viewModel!.userLocationIsEnabled {
+            self.centerMapOnUserLocation()
+        } else {
+            self.showLocationDisabledAlert()
         }
-
-        return coordinates
     }
-    
-    
 }
 
 //MARK: - Annotations
@@ -517,6 +475,44 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         pointAnnotationManager.annotations.removeAll()
         viewModel?.activeAnnotationsId = ""
         deletePolyLines()
+    }
+    
+    func startNavigation() -> Bool {
+        if viewModel!.userLocationIsEnabled {
+            tiltAndFollowBearing()
+            userLocationButton.removeAction(identifiedBy: userLocationAction.identifier, for: .touchUpInside)
+            userLocationAction = UIAction { [weak self] _ in
+                self?.tiltAndFollowBearing()
+            }
+            userLocationButton.addAction(userLocationAction, for: .touchUpInside)
+            
+            return true
+        } else {
+            showLocationDisabledAlert()
+            return false
+        }
+    }
+    
+    func finishNavigation() {
+        self.mapView.mapView.viewport.idle()
+        userLocationButton.removeAction(identifiedBy: userLocationAction.identifier, for: .touchUpInside)
+        userLocationAction = UIAction { [weak self] _ in
+            self?.centerUserLocation()
+        }
+        userLocationButton.addAction(userLocationAction, for: .touchUpInside)
+    }
+    
+    
+    private func tiltAndFollowBearing() {
+        let followPuckViewportStateOptions = FollowPuckViewportStateOptions(
+            bearing: .course,
+            pitch: 45
+        )
+        let followPuckViewportState = mapView.mapView.viewport.makeFollowPuckViewportState(options: followPuckViewportStateOptions)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.mapView.mapView.viewport.transition(to: followPuckViewportState)
+        }
     }
     
     private func deletePolyLines() {

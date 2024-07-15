@@ -31,6 +31,9 @@ class NavigationInformationStackView: UIStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        axis = .horizontal
+        alignment = .center
+        distribution = .equalCentering
         addArranged(subviews: [
             generateStackView(with: "Time", and: timeValueLabel),
             generateStackView(with: "Distance", and: distanceValueLabel),
@@ -103,6 +106,14 @@ class NavigationInformationStackView: UIStackView {
         timer?.invalidate()
         timer = nil
     }
+    
+    private func formatDistance(metres: Double) -> String {
+        if metres >= 1000 {
+            String(format: "%.2fkm", metres / 1000)
+        } else {
+            String(format: "%.2fm", metres)
+        }
+    }
 
     @objc private func updateTimeLabel() {
         guard let startTime = startTime else { return }
@@ -118,13 +129,17 @@ extension NavigationInformationStackView: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             let altitude = lastLocation.altitude
-            elevationGainValueLabel.text = String(format: "\n%.1fm", altitude)
+            elevationGainValueLabel.text = formatDistance(metres: altitude)
+            
+            if oldLocation == nil {
+                oldLocation = lastLocation
+            }
             
             distanceTravelled += lastLocation.distance(from: oldLocation ?? CLLocation())
             
             oldLocation = lastLocation
             
-            distanceValueLabel.text = "\(distanceTravelled)m"
+            distanceValueLabel.text = formatDistance(metres: distanceTravelled)
         }
     }
 }
