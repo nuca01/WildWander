@@ -24,6 +24,7 @@
 		87876DE12C4431D500B439E7 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE02C4431D500B439E7 /* UIButton.swift */; };
 		87876DE42C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE32C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift */; };
 		87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE72C4435B900B439E7 /* UIStackView.swift */; };
+		87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -57,6 +58,7 @@
 		87876DE02C4431D500B439E7 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		87876DE32C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigatePageViewController + UIViewControllerTransitioningDelegate.swift"; sourceTree = "<group>"; };
 		87876DE72C4435B900B439E7 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
+		87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationInformationStackView.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
 				87F0ED872C4151520092A756 /* TrailShownViewController.swift */,
 				87876DE22C4433B500B439E7 /* Extensions */,
+				87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */,
 			);
 			path = "Navigate Page";
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
 				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
+				87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */,
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,

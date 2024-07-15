@@ -123,6 +123,21 @@ class TrailShownViewController: UIViewController {
         UIStackView.horizontalButtonsStackView()
     }()
     
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let informationStackView = NavigationInformationStackView()
+        
+        stackView.addArrangedSubview(informationStackView)
+        
+        return stackView
+    }()
+    
+    private lazy var informationStackView = NavigationInformationStackView()
     //MARK: - customTrailNavigationStackView
     private lazy var customTrailNavigationStackView: UIStackView = {
         UIStackView.horizontalButtonsStackView()
@@ -300,6 +315,7 @@ class TrailShownViewController: UIViewController {
     }
     
     private func constrainToScrollView(_ view: UIView) {
+        
         NSLayoutConstraint.activate([
             view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
