@@ -22,7 +22,15 @@ class NavigatePageViewController: UIViewController {
         
         return mapView
     }()
-    private var sheetNavigationController: UINavigationController?
+    
+    private lazy var sheetNavigationController: UINavigationController = {
+        sheetNavigationController = UINavigationController(rootViewController: makeCustomTrailViewController)
+        sheetNavigationController.modalPresentationStyle = .custom
+        sheetNavigationController.transitioningDelegate = self
+        sheetNavigationController.isModalInPresentation = true
+        
+        return sheetNavigationController
+    }()
     
     private lazy var makeCustomTrailViewController = TrailShownViewController { [weak self] index in
         return self?.mapView.changeActiveAnnotationIndex(to: index) ?? false
@@ -38,7 +46,10 @@ class NavigatePageViewController: UIViewController {
     } willAddCustomTrail: { [weak self] in
         self?.mapView.allowsDynamicPointAnnotations = true
     } didTapStartNavigation: { [weak self] in
-        self?.mapView.allowsDynamicPointAnnotations = true
+        guard let self else { return false }
+        return self.mapView.startNavigation()
+    } didTapFinishNavigation: { [weak self] in
+        self?.mapView.finishNavigation()
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
@@ -54,16 +65,6 @@ class NavigatePageViewController: UIViewController {
         view.addSubview(mapView)
         
         view.backgroundColor = .white
-        
-        sheetNavigationController = UINavigationController(rootViewController: makeCustomTrailViewController)
-        
-        sheetNavigationController?.modalPresentationStyle = .custom
-        
-        sheetNavigationController?.transitioningDelegate = self
-        
-        sheetNavigationController?.isModalInPresentation = true
-    
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -81,10 +82,11 @@ class NavigatePageViewController: UIViewController {
     }
     
     //MARK: - Methods
+    
     private func presentMakeCustomTrailView() {
         DispatchQueue.main.async { [weak self] in
-            guard let self, let nav = self.sheetNavigationController  else { return }
-            tabBarController?.present(nav, animated: true)
+            guard let self else { return }
+            tabBarController?.present(sheetNavigationController, animated: true)
         }
     }
     
