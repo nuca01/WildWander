@@ -99,7 +99,39 @@ class TrailShownViewController: UIViewController {
     }
     
     private lazy var startAndCancelStackView: UIStackView = {
-        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Cancel", leftAction: startTrailAction, rightAction: cancelButtonAction)
+        return ButtonsStackView(leftTitle: "Start", rightTitle: "Cancel", leftAction: startTrailAction, rightAction: cancelButtonAction)
+    }()
+    
+    private lazy var pauseAndFinishStackView: UIStackView = {
+        let pauseNavigationAction = UIAction { [weak self] _ in
+            guard let self else { return }
+            pauseAndFinishStackView.removeFromSuperview()
+            addToMainStackView(resumeAndFinishStackView)
+            informationStackView.pauseObserving()
+            didTapFinishNavigation()
+        }
+        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
+    }()
+    
+    lazy var finishNavigationAction = UIAction { [weak self] _ in
+        guard let self else { return }
+        pauseAndFinishStackView.removeFromSuperview()
+        resumeAndFinishStackView.removeFromSuperview()
+        addToMainStackView(makeTrailAndChooseTrailStackView)
+        informationStackView.finishObserving()
+        didTapFinishNavigation()
+    }
+    
+    private lazy var resumeAndFinishStackView: UIStackView = {
+        let resumeNavigationAction = UIAction { [weak self] _ in
+            guard let self else { return }
+            if didTapStartNavigation() {
+                resumeAndFinishStackView.removeFromSuperview()
+                addToMainStackView(pauseAndFinishStackView)
+                informationStackView.resumeObserving()
+            }
+        }
+        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishNavigationAction, rightAction: resumeNavigationAction)
     }()
     
     private lazy var mainStackView: UIStackView = {
@@ -128,9 +160,11 @@ class TrailShownViewController: UIViewController {
     
     lazy var startTrailAction = UIAction { [weak self] _ in
         guard let self else { return }
-        informationStackView.startObserving()
         if didTapStartNavigation() {
-            
+            startAndCancelStackView.removeFromSuperview()
+            customTrailNavigationStackView.removeFromSuperview()
+            addToMainStackView(pauseAndFinishStackView)
+            informationStackView.startObserving()
         }
     }
     
@@ -177,6 +211,8 @@ class TrailShownViewController: UIViewController {
     
     var didTapStartNavigation: () -> Bool
     
+    var didTapFinishNavigation: () -> Void
+    
     var didTapAddTrail: () -> Void
     
     //MARK: - Initializers
@@ -187,6 +223,7 @@ class TrailShownViewController: UIViewController {
          didTapOnCancelButton: @escaping () -> Void,
          willAddCustomTrail: @escaping () -> Void,
          didTapStartNavigation: @escaping () -> Bool,
+         didTapFinishNavigation: @escaping () -> Void,
          didTapAddTrail: @escaping () -> Void
     ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap
@@ -195,6 +232,7 @@ class TrailShownViewController: UIViewController {
         self.didTapOnCancelButton = didTapOnCancelButton
         self.willAddCustomTrail = willAddCustomTrail
         self.didTapStartNavigation = didTapStartNavigation
+        self.didTapFinishNavigation = didTapFinishNavigation
         self.didTapAddTrail = didTapAddTrail
         
         super.init(nibName: nil, bundle: nil)

@@ -455,7 +455,6 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
                 waypoints.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)))
             }
         let routeOptions = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
-        
         Directions.shared.calculate(routeOptions) {[weak self] session, result in
             switch result {
             case .failure(let error):

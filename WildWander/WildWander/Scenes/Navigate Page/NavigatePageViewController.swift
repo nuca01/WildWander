@@ -48,6 +48,8 @@ class NavigatePageViewController: UIViewController {
     } didTapStartNavigation: { [weak self] in
         guard let self else { return false }
         return self.mapView.startNavigation()
+    } didTapFinishNavigation: { [weak self] in
+        self?.mapView.finishNavigation()
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0

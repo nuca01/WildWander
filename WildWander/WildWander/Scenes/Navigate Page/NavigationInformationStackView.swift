@@ -23,10 +23,12 @@ class NavigationInformationStackView: UIStackView {
     }()
     
     private var distanceTravelled: CLLocationDistance = 0.0
-    private var oldLocation: CLLocation?
     private var startTime: Date?
     private var timer: Timer?
     private var pauseTime: Date?
+    private var justStarted: Bool = true
+    private var lastAltitude: CLLocationDistance?
+    private var elevationGain: CLLocationDistance = 0.0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,6 +54,7 @@ class NavigationInformationStackView: UIStackView {
     }
     
     func startObserving() {
+        nullifyProperties()
         startTime = Date()
         startTimer()
         locationManager.startUpdatingLocation()
@@ -73,6 +76,7 @@ class NavigationInformationStackView: UIStackView {
         startTime = Date().addingTimeInterval(-Date().timeIntervalSince(pauseTime ?? Date()))
         pauseTime = nil
         startTimer()
+        justStarted = true
         locationManager.startUpdatingLocation()
     }
     
@@ -114,6 +118,13 @@ class NavigationInformationStackView: UIStackView {
             String(format: "%.2fm", metres)
         }
     }
+    
+    private func nullifyProperties() {
+        distanceTravelled = 0.0
+        justStarted = true
+        lastAltitude = nil
+        elevationGain = 0.0
+    }
 
     @objc private func updateTimeLabel() {
         guard let startTime = startTime else { return }
@@ -128,18 +139,19 @@ class NavigationInformationStackView: UIStackView {
 extension NavigationInformationStackView: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
-            let altitude = lastLocation.altitude
-            elevationGainValueLabel.text = formatDistance(metres: altitude)
+            let currentAltitude = lastLocation.altitude
             
-            if oldLocation == nil {
-                oldLocation = lastLocation
+            if !justStarted {
+                elevationGain += (lastAltitude ?? 0.0) - lastLocation.altitude
+                elevationGainValueLabel.text = formatDistance(metres: elevationGain)
+                
+                distanceTravelled += 50
+                distanceValueLabel.text = formatDistance(metres: distanceTravelled)
+            } else {
+                justStarted = false
             }
             
-            distanceTravelled += lastLocation.distance(from: oldLocation ?? CLLocation())
-            
-            oldLocation = lastLocation
-            
-            distanceValueLabel.text = formatDistance(metres: distanceTravelled)
+            lastAltitude = currentAltitude
         }
     }
 }
