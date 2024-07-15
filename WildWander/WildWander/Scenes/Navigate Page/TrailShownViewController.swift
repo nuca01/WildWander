@@ -109,6 +109,7 @@ class TrailShownViewController: UIViewController {
             self.cancelAndStratStackView.removeFromSuperview()
             self.cancelButton.removeFromSuperview()
             self.configureButtonsView(for: self.addTrailAndChooseTrailStackView, and: [self.makeTrailButton, self.chooseTrailButton])
+            self.trailsAdded = false
             self.didTapOnCancelButton()
         }, for: .touchUpInside)
         return button
@@ -172,6 +173,8 @@ class TrailShownViewController: UIViewController {
     }
     
     private var labels: [UILabel] = []
+    
+    private var trailsAdded: Bool = false
     
     //MARK: - Closures
     var didTapOnChooseOnTheMap: (_: Int) -> Bool
@@ -241,11 +244,19 @@ class TrailShownViewController: UIViewController {
         constrainMainButtonsOf(cancelAndFinishStackView)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if trailsAdded {
+            addTrailAndChooseTrailStackView.removeFromSuperview()
+            customTrailStackView.removeFromSuperview()
+            configureButtonsView(for: cancelAndStratStackView, and: [cancelButton, startTrailButton])
+        }
+    }
+    
     //MARK: - Methods
     func onTrailAdded() {
-        addTrailAndChooseTrailStackView.removeFromSuperview()
-        customTrailStackView.removeFromSuperview()
-        configureButtonsView(for: cancelAndStratStackView, and: [cancelButton, startTrailButton])
+        trailsAdded = true
     }
     
     private func configureButtonsView(for stackView: UIStackView, and buttons: [UIButton]) {
