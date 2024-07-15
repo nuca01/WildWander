@@ -65,12 +65,14 @@ final class WildWanderMapView: UIView {
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.mapboxMap.loadStyleURI(mapStyle)
         mapView.ornaments.options.scaleBar.visibility = .visible
+        mapView.gestures.delegate = self
+        
+        let navigationMapView = NavigationMapView(frame: bounds, mapView: mapView)
         
         let configuration = Puck2DConfiguration.makeDefault(showBearing: true)
+        navigationMapView.userLocationStyle = .puck2D(configuration: configuration)
         
-        mapView.location.options.puckType = .puck2D(configuration)
-        mapView.gestures.delegate = self
-        return NavigationMapView(frame: bounds, mapView: mapView)
+        return navigationMapView
     }()
     
     var mapStyle: StyleURI = .outdoors
