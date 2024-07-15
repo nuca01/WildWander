@@ -21,6 +21,9 @@
 		87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */; };
 		87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */; };
 		87876DDF2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDE2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift */; };
+		87876DE12C4431D500B439E7 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE02C4431D500B439E7 /* UIButton.swift */; };
+		87876DE42C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE32C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift */; };
+		87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DE72C4435B900B439E7 /* UIStackView.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -28,7 +31,7 @@
 		87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED802C3DCE9A0092A756 /* MapStylePageViewController.swift */; };
 		87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED822C3F3E650092A756 /* WildWanderMapViewModel.swift */; };
 		87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */; };
-		87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */; };
+		87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED872C4151520092A756 /* TrailShownViewController.swift */; };
 		87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */; };
 		87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED8D2C41F9F60092A756 /* Trail.swift */; };
 		87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */; };
@@ -51,6 +54,9 @@
 		87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSheetPresentationController.swift; sourceTree = "<group>"; };
 		87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetPresentationController.Detent.swift; sourceTree = "<group>"; };
 		87876DDE2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetPresentationController.Detent.Identifier.swift; sourceTree = "<group>"; };
+		87876DE02C4431D500B439E7 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		87876DE32C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigatePageViewController + UIViewControllerTransitioningDelegate.swift"; sourceTree = "<group>"; };
+		87876DE72C4435B900B439E7 /* UIStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -58,7 +64,7 @@
 		87F0ED802C3DCE9A0092A756 /* MapStylePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylePageViewController.swift; sourceTree = "<group>"; };
 		87F0ED822C3F3E650092A756 /* WildWanderMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapViewModel.swift; sourceTree = "<group>"; };
 		87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderAlertView.swift; sourceTree = "<group>"; };
-		87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCustomTrailViewController.swift; sourceTree = "<group>"; };
+		87F0ED872C4151520092A756 /* TrailShownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailShownViewController.swift; sourceTree = "<group>"; };
 		87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatePageViewController.swift; sourceTree = "<group>"; };
 		87F0ED8D2C41F9F60092A756 /* Trail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trail.swift; sourceTree = "<group>"; };
 		87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorePageViewModel.swift; sourceTree = "<group>"; };
@@ -219,7 +225,8 @@
 			isa = PBXGroup;
 			children = (
 				87F0ED892C418CF50092A756 /* NavigatePageViewController.swift */,
-				87F0ED872C4151520092A756 /* MakeCustomTrailViewController.swift */,
+				87F0ED872C4151520092A756 /* TrailShownViewController.swift */,
+				87876DE22C4433B500B439E7 /* Extensions */,
 			);
 			path = "Navigate Page";
 			sourceTree = "<group>";
@@ -245,6 +252,14 @@
 			path = "Saved Page";
 			sourceTree = "<group>";
 		};
+		87876DE22C4433B500B439E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				87876DE32C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		87BF71882C3C29E600D120C0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +267,8 @@
 				87CA3AE92C3C884D00640C58 /* UIImageView.swift */,
 				87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */,
 				87876DDE2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift */,
+				87876DE02C4431D500B439E7 /* UIButton.swift */,
+				87876DE72C4435B900B439E7 /* UIStackView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -364,6 +381,7 @@
 				871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */,
 				87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */,
 				87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */,
+				87876DE42C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
@@ -371,11 +389,13 @@
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
+				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
+				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
 				87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
-				87F0ED882C4151520092A756 /* MakeCustomTrailViewController.swift in Sources */,
+				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,

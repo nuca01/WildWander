@@ -121,20 +121,9 @@ class TrailsCell: UITableViewCell {
     private func addSubViews() {
         contentView.addSubview(wholeStackView)
         constrainWholeStackView()
-        [imagesCarouselView, bottomStackView]
-            .forEach { view in
-                wholeStackView.addArrangedSubview(view)
-            }
-        
-        [titleLabel, locationLabel]
-            .forEach { label in
-                nameAndLocationStackView.addArrangedSubview(label)
-            }
-        
-        [nameAndLocationStackView, informationLabel]
-            .forEach { view in
-                bottomStackView.addArrangedSubview(view)
-            }
+        wholeStackView.addArranged(subviews: [imagesCarouselView, bottomStackView])
+        nameAndLocationStackView.addArranged(subviews: [titleLabel, locationLabel])
+        bottomStackView.addArranged(subviews: [nameAndLocationStackView, informationLabel])
         constrainBottomStackView()
         ConstrainImagesCarouselView()
         constrainLabels()

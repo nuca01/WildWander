@@ -20,9 +20,15 @@ extension UISheetPresentationController.Detent {
         }
     }
     
+    class func interactiveMedium() -> UISheetPresentationController.Detent {
+        return UISheetPresentationController.Detent.custom(identifier: .interactiveMedium) { context in
+            return 290
+        }
+    }
+    
     class func smallThanMedium() -> UISheetPresentationController.Detent {
         return UISheetPresentationController.Detent.custom(identifier: .smallThanMedium) { context in
-            return 300
+            return 170
         }
     }
 }

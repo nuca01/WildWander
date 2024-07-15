@@ -9,14 +9,14 @@ import UIKit
 import MapboxMaps
 import CoreLocation
 
-//example of using WildWanderMapView and MakeCustomTrailViewController
 class NavigatePageViewController: UIViewController {
+    //MARK: - Properties
     private lazy var mapView: WildWanderMapView = {
         let mapView = WildWanderMapView(frame: CGRect(
             x: 0,
             y: 0,
             width: view.bounds.width,
-            height: view.bounds.height - 300
+            height: view.bounds.height - 80
         ), allowsDynamicPointAnnotations: true)
         mapView.delegate = self
         
@@ -24,13 +24,13 @@ class NavigatePageViewController: UIViewController {
     }()
     private var sheetNavigationController: UINavigationController?
     
-    private lazy var makeCustomTrailViewController = MakeCustomTrailViewController { [weak self] index in
+    private lazy var makeCustomTrailViewController = TrailShownViewController { [weak self] index in
         return self?.mapView.changeActiveAnnotationIndex(to: index) ?? false
     } didDeleteCheckpoint: { [weak self] index in
         self?.mapView.deleteAnnotationOf(index: index) ?? 0
     } didTapOnFinishButton: { [weak self] in
         self?.mapView.allowsDynamicPointAnnotations = false
-        self?.mapView.drawRoute()
+        self?.mapView.drawCustomRoute()
     } didTapOnCancelButton: { [weak self] in
         self?.mapView.allowsDynamicPointAnnotations = false
         self?.mapView.deleteAllAnnotations()
@@ -47,6 +47,7 @@ class NavigatePageViewController: UIViewController {
     
     private var trailToDraw: Trail?
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,7 +69,7 @@ class NavigatePageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         presentMakeCustomTrailView()
         if let trailToDraw {
-            mapView.drawStaticAnnotationRoute(with: trailToDraw)
+            mapView.drawStaticAnnotationRouteWith(routeGeometry: trailToDraw.routeGeometry)
         }
     }
     
@@ -79,6 +80,7 @@ class NavigatePageViewController: UIViewController {
         trailToDraw = nil
     }
     
+    //MARK: - Methods
     private func presentMakeCustomTrailView() {
         DispatchQueue.main.async { [weak self] in
             guard let self, let nav = self.sheetNavigationController  else { return }
@@ -88,25 +90,11 @@ class NavigatePageViewController: UIViewController {
     
     func addTrail(_ trail: Trail) {
         trailToDraw = trail
+        makeCustomTrailViewController.onTrailAdded()
     }
 }
 
-extension NavigatePageViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
-        tabSheetPresentationController.detents = [
-            .smallThanMedium(),
-        ]
-        tabSheetPresentationController.largestUndimmedDetentIdentifier = .smallThanMedium
-        tabSheetPresentationController.prefersGrabberVisible = true
-        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-        tabSheetPresentationController.selectedDetentIdentifier = .medium
-
-        return tabSheetPresentationController
-    }
-}
-
+//MARK: - WildWanderMapViewDelegate
 extension NavigatePageViewController: WildWanderMapViewDelegate {
     func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
          if let presentedViewController = presentedViewController {

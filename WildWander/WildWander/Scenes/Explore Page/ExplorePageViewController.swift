@@ -76,13 +76,7 @@ class ExplorePageViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        sheetNavigationController = UINavigationController(rootViewController: trailsView)
-        
-        sheetNavigationController?.modalPresentationStyle = .custom
-        
-        sheetNavigationController?.transitioningDelegate = self
-        
-        sheetNavigationController?.isModalInPresentation = true
+        configureSheetNavigationController()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -98,6 +92,16 @@ class ExplorePageViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         mapView.changeCameraOptions(zoom: 5)
+    }
+    
+    private func configureSheetNavigationController() {
+        sheetNavigationController = UINavigationController(rootViewController: trailsView)
+        
+        sheetNavigationController?.modalPresentationStyle = .custom
+        
+        sheetNavigationController?.transitioningDelegate = self
+        
+        sheetNavigationController?.isModalInPresentation = true
     }
     
     private func presentTrailsView() {
@@ -130,7 +134,6 @@ extension ExplorePageViewController: UIViewControllerTransitioningDelegate {
 extension ExplorePageViewController: WildWanderMapViewDelegate {
     func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
          if let presentedViewController = presentedViewController {
-             // If a view controller is already presented, dismiss it before presenting a new one
              presentedViewController.dismiss(animated: true) { [weak self] in
                  self?.presentMapStyleViewController(currentMapStyle: currentMapStyle)
              }
