@@ -21,8 +21,6 @@ class ExplorePageViewController: UIViewController {
         return mapView
     }()
     
-    private lazy var searchBar: SearchBarView = SearchBarView()
-    
     private lazy var trailsView: TrailsView = {
         let trailsViewViewModel = TrailsViewViewModel()
         viewModel.trailsDidChange = {[weak self] trails in
@@ -50,18 +48,13 @@ class ExplorePageViewController: UIViewController {
         return trailsView
     }()
     
-    private lazy var viewModel: ExplorePageViewModel = {
-        let mapViewVisibleBounds = mapView.visibleBounds
-        let bounds = Bounds(
-            upperLongitude: mapViewVisibleBounds.northwest.longitude,
-            upperLatitude: mapViewVisibleBounds.northwest.latitude,
-            lowerLongitude: mapViewVisibleBounds.southeast.longitude,
-            lowerLatitude: mapViewVisibleBounds.southeast.latitude
-        )
-        return ExplorePageViewModel(viewController: self, currentBounds: bounds)
-    }()
+    private lazy var viewModel: ExplorePageViewModel = ExplorePageViewModel(viewController: self, currentBounds: mapBounds)
     
-    private var searchBar: SearchBarView = SearchBarView()
+    private lazy var searchBar: SearchBarView = {
+        let searchBar = SearchBarView()
+        searchBar.delegate = self
+        return searchBar
+    }()
     
     var didChangeMapBounds: ((Double, Double, Double, Double) -> Void)?
     
@@ -71,15 +64,30 @@ class ExplorePageViewController: UIViewController {
         self?.presentTrailsView()
     } didSelectLocation: { [weak self] location in
         guard let self else { return }
+        
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
+        
         if let location {
             searchBar.text = location.displayName
             
             if let latitude = location.latitude, let longitude = location.longitude {
-                mapView.changeCameraOptions(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                mapView.changeCameraOptions(center: CLLocationCoordinate2D(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0), zoom: 12, duration: 0.0)
             }
         } else {
             searchBar.text = nil
         }
+    }
+    
+    private var mapBounds: Bounds {
+        let mapViewVisibleBounds = mapView.visibleBounds
+        return Bounds(
+            upperLongitude: mapViewVisibleBounds.northwest.longitude,
+            upperLatitude: mapViewVisibleBounds.northwest.latitude,
+            lowerLongitude: mapViewVisibleBounds.southeast.longitude,
+            lowerLatitude: mapViewVisibleBounds.southeast.latitude
+        )
     }
 
     
@@ -112,7 +120,12 @@ class ExplorePageViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        mapView.changeCameraOptions(zoom: 5)
+        didChangeMapBounds?(
+            mapBounds.upperLongitude,
+            mapBounds.upperLatitude,
+            mapBounds.lowerLongitude,
+            mapBounds.lowerLatitude
+        )
     }
     
     private func configureSheetNavigationController() {

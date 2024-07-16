@@ -9,8 +9,8 @@ import Foundation
 
 class Location: Decodable {
     var displayName: String?
-    var latitude: Double?
-    var longitude: Double?
+    var latitude: String?
+    var longitude: String?
     
     enum CodingKeys: String, CodingKey {
         case displayName = "display_name"

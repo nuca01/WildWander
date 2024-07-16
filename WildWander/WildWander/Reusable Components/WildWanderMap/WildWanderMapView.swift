@@ -201,7 +201,7 @@ final class WildWanderMapView: UIView {
             pitch: pitch
         ), duration: duration)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self] in
             guard let self else { return }
             self.mapDidChangeFrameTo?(visibleBounds)
         }
@@ -544,11 +544,12 @@ extension WildWanderMapView: GestureManagerDelegate {
     }
     
     func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEnd gestureType: MapboxMaps.GestureType, willAnimate: Bool) {
-    }
-    
-    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
         if gestureType != .singleTap {
             mapDidChangeFrameTo?(visibleBounds)
         }
+    }
+    
+    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
+        
     }
 }

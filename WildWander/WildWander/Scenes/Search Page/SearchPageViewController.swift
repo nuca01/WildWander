@@ -28,6 +28,7 @@ class SearchPageViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
     }()
@@ -49,11 +50,19 @@ class SearchPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(stackView)
+        view.backgroundColor = .white
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
         ])
     }
     
@@ -102,11 +111,8 @@ extension SearchPageViewController: UITableViewDelegate {
 extension SearchPageViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder();
-        return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
         viewModel.search(with: textField.text ?? "")
+        return true
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {

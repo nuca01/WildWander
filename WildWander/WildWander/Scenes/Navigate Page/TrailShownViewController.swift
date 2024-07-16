@@ -90,9 +90,11 @@ class TrailShownViewController: UIViewController {
     
     private lazy var cancelButtonAction: UIAction = UIAction { [weak self] _ in
         guard let self else {return}
-        self.customTrailStackView.removeFromSuperview()
-        self.startAndCancelStackView.removeFromSuperview()
-        
+        DispatchQueue.main.async {
+            self.customTrailStackView.removeFromSuperview()
+            self.startAndCancelStackView.removeFromSuperview()
+        }
+
         addToMainStackView(makeTrailAndChooseTrailStackView)
         self.trailsAdded = false
         self.didTapOnCancelButton()
@@ -161,6 +163,7 @@ class TrailShownViewController: UIViewController {
     lazy var startTrailAction = UIAction { [weak self] _ in
         guard let self else { return }
         if didTapStartNavigation() {
+            trailsAdded = false
             startAndCancelStackView.removeFromSuperview()
             customTrailNavigationStackView.removeFromSuperview()
             addToMainStackView(pauseAndFinishStackView)
