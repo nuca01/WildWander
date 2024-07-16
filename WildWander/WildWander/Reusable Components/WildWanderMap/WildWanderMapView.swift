@@ -11,10 +11,6 @@ import MapboxNavigation
 import MapboxDirections
 import MapboxCoreNavigation
 
-protocol WildWanderMapViewDelegate: AnyObject {
-    func mapStyleButtonTapped(currentMapStyle: StyleURI)
-}
-
 final class WildWanderMapView: UIView {
     //MARK: - Properties
     weak var delegate: WildWanderMapViewDelegate?
@@ -501,7 +497,8 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
     }
     
     func finishNavigation() {
-        self.mapView.mapView.viewport.idle()
+        mapView.mapView.viewport.idle()
+        changeCameraOptions(pitch: 0)
         userLocationButton.removeAction(identifiedBy: userLocationAction.identifier, for: .touchUpInside)
         userLocationAction = UIAction { [weak self] _ in
             self?.centerUserLocation()

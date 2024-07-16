@@ -1,25 +1,25 @@
 //
-//  NavigatePageViewController + UIViewControllerTransitioningDelegate.swift
+//  ExplorePageViewController + UIViewControllerTransitioningDelegate.swift
 //  WildWander
 //
-//  Created by nuca on 14.07.24.
+//  Created by nuca on 16.07.24.
 //
 
 import UIKit
 
-extension NavigatePageViewController: UIViewControllerTransitioningDelegate {
+extension ExplorePageViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
         tabSheetPresentationController.detents = [
             .small(),
-            .smallThanMedium(),
-            .interactiveMedium()
+            .medium(),
+            .myLarge(),
         ]
-        tabSheetPresentationController.largestUndimmedDetentIdentifier = .interactiveMedium
+        tabSheetPresentationController.largestUndimmedDetentIdentifier = .myLarge
         tabSheetPresentationController.prefersGrabberVisible = true
         tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
         tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-        tabSheetPresentationController.selectedDetentIdentifier = .interactiveMedium
+        tabSheetPresentationController.selectedDetentIdentifier = .medium
 
         return tabSheetPresentationController
     }

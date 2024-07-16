@@ -260,13 +260,23 @@ class TrailShownViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         if trailsAdded {
-            makeTrailAndChooseTrailStackView.removeFromSuperview()
-            customTrailStackView.removeFromSuperview()
+            cancelAnyPreviousActivity()
+            
             addToMainStackView(startAndCancelStackView)
         }
     }
     
     //MARK: - Methods
+    private func cancelAnyPreviousActivity() {
+        makeTrailAndChooseTrailStackView.removeFromSuperview()
+        customTrailStackView.removeFromSuperview()
+        customTrailNavigationStackView.removeFromSuperview()
+        pauseAndFinishStackView.removeFromSuperview()
+        resumeAndFinishStackView.removeFromSuperview()
+        informationStackView.finishObserving()
+        didTapFinishNavigation()
+    }
+    
     func onTrailAdded() {
         trailsAdded = true
     }

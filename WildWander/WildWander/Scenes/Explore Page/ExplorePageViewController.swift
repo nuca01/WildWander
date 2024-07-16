@@ -10,7 +10,7 @@ import MapboxMaps
 import CoreLocation
 
 class ExplorePageViewController: UIViewController {
-    private lazy var mapView: WildWanderMapView = {
+    internal lazy var mapView: WildWanderMapView = {
         let mapView = WildWanderMapView(frame: CGRect(
             x: 0,
             y: 0,
@@ -33,13 +33,20 @@ class ExplorePageViewController: UIViewController {
             let upperLatitude = visibleBounds.northwest.latitude
             let lowerLongitude = visibleBounds.southeast.longitude
             let lowerLatitude = visibleBounds.southeast.latitude
-            self?.didChangeMapBounds?(upperLongitude, upperLatitude, lowerLongitude, lowerLatitude)
+            let bounds = Bounds(
+                upperLongitude: upperLongitude,
+                upperLatitude: upperLatitude,
+                lowerLongitude: lowerLongitude,
+                lowerLatitude: lowerLatitude
+            )
+            
+            self?.didChangeMapBounds(to: bounds)
         }
         let trailsView = TrailsView(viewModel: trailsViewViewModel)
         
         trailsView.didTapOnCell = { [weak self] trail in
             guard let self else { return }
-            let navigatePage = self.tabBarController?.viewControllers?[1] as! NavigatePageViewController
+            let navigatePage = self.tabBarController?.viewControllers?[1] as! TrailAddable
             navigatePage.addTrail(trail)
             self.tabBarController?.selectedIndex = 1
             
@@ -48,20 +55,18 @@ class ExplorePageViewController: UIViewController {
         return trailsView
     }()
     
-    private lazy var viewModel: ExplorePageViewModel = ExplorePageViewModel(viewController: self, currentBounds: mapBounds)
+    private lazy var viewModel: ExplorePageViewModel = ExplorePageViewModel(currentBounds: mapBounds)
     
     private lazy var searchBar: SearchBarView = {
         let searchBar = SearchBarView()
         searchBar.delegate = self
         return searchBar
     }()
-    
-    var didChangeMapBounds: ((Double, Double, Double, Double) -> Void)?
-    
+
     var sheetNavigationController: UINavigationController?
     
     private lazy var searchPage: SearchPageViewController = SearchPageViewController { [weak self] in
-        self?.presentTrailsView()
+        self?.presentConstantView()
     } didSelectLocation: { [weak self] location in
         guard let self else { return }
         
@@ -115,17 +120,12 @@ class ExplorePageViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        presentTrailsView()
+        presentConstantView()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        didChangeMapBounds?(
-            mapBounds.upperLongitude,
-            mapBounds.upperLatitude,
-            mapBounds.lowerLongitude,
-            mapBounds.lowerLatitude
-        )
+        didChangeMapBounds(to: mapBounds)
     }
     
     private func configureSheetNavigationController() {
@@ -138,7 +138,15 @@ class ExplorePageViewController: UIViewController {
         sheetNavigationController?.isModalInPresentation = true
     }
     
-    private func presentTrailsView() {
+    private func didChangeMapBounds(to bounds: Bounds) {
+        viewModel.getTrailsWith(bounds: bounds)
+    }
+    
+}
+
+//MARK: - ExplorePageViewController
+extension ExplorePageViewController: WildWanderMapViewDelegate {
+    internal func presentConstantView() {
         DispatchQueue.main.async { [weak self] in
             guard let self, let nav = self.sheetNavigationController  else { return }
             tabBarController?.present(nav, animated: true)
@@ -146,48 +154,7 @@ class ExplorePageViewController: UIViewController {
     }
 }
 
-extension ExplorePageViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
-        tabSheetPresentationController.detents = [
-            .small(),
-            .medium(),
-            .myLarge(),
-        ]
-        tabSheetPresentationController.largestUndimmedDetentIdentifier = .myLarge
-        tabSheetPresentationController.prefersGrabberVisible = true
-        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-        tabSheetPresentationController.selectedDetentIdentifier = .medium
-
-        return tabSheetPresentationController
-    }
-}
-
-extension ExplorePageViewController: WildWanderMapViewDelegate {
-    func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
-         if let presentedViewController = presentedViewController {
-             presentedViewController.dismiss(animated: true) { [weak self] in
-                 self?.presentMapStyleViewController(currentMapStyle: currentMapStyle)
-             }
-         } else {
-             presentMapStyleViewController(currentMapStyle: currentMapStyle)
-         }
-     }
-     
-     private func presentMapStyleViewController(currentMapStyle: MapboxMaps.StyleURI) {
-         let mapStyleViewController = MapStylePageViewController(mapStyle: mapView.mapStyle) { [weak self] changedMapStyle in
-             self?.mapView.mapStyle = changedMapStyle
-         } sheetDidDisappear: { [weak self] in
-             self?.presentTrailsView()
-         }
-         
-         DispatchQueue.main.async { [weak self] in
-             self?.present(mapStyleViewController, animated: true)
-         }
-     }
-}
-
+//MARK: - ExplorePageViewController
 extension ExplorePageViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if let presentedViewController = presentedViewController {

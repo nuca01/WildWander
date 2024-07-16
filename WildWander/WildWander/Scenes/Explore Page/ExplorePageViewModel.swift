@@ -13,26 +13,11 @@ class ExplorePageViewModel {
     private var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: "")
     var trailsDidChange: ((_: [Trail]) -> Void)?
     
-    init(viewController: ExplorePageViewController, currentBounds: Bounds) {
-        configureClosureDidChangeMapBounds(for: viewController)
+    init(currentBounds: Bounds) {
         getTrailsWith(bounds: currentBounds)
     }
     
-    private func configureClosureDidChangeMapBounds(for viewController: ExplorePageViewController) {
-        viewController.didChangeMapBounds = { [weak self] upperLongitude, upperLatitude, lowerLongitude, lowerLatitude in
-            
-            let bounds = Bounds(
-                upperLongitude: upperLongitude,
-                upperLatitude: upperLatitude,
-                lowerLongitude: lowerLongitude,
-                lowerLatitude: lowerLatitude
-            )
-            
-            self?.getTrailsWith(bounds: bounds)
-        }
-    }
-    
-    private func getTrailsWith(bounds: Bounds) {
+    func getTrailsWith(bounds: Bounds) {
         configureEndPointCreator(bounds: bounds)
         
         getTrails()
