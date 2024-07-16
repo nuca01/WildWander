@@ -10,7 +10,6 @@ import NetworkingService
 
 class TrailsViewViewModel {
     private var trails: [Trail] = []
-    private let endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: "")
     
     var trailCount: Int {
         trails.count

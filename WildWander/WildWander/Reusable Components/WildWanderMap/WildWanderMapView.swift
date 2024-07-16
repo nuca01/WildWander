@@ -67,7 +67,6 @@ final class WildWanderMapView: UIView {
         
         let configuration = Puck2DConfiguration.makeDefault(showBearing: true)
         navigationMapView.userLocationStyle = .puck2D(configuration: configuration)
-        
         return navigationMapView
     }()
     
