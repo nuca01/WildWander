@@ -17,7 +17,7 @@ final class WildWanderMapView: UIView {
     var viewModel: WildWanderMapViewModel?
     var willAccessUsersLocation: (() -> Void)?
     var didTapOnAnnotation: ((_: Int?) -> Void)?
-    var mapDidChangeFrameTo: ((CoordinateBounds) -> Void)?
+    var mapDidChangeFrameTo: ((Bounds) -> Void)?
     
     let locationDisabledAlert = WildWanderAlertView(
         title: "share your location",
@@ -43,8 +43,21 @@ final class WildWanderMapView: UIView {
     private var annotations: [PointAnnotation] = []
     private var trails: [String: Int] = [:]
     
-    var visibleBounds: CoordinateBounds {
-        mapView.mapView.mapboxMap.coordinateBounds(for: mapView.bounds)
+    var visibleBounds: Bounds {
+        let mapViewFrame = mapView.mapView.frame
+
+        let topLeftScreenCoordinate = CGPoint(x: mapViewFrame.minX, y: mapViewFrame.minY)
+        let bottomRightScreenCoordinate = CGPoint(x: mapViewFrame.maxX, y: mapViewFrame.maxY)
+
+        let topLeftCoordinate = mapView.mapView.mapboxMap.coordinate(for: topLeftScreenCoordinate)
+        let bottomRightCoordinate = mapView.mapView.mapboxMap.coordinate(for: bottomRightScreenCoordinate)
+        
+        return Bounds(
+            upperLongitude: topLeftCoordinate.longitude,
+            upperLatitude: topLeftCoordinate.latitude,
+            lowerLongitude: bottomRightCoordinate.longitude,
+            lowerLatitude: bottomRightCoordinate.latitude
+        )
     }
     
     private lazy var mapView: NavigationMapView = {
@@ -540,12 +553,14 @@ extension WildWanderMapView: GestureManagerDelegate {
     }
     
     func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEnd gestureType: MapboxMaps.GestureType, willAnimate: Bool) {
-        if gestureType != .singleTap {
+
+        
+        if !willAnimate {
             mapDidChangeFrameTo?(visibleBounds)
         }
     }
     
     func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
-        
+        mapDidChangeFrameTo?(visibleBounds)
     }
 }

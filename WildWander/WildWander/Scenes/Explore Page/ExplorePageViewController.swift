@@ -29,18 +29,7 @@ class ExplorePageViewController: UIViewController {
         }
         
         mapView.mapDidChangeFrameTo = { [weak self] visibleBounds in
-            let upperLongitude = visibleBounds.northwest.longitude
-            let upperLatitude = visibleBounds.northwest.latitude
-            let lowerLongitude = visibleBounds.southeast.longitude
-            let lowerLatitude = visibleBounds.southeast.latitude
-            let bounds = Bounds(
-                upperLongitude: upperLongitude,
-                upperLatitude: upperLatitude,
-                lowerLongitude: lowerLongitude,
-                lowerLatitude: lowerLatitude
-            )
-            
-            self?.didChangeMapBounds(to: bounds)
+            self?.didChangeMapBounds(to: visibleBounds)
         }
         let trailsView = TrailsView(viewModel: trailsViewViewModel)
         
@@ -86,13 +75,7 @@ class ExplorePageViewController: UIViewController {
     }
     
     private var mapBounds: Bounds {
-        let mapViewVisibleBounds = mapView.visibleBounds
-        return Bounds(
-            upperLongitude: mapViewVisibleBounds.northwest.longitude,
-            upperLatitude: mapViewVisibleBounds.northwest.latitude,
-            lowerLongitude: mapViewVisibleBounds.southeast.longitude,
-            lowerLatitude: mapViewVisibleBounds.southeast.latitude
-        )
+        mapView.visibleBounds
     }
 
     
