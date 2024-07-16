@@ -11,7 +11,7 @@ import CoreLocation
 
 class NavigatePageViewController: UIViewController {
     //MARK: - Properties
-    private lazy var mapView: WildWanderMapView = {
+    internal lazy var mapView: WildWanderMapView = {
         let mapView = WildWanderMapView(frame: CGRect(
             x: 0,
             y: 0,
@@ -68,7 +68,7 @@ class NavigatePageViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        presentMakeCustomTrailView()
+        presentConstantView()
         if let trailToDraw {
             mapView.drawStaticAnnotationRouteWith(routeGeometry: trailToDraw.routeGeometry)
         }
@@ -80,44 +80,21 @@ class NavigatePageViewController: UIViewController {
         }
         trailToDraw = nil
     }
-    
-    //MARK: - Methods
-    
-    private func presentMakeCustomTrailView() {
+}
+
+//MARK: - WildWanderMapViewDelegate
+extension NavigatePageViewController: WildWanderMapViewDelegate {
+    func presentConstantView() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             tabBarController?.present(sheetNavigationController, animated: true)
         }
     }
-    
+}
+
+extension NavigatePageViewController: TrailAddable {
     func addTrail(_ trail: Trail) {
         trailToDraw = trail
         makeCustomTrailViewController.onTrailAdded()
     }
-}
-
-//MARK: - WildWanderMapViewDelegate
-extension NavigatePageViewController: WildWanderMapViewDelegate {
-    func mapStyleButtonTapped(currentMapStyle: MapboxMaps.StyleURI) {
-         if let presentedViewController = presentedViewController {
-             
-             presentedViewController.dismiss(animated: true) { [weak self] in
-                 self?.presentMapStyleViewController(currentMapStyle: currentMapStyle)
-             }
-         } else {
-             presentMapStyleViewController(currentMapStyle: currentMapStyle)
-         }
-     }
-     
-     private func presentMapStyleViewController(currentMapStyle: MapboxMaps.StyleURI) {
-         let mapStyleViewController = MapStylePageViewController(mapStyle: mapView.mapStyle) { [weak self] changedMapStyle in
-             self?.mapView.mapStyle = changedMapStyle
-         } sheetDidDisappear: { [weak self] in
-             self?.presentMakeCustomTrailView()
-         }
-         
-         DispatchQueue.main.async { [weak self] in
-             self?.present(mapStyleViewController, animated: true)
-         }
-     }
 }

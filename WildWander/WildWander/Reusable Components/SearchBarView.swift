@@ -36,9 +36,9 @@ final class SearchBarView: UITextField {
         
         setTextColor()
         
-        setupHeightConstraint(60)
+        setupHeightConstraint(50)
         
-        setCornerRadius(25)
+        setCornerRadius(20)
         
         setPlaceholder()
         
@@ -74,7 +74,7 @@ final class SearchBarView: UITextField {
     }
     
     private func setBackgroundColor() {
-        backgroundColor = UIColor.with(red: 239, green: 239, blue: 236, alpha: 96.61)
+        backgroundColor = UIColor.white
     }
     
     private func setTextColor() {

@@ -9,9 +9,9 @@ import UIKit
 import CoreLocation
 
 class NavigationInformationStackView: UIStackView {
-    private lazy var timeValueLabel: UILabel = generateTitleLabel(with: "0:0", and: 18)
-    private lazy var distanceValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 18)
-    private lazy var elevationGainValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 18)
+    private lazy var timeValueLabel: UILabel = generateTitleLabel(with: "0:0", and: 23)
+    private lazy var distanceValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 23)
+    private lazy var elevationGainValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 23)
     private lazy var locationManager = {
         let locationManager =  CLLocationManager()
         locationManager.requestWhenInUseAuthorization()
@@ -84,7 +84,7 @@ class NavigationInformationStackView: UIStackView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
-        stackView.spacing = 15
+        stackView.spacing = 5
         stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
         

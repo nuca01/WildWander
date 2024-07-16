@@ -27,6 +27,12 @@
 		87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */; };
 		87876DEE2C45947100B439E7 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DED2C45947100B439E7 /* String.swift */; };
 		87876DF02C45A8CF00B439E7 /* ButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */; };
+		87876DFC2C45EF7500B439E7 /* SearchPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DFB2C45EF7500B439E7 /* SearchPageViewController.swift */; };
+		87876DFE2C45EF9900B439E7 /* SearchPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DFD2C45EF9900B439E7 /* SearchPageViewModel.swift */; };
+		87876E002C45F03A00B439E7 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DFF2C45F03A00B439E7 /* Location.swift */; };
+		87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E022C46BA1600B439E7 /* WildWanderMapViewDelegate.swift */; };
+		87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */; };
+		87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E072C46BFC300B439E7 /* TrailAddable.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -63,6 +69,12 @@
 		87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationInformationStackView.swift; sourceTree = "<group>"; };
 		87876DED2C45947100B439E7 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsStackView.swift; sourceTree = "<group>"; };
+		87876DFB2C45EF7500B439E7 /* SearchPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewController.swift; sourceTree = "<group>"; };
+		87876DFD2C45EF9900B439E7 /* SearchPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPageViewModel.swift; sourceTree = "<group>"; };
+		87876DFF2C45F03A00B439E7 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		87876E022C46BA1600B439E7 /* WildWanderMapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapViewDelegate.swift; sourceTree = "<group>"; };
+		87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExplorePageViewController + UIViewControllerTransitioningDelegate.swift"; sourceTree = "<group>"; };
+		87876E072C46BFC300B439E7 /* TrailAddable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailAddable.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -119,6 +131,7 @@
 				876A7A562C335F1D0022B85E /* Supporting Files */,
 				876A7A622C3364740022B85E /* Reusable Components */,
 				876A7A632C3364970022B85E /* Networking */,
+				87876E012C46B96D00B439E7 /* Protocols */,
 				87BF71882C3C29E600D120C0 /* Extensions */,
 			);
 			path = WildWander;
@@ -170,6 +183,7 @@
 				876A7A682C3365FE0022B85E /* Profile Page */,
 				876A7A692C3366190022B85E /* Settings Page */,
 				87F0ED7F2C3D69440092A756 /* MapStylePage */,
+				87876DFA2C45EF4C00B439E7 /* Search Page */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -182,6 +196,7 @@
 				87F0ED962C4283350092A756 /* TrailsCell.swift */,
 				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
 				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
+				87876E042C46BC7E00B439E7 /* Extensions */,
 			);
 			path = "Explore Page";
 			sourceTree = "<group>";
@@ -268,6 +283,32 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		87876DFA2C45EF4C00B439E7 /* Search Page */ = {
+			isa = PBXGroup;
+			children = (
+				87876DFB2C45EF7500B439E7 /* SearchPageViewController.swift */,
+				87876DFD2C45EF9900B439E7 /* SearchPageViewModel.swift */,
+			);
+			path = "Search Page";
+			sourceTree = "<group>";
+		};
+		87876E012C46B96D00B439E7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				87876E022C46BA1600B439E7 /* WildWanderMapViewDelegate.swift */,
+				87876E072C46BFC300B439E7 /* TrailAddable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		87876E042C46BC7E00B439E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		87BF71882C3C29E600D120C0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,6 +345,7 @@
 			children = (
 				87F0ED8D2C41F9F60092A756 /* Trail.swift */,
 				87876DD72C42F8CE00B439E7 /* Bounds.swift */,
+				87876DFF2C45F03A00B439E7 /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -389,16 +431,20 @@
 			files = (
 				871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */,
 				87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */,
+				87876E002C45F03A00B439E7 /* Location.swift in Sources */,
 				87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */,
 				87876DF02C45A8CF00B439E7 /* ButtonsStackView.swift in Sources */,
 				87876DE42C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
+				87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
 				87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
+				87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
+				87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */,
 				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
 				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
@@ -408,7 +454,9 @@
 				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87876DEE2C45947100B439E7 /* String.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
+				87876DFC2C45EF7500B439E7 /* SearchPageViewController.swift in Sources */,
 				87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */,
+				87876DFE2C45EF9900B439E7 /* SearchPageViewModel.swift in Sources */,
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,

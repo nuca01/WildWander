@@ -11,10 +11,6 @@ import MapboxNavigation
 import MapboxDirections
 import MapboxCoreNavigation
 
-protocol WildWanderMapViewDelegate: AnyObject {
-    func mapStyleButtonTapped(currentMapStyle: StyleURI)
-}
-
 final class WildWanderMapView: UIView {
     //MARK: - Properties
     weak var delegate: WildWanderMapViewDelegate?
@@ -155,7 +151,15 @@ final class WildWanderMapView: UIView {
         addSubview(buttonsStackView)
         constrainButtons()
         constrainButtonsStackView()
-        
+        constrainCompass()
+    }
+    
+    private func constrainCompass() {
+        mapView.mapView.ornaments.compassView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mapView.mapView.ornaments.compassView.topAnchor.constraint(equalToSystemSpacingBelow: buttonsStackView.topAnchor, multiplier: 1),
+            mapView.mapView.ornaments.compassView.leadingAnchor.constraint(equalTo: mapView.leadingAnchor, constant: 10)
+        ])
     }
     
     private func constrainButtons() {
@@ -193,7 +197,7 @@ final class WildWanderMapView: UIView {
             pitch: pitch
         ), duration: duration)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self] in
             guard let self else { return }
             self.mapDidChangeFrameTo?(visibleBounds)
         }
@@ -493,7 +497,8 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
     }
     
     func finishNavigation() {
-        self.mapView.mapView.viewport.idle()
+        mapView.mapView.viewport.idle()
+        changeCameraOptions(pitch: 0)
         userLocationButton.removeAction(identifiedBy: userLocationAction.identifier, for: .touchUpInside)
         userLocationAction = UIAction { [weak self] _ in
             self?.centerUserLocation()
@@ -536,11 +541,12 @@ extension WildWanderMapView: GestureManagerDelegate {
     }
     
     func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEnd gestureType: MapboxMaps.GestureType, willAnimate: Bool) {
-    }
-    
-    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
         if gestureType != .singleTap {
             mapDidChangeFrameTo?(visibleBounds)
         }
+    }
+    
+    func gestureManager(_ gestureManager: MapboxMaps.GestureManager, didEndAnimatingFor gestureType: MapboxMaps.GestureType) {
+        
     }
 }
