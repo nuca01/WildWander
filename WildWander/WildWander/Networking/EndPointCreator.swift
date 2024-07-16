@@ -26,12 +26,13 @@ struct EndPointCreator: EndPoint {
     
     var body: Data?
     
-    var host: String = "hikingapp20240711084758.azurewebsites.net"
+    var host: String
     
     private let accessToken: String?
     
     //MARK: - Intializer
     init(
+        host: String = "hikingapp20240711084758.azurewebsites.net",
         pathParams: [String : String]? = nil,
         path: String,
         queryItems: [URLQueryItem]? = nil,
@@ -39,11 +40,12 @@ struct EndPointCreator: EndPoint {
         body: Data? = nil,
         accessToken: String
     ) {
+        self.host = host
         self.pathParams = pathParams
         self.path = path
         self.queryItems = queryItems
         self.method = method
         self.body = body
-        self.accessToken = nil
+        self.accessToken = accessToken
     }
 }

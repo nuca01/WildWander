@@ -59,15 +59,27 @@ class ExplorePageViewController: UIViewController {
         return ExplorePageViewModel(viewController: self, currentBounds: bounds)
     }()
     
-    private var searchBar: SearchBarView = {
-        let searchBarView = SearchBarView()
-        
-        return searchBarView
-    }()
+    private var searchBar: SearchBarView = SearchBarView()
     
     var didChangeMapBounds: ((Double, Double, Double, Double) -> Void)?
     
     var sheetNavigationController: UINavigationController?
+    
+    private lazy var searchPage: SearchPageViewController = SearchPageViewController { [weak self] in
+        self?.presentTrailsView()
+    } didSelectLocation: { [weak self] location in
+        guard let self else { return }
+        if let location {
+            searchBar.text = location.displayName
+            
+            if let latitude = location.latitude, let longitude = location.longitude {
+                mapView.changeCameraOptions(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+            }
+        } else {
+            searchBar.text = nil
+        }
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,7 +122,6 @@ class ExplorePageViewController: UIViewController {
             tabBarController?.present(nav, animated: true)
         }
     }
-    
 }
 
 extension ExplorePageViewController: UIViewControllerTransitioningDelegate {
@@ -153,4 +164,24 @@ extension ExplorePageViewController: WildWanderMapViewDelegate {
              self?.present(mapStyleViewController, animated: true)
          }
      }
+}
+
+extension ExplorePageViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true) { [weak self] in
+                self?.presentSearchPage()
+            }
+        } else {
+            presentSearchPage()
+        }
+        return false
+    }
+    
+    private func presentSearchPage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            present(searchPage, animated: true)
+        }
+    }
 }
