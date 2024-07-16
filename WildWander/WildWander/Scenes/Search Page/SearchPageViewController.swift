@@ -29,6 +29,7 @@ class SearchPageViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .wildWanderExtraLightGray
         
         return tableView
     }()
@@ -50,7 +51,7 @@ class SearchPageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(stackView)
-        view.backgroundColor = .white
+        view.backgroundColor = .wildWanderExtraLightGray
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -97,6 +98,7 @@ extension SearchPageViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = viewModel.locationFor(index: indexPath.row).displayName
         cell.textLabel?.numberOfLines = 0
+        cell.backgroundColor = .wildWanderExtraLightGray
         return cell
     }
 }
