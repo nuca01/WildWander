@@ -21,6 +21,8 @@ class ExplorePageViewController: UIViewController {
         return mapView
     }()
     
+    private lazy var searchBar: SearchBarView = SearchBarView()
+    
     private lazy var trailsView: TrailsView = {
         let trailsViewViewModel = TrailsViewViewModel()
         viewModel.trailsDidChange = {[weak self] trails in
@@ -85,6 +87,13 @@ class ExplorePageViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(mapView)
+        view.addSubview(searchBar)
+        
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        ])
         
         view.backgroundColor = .white
         

@@ -155,7 +155,15 @@ final class WildWanderMapView: UIView {
         addSubview(buttonsStackView)
         constrainButtons()
         constrainButtonsStackView()
-        
+        constrainCompass()
+    }
+    
+    private func constrainCompass() {
+        mapView.mapView.ornaments.compassView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mapView.mapView.ornaments.compassView.topAnchor.constraint(equalToSystemSpacingBelow: buttonsStackView.topAnchor, multiplier: 1),
+            mapView.mapView.ornaments.compassView.leadingAnchor.constraint(equalTo: mapView.leadingAnchor, constant: 10)
+        ])
     }
     
     private func constrainButtons() {
