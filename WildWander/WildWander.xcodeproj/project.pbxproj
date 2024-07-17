@@ -33,6 +33,7 @@
 		87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E022C46BA1600B439E7 /* WildWanderMapViewDelegate.swift */; };
 		87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */; };
 		87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E072C46BFC300B439E7 /* TrailAddable.swift */; };
+		87876E0D2C47345B00B439E7 /* LogInPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E0C2C47345B00B439E7 /* LogInPageViewController.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -75,6 +76,7 @@
 		87876E022C46BA1600B439E7 /* WildWanderMapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapViewDelegate.swift; sourceTree = "<group>"; };
 		87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExplorePageViewController + UIViewControllerTransitioningDelegate.swift"; sourceTree = "<group>"; };
 		87876E072C46BFC300B439E7 /* TrailAddable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailAddable.swift; sourceTree = "<group>"; };
+		87876E0C2C47345B00B439E7 /* LogInPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInPageViewController.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		876A7A5F2C3360B10022B85E /* Login Page */ = {
 			isa = PBXGroup;
 			children = (
+				87876E0C2C47345B00B439E7 /* LogInPageViewController.swift */,
 			);
 			name = "Login Page";
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				87876E002C45F03A00B439E7 /* Location.swift in Sources */,
 				87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */,
 				87876DF02C45A8CF00B439E7 /* ButtonsStackView.swift in Sources */,
+				87876E0D2C47345B00B439E7 /* LogInPageViewController.swift in Sources */,
 				87876DE42C4433CC00B439E7 /* NavigatePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,

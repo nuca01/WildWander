@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         
         let firstViewController = ExplorePageViewController()
-        let secondViewController = NavigatePageViewController()
+        let secondViewController = LogInPageViewController()
         
         firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
         secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
