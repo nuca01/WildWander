@@ -8,12 +8,26 @@
 import UIKit
 
 extension UIStackView {
-    static func horizontalButtonsStackView() -> UIStackView {
+    static func generateHorizontalButtonsStackView() -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }
+    
+    static func generateTextfieldAndTitleStackView(title: String, placeholder: String, textFieldDelegate: UITextFieldDelegate) -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let titleLabel = UILabel.textfieldTitleLabel(text: title)
+        let textField = UITextField.wildWanderTextField(placeholder: placeholder)
+        textField.delegate = textFieldDelegate
+        stackView.addArranged(subviews: [titleLabel, textField])
         return stackView
     }
     

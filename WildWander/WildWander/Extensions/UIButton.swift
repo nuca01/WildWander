@@ -13,8 +13,9 @@ extension UIButton {
         button.backgroundColor = .wildWanderGreen
         button.setTitle(title, for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return button
     }
     
@@ -23,9 +24,9 @@ extension UIButton {
         button.backgroundColor = .wildWanderExtraLightGray
         button.setTitle(title, for: .normal)
         button.setTitleColor(.wildWanderGreen, for: .normal)
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
-        
+        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         return button
     }
 }
