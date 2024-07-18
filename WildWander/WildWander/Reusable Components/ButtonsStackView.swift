@@ -24,7 +24,6 @@ class ButtonsStackView: UIStackView {
         addActions(leftAction, rightAction)
         addSubviews()
         setUpModifiers()
-        constrainButtons()
     }
     
     required init(coder: NSCoder) {
@@ -46,13 +45,5 @@ class ButtonsStackView: UIStackView {
         distribution = .fillEqually
         spacing = 20
         translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    private func constrainButtons() {
-        arrangedSubviews.forEach { button in
-            NSLayoutConstraint.activate([
-                button.heightAnchor.constraint(equalToConstant: 50),
-            ])
-        }
     }
 }
