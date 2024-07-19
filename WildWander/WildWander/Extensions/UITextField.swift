@@ -26,4 +26,51 @@ extension UITextField {
         ])
         return textField
     }
+    
+    //MARK: - Secure Entry
+    
+    func setButtonForSecureEntry() {
+        let secureEntryButton = UIButton()
+        
+        let closedEyeImage = UIImage(named: "closedEye")
+        let openEyeImage = UIImage(named: "openEye")
+        
+        secureEntryButton.setImage(closedEyeImage, for: .normal)
+        secureEntryButton.tintColor = .wildWanderGreen
+        secureEntryButton.imageView?.contentMode = .scaleAspectFit
+        secureEntryButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            secureEntryButton.heightAnchor.constraint(equalToConstant: 20),
+            secureEntryButton.widthAnchor.constraint(equalToConstant: 40),
+        ])
+        
+        secureEntryButton.addAction(UIAction { [weak self] _ in
+            if secureEntryButton.imageView?.image === closedEyeImage {
+                secureEntryButton.setImage(openEyeImage, for: .normal)
+            } else {
+                secureEntryButton.setImage(closedEyeImage, for: .normal)
+            }
+            
+            self?.toggleVisibility()
+        }, for: .touchUpInside)
+        
+        rightView = secureEntryButton
+        rightViewMode = .always
+    }
+    
+    func toggleVisibility() {
+        isSecureTextEntry.toggle()
+        
+        if let existingText = text, isSecureTextEntry {
+            deleteBackward()
+            
+            text = existingText
+        }
+        
+        if let existingSelectedTextRange = selectedTextRange {
+            selectedTextRange = nil
+            selectedTextRange = existingSelectedTextRange
+        }
+    }
 }

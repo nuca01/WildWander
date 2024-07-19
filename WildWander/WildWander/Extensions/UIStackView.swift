@@ -17,7 +17,7 @@ extension UIStackView {
         return stackView
     }
     
-    static func generateTextfieldAndTitleStackView(title: String, placeholder: String, textFieldDelegate: UITextFieldDelegate) -> UIStackView {
+    static func generateTextfieldAndTitleStackView(title: String, placeholder: String, textFieldDelegate: UITextFieldDelegate, allowsSecureEntry: Bool = false) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
@@ -27,6 +27,11 @@ extension UIStackView {
         let titleLabel = UILabel.textfieldTitleLabel(text: title)
         let textField = UITextField.wildWanderTextField(placeholder: placeholder)
         textField.delegate = textFieldDelegate
+        if allowsSecureEntry {
+            textField.toggleVisibility()
+            textField.setButtonForSecureEntry()
+        }
+        
         stackView.addArranged(subviews: [titleLabel, textField])
         return stackView
     }
