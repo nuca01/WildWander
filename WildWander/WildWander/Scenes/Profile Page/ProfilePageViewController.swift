@@ -8,22 +8,33 @@
 import UIKit
 
 class ProfilePageViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    private lazy var sheetNavigationController: UINavigationController = {
+        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController())
+        
+        sheetNavigationController.modalPresentationStyle = .custom
+        sheetNavigationController.transitioningDelegate = self
+        sheetNavigationController.isModalInPresentation = true
+        sheetNavigationController.isModalInPresentation = true
+        
+        return sheetNavigationController
+    }()
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        present(sheetNavigationController, animated: true)
     }
-    */
+}
 
+extension ProfilePageViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
+        tabSheetPresentationController.detents = [
+            .large()
+        ]
+        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+        tabSheetPresentationController.selectedDetentIdentifier = .large
+
+        return tabSheetPresentationController
+    }
 }

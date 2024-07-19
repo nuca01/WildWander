@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         
         let firstViewController = ExplorePageViewController()
-        let secondViewController = NavigatePageViewController()
+        let secondViewController = ProfilePageViewController()
         
         firstViewController.tabBarItem = UITabBarItem(
             title: "Explore Page",

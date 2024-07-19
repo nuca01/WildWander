@@ -92,6 +92,18 @@ class LogInPageViewController: UIViewController {
             dividerView,
             signUpButton
         ])
+        
+        [logoImageView,
+         explanationLabel,
+         emailStackView,
+         passwordStackView,
+         signUpButton
+        ].forEach { view in
+            constrainEdgesToMainStackView(view: view, constant: 0)
+        }
+        
+        constrainEdgesToMainStackView(view: dividerView, constant: 40)
+        constrainEdgesToMainStackView(view: enterButton, constant: 120)
     }
     
     //MARK: - Constraints
@@ -106,8 +118,15 @@ class LogInPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
+    
+    private func constrainEdgesToMainStackView(view: UIView, constant: CGFloat) {
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: constant),
+            view.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -constant),
         ])
     }
     
