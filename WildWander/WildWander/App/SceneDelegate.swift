@@ -18,20 +18,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let firstViewController = ExplorePageViewController()
         let secondViewController = NavigatePageViewController()
+        let thirdViewController = ProfilePageViewController()
         
         firstViewController.tabBarItem = UITabBarItem(
-            title: "Explore Page",
-            image: UIImage(named: "explorePageInactive"),
-            selectedImage: UIImage(named: "explorePageActive")?.withTintColor(.wildWanderGreen)
+            title: "Explore",
+            image: UIImage(systemName: "location.magnifyingglass"),
+            selectedImage: UIImage(systemName: "location.magnifyingglass")
         )
         
         secondViewController.tabBarItem = UITabBarItem(
-            title: "Navigate Page",
-            image: UIImage(named: "navigatePage"),
-            selectedImage: UIImage(named: "navigatePage")?.withTintColor(.wildWanderGreen)
+            title: "Navigate",
+            image: UIImage(systemName: "location"),
+            selectedImage: UIImage(systemName: "location.fill")
         )
         
-        tabBarController.viewControllers = [firstViewController, secondViewController]
+        thirdViewController.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person"),
+            selectedImage: UIImage(systemName: "person.fill")
+        )
+        
+        tabBarController.viewControllers = [firstViewController, secondViewController, thirdViewController]
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
