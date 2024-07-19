@@ -37,6 +37,10 @@
 		87876E0F2C47FA6500B439E7 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E0E2C47FA6500B439E7 /* UITextField.swift */; };
 		87876E112C47FBCA00B439E7 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E102C47FBCA00B439E7 /* UILabel.swift */; };
 		87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E122C4ADB3900B439E7 /* ProfilePageViewController.swift */; };
+		87876E152C4B014300B439E7 /* EmailEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E142C4B014300B439E7 /* EmailEntryViewController.swift */; };
+		87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */; };
+		87876E1A2C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */; };
+		87876E1D2C4B1DCF00B439E7 /* CodeEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -83,6 +87,10 @@
 		87876E0E2C47FA6500B439E7 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		87876E102C47FBCA00B439E7 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		87876E122C4ADB3900B439E7 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
+		87876E142C4B014300B439E7 /* EmailEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEntryViewController.swift; sourceTree = "<group>"; };
+		87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEntryViewModel.swift; sourceTree = "<group>"; };
+		87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldAndTitleStackView.swift; sourceTree = "<group>"; };
+		87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEntryViewController.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -218,6 +226,8 @@
 		876A7A602C3360C30022B85E /* Sign Up Page */ = {
 			isa = PBXGroup;
 			children = (
+				87876E162C4B065F00B439E7 /* EmailEntry */,
+				87876E1B2C4B1DAE00B439E7 /* CodeEntry */,
 			);
 			name = "Sign Up Page";
 			sourceTree = "<group>";
@@ -231,6 +241,7 @@
 				87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */,
 				87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */,
 				87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */,
+				87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */,
 			);
 			path = "Reusable Components";
 			sourceTree = "<group>";
@@ -333,6 +344,23 @@
 				87876DEB2C44B4DB00B439E7 /* NavigationInformationStackView.swift */,
 			);
 			path = "Helper Views";
+			sourceTree = "<group>";
+		};
+		87876E162C4B065F00B439E7 /* EmailEntry */ = {
+			isa = PBXGroup;
+			children = (
+				87876E142C4B014300B439E7 /* EmailEntryViewController.swift */,
+				87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */,
+			);
+			name = EmailEntry;
+			sourceTree = "<group>";
+		};
+		87876E1B2C4B1DAE00B439E7 /* CodeEntry */ = {
+			isa = PBXGroup;
+			children = (
+				87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */,
+			);
+			name = CodeEntry;
 			sourceTree = "<group>";
 		};
 		87BF71882C3C29E600D120C0 /* Extensions */ = {
@@ -477,15 +505,18 @@
 				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
 				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
+				87876E1D2C4B1DCF00B439E7 /* CodeEntryViewController.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
 				87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */,
 				87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */,
+				87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
 				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87876DEE2C45947100B439E7 /* String.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
 				87876E112C47FBCA00B439E7 /* UILabel.swift in Sources */,
 				87876E0F2C47FA6500B439E7 /* UITextField.swift in Sources */,
+				87876E152C4B014300B439E7 /* EmailEntryViewController.swift in Sources */,
 				87876DFC2C45EF7500B439E7 /* SearchPageViewController.swift in Sources */,
 				87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */,
 				87876DFE2C45EF9900B439E7 /* SearchPageViewModel.swift in Sources */,
@@ -495,6 +526,7 @@
 				87F0ED972C4283350092A756 /* TrailsCell.swift in Sources */,
 				87F0ED952C41FFE30092A756 /* TrailsViewViewModel.swift in Sources */,
 				87876DDF2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift in Sources */,
+				87876E1A2C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
