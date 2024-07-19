@@ -17,10 +17,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         
         let firstViewController = ExplorePageViewController()
-        let secondViewController = LogInPageViewController()
+        let secondViewController = NavigatePageViewController()
         
-        firstViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        firstViewController.tabBarItem = UITabBarItem(
+            title: "Explore Page",
+            image: UIImage(named: "explorePageInactive"),
+            selectedImage: UIImage(named: "explorePageActive")?.withTintColor(.wildWanderGreen)
+        )
+        
+        secondViewController.tabBarItem = UITabBarItem(
+            title: "Navigate Page",
+            image: UIImage(named: "navigatePage"),
+            selectedImage: UIImage(named: "navigatePage")?.withTintColor(.wildWanderGreen)
+        )
         
         tabBarController.viewControllers = [firstViewController, secondViewController]
         window?.rootViewController = tabBarController
