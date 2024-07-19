@@ -24,13 +24,12 @@ class LogInPageViewController: UIViewController {
         label.textColor = .wildWanderGreen
         label.numberOfLines = 0
         label.textAlignment = .center
-        
         return label
     }()
     
     private lazy var emailStackView: UIStackView = UIStackView.generateTextfieldAndTitleStackView(title: "Email", placeholder: "ex: user@gmail.com", textFieldDelegate: self)
     
-    private lazy var passwordStackView: UIStackView = UIStackView.generateTextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123", textFieldDelegate: self)
+    private lazy var passwordStackView: UIStackView = UIStackView.generateTextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123", textFieldDelegate: self, allowsSecureEntry: true)
     
     private var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
