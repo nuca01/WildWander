@@ -59,7 +59,7 @@ class LogInPageViewController: UIViewController {
     private lazy var signUpButton: UIButton = {
         let button = UIButton.wildWanderGrayButton(titled: "Sign up")
         button.addAction(UIAction { [weak self] _ in
-            self?.navigationController?.pushViewController(EmailEntryViewController(), animated: true)
+            self?.navigationController?.pushViewController(CodeEntryViewController(email: ""), animated: true)
         }, for: .touchUpInside)
         
 //        button.layer.borderWidth = 2

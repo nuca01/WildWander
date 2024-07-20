@@ -8,6 +8,7 @@
 import UIKit
 
 class CodeEntryViewController: UIViewController {
+    private var viewModel: CodeEntryViewModel
     private var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -44,7 +45,7 @@ class CodeEntryViewController: UIViewController {
     private lazy var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
-            
+            self?.viewModel.validate()
         }, for: .touchUpInside)
         
         return button
@@ -66,6 +67,16 @@ class CodeEntryViewController: UIViewController {
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+    }
+    
+    //MARK: - Initializers
+    init(email: String) {
+        viewModel = CodeEntryViewModel(email: email)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - Methods
@@ -141,20 +152,39 @@ class CodeEntryViewController: UIViewController {
         ])
         return textfield
     }
+    
+    private func changeToNextResponder(for textField: UITextField) -> UITextField? {
+        if let nextField = view.viewWithTag(textField.tag + 1) as? UITextField {
+            viewModel.ChangeCodeNumber(for: textField.tag, with: textField.text ?? "")
+            nextField.becomeFirstResponder()
+            return nextField
+        } else {
+            textField.resignFirstResponder()
+        }
+        return nil
+    }
 }
 
 extension CodeEntryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let nextField = view.viewWithTag(textField.tag + 1) as? UITextField {
-            nextField.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-        }
+        changeToNextResponder(for: textField)
         return false
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let x = string.rangeOfCharacter(from: NSCharacterSet.decimalDigits) {
+        if string.count > 1 { return false }
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        if updatedText.count > 1 {
+            if var nextField = changeToNextResponder(for: textField) {
+                nextField.text = string
+            }
+            return false
+        }
+        
+        if string.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil {
             return true
         } else {
             return false
