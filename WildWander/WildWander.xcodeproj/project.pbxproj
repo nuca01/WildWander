@@ -48,6 +48,7 @@
 		87876E292C4B5B5900B439E7 /* RegisterUserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E282C4B5B5800B439E7 /* RegisterUserInformation.swift */; };
 		87876E2B2C4C161F00B439E7 /* EmailValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2A2C4C161F00B439E7 /* EmailValidation.swift */; };
 		87876E2D2C4C4B5200B439E7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2C2C4C4B5200B439E7 /* Token.swift */; };
+		87876E2F2C4C57E500B439E7 /* LogInPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2E2C4C57E500B439E7 /* LogInPageViewModel.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -105,6 +106,7 @@
 		87876E282C4B5B5800B439E7 /* RegisterUserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInformation.swift; sourceTree = "<group>"; };
 		87876E2A2C4C161F00B439E7 /* EmailValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidation.swift; sourceTree = "<group>"; };
 		87876E2C2C4C4B5200B439E7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		87876E2E2C4C57E500B439E7 /* LogInPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInPageViewModel.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				87876E0C2C47345B00B439E7 /* LogInPageViewController.swift */,
+				87876E2E2C4C57E500B439E7 /* LogInPageViewModel.swift */,
 			);
 			name = "Login Page";
 			sourceTree = "<group>";
@@ -535,6 +538,7 @@
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
 				87876E242C4B3E8600B439E7 /* InformationEntryViewController.swift in Sources */,
 				87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
+				87876E2F2C4C57E500B439E7 /* LogInPageViewModel.swift in Sources */,
 				87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				87876E222C4B321800B439E7 /* KeychainHelper.swift in Sources */,
