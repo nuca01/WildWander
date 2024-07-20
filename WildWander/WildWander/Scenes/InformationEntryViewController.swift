@@ -193,7 +193,7 @@ class InformationEntryViewController: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -202,7 +202,7 @@ class InformationEntryViewController: UIViewController {
             mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
             mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -50),
             mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
         ])
     }
