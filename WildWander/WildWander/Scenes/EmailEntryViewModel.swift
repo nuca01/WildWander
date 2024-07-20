@@ -9,7 +9,8 @@ import Foundation
 import NetworkingService
 
 class EmailEntryViewModel {
-    private var endPointCreator = EndPointCreator(path: "/api/User/RegisterUserEmail", method: "Post", accessToken: "")
+    private var endPointCreator = EndPointCreator(path: "/api/User/RegisterUserEmail", method: "POST", accessToken: "")
+    var didSendAnEmail: ((_: String?) -> Void)?
     
     private func isValidEmail(email: String) -> Bool {
         let emailRegEx = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{1,4}$"
@@ -17,20 +18,31 @@ class EmailEntryViewModel {
         return emailTest.evaluate(with: email)
     }
     
-    func sendCodeTo(_ email: String, completion: @escaping (String?) -> Void) {
+    func sendCodeTo(_ email: String) {
         if isValidEmail(email: email) {
-            endPointCreator.body = email.data(using: .utf8)
+            let emailValidationModel: EmailValidation = EmailValidation(email: email)
             
-            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { (result: Result<Int, NetworkError>) in
+            endPointCreator.body = emailValidationModel
+            
+            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Int, NetworkError>) in
                 switch result {
                 case .success(_):
-                    completion(nil)
+                    self?.didSendAnEmail?(nil)
                 case .failure(let error):
-                    completion(error.localizedDescription)
+                    var message = ""
+                    switch error {
+                    case .unknown:
+                        message = "unknown error has occurred"
+                    case .decode, .invalidURL:
+                        message = "internal error has occurred"
+                    case .unexpectedStatusCode(let errorDescription):
+                        message = errorDescription
+                    }
+                    self?.didSendAnEmail?(message)
                 }
             }
         } else {
-            completion("Email format is invalid")
+            didSendAnEmail?("Email format is invalid")
         }
     }
 }

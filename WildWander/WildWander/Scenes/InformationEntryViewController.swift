@@ -9,7 +9,7 @@ import UIKit
 
 class InformationEntryViewController: UIViewController {
     //MARK: - Properties
-    private var viewModel: InformationEntryViewModel = InformationEntryViewModel()
+    private var viewModel: InformationEntryViewModel
     private var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -52,6 +52,16 @@ class InformationEntryViewController: UIViewController {
         let datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.datePickerMode = .date
+        
+        let calendar = Calendar.current
+        var components = DateComponents()
+        components.year = 1900
+        components.month = 1
+        components.day = 1
+        let minDate = calendar.date(from: components)
+        
+        datePicker.minimumDate = minDate
+        datePicker.maximumDate = Date()
         return datePicker
     }()
     
@@ -70,16 +80,32 @@ class InformationEntryViewController: UIViewController {
         return picker
     }()
     
-    private lazy var passwordStackView: UIStackView = {
+    private lazy var passwordStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
         stackView.setupSecureEntryOnTextfield()
         return stackView
+    }()
+    
+    private var errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .red
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
     }()
     
     private lazy var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
             guard let self else { return }
+            viewModel.register(
+                password: passwordStackView.textFieldText ?? "",
+                firstName: firstNameStackView.textFieldText ?? "",
+                lastName: lastNameStackView.textFieldText ?? "",
+                gender: genderStackView.textFieldText ?? ""
+            )
         }, for: .touchUpInside)
         
         return button
@@ -101,6 +127,28 @@ class InformationEntryViewController: UIViewController {
         return scrollView
     }()
     
+    //MARK: - Initializers
+    init(email: String) {
+        self.viewModel = InformationEntryViewModel(email: email)
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.didTryToRegister = { [weak self] errorMessage in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let errorMessage {
+                    self.errorLabel.text = errorMessage
+                    self.errorLabel.isHidden = false
+                } else {
+                    self.errorLabel.isHidden = true
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,8 +160,13 @@ class InformationEntryViewController: UIViewController {
     //MARK: - Methods
     private func addSubviews() {
         view.addSubview(scrollView)
+        
         scrollView.addSubview(mainStackView)
         
+        addMainStackViewSubViews()
+    }
+    
+    private func addMainStackViewSubViews() {
         mainStackView.addArranged(subviews: [
             logoImageView,
             explanationLabel,
@@ -122,9 +175,39 @@ class InformationEntryViewController: UIViewController {
             dateOfBirthStackView,
             genderStackView,
             passwordStackView,
+            errorLabel,
             enterButton,
         ])
-        
+    }
+    
+    //MARK: - Constraints
+    private func addConstraints() {
+        constrainScrollView()
+        constrainMainStackView()
+        constrainLogoImageView()
+        constrainMainStackViewSubviews()
+    }
+    
+    private func constrainScrollView() {
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
+        ])
+    }
+    
+    private func constrainMainStackView() {
+        NSLayoutConstraint.activate([
+            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
+        ])
+    }
+    
+    private func constrainMainStackViewSubviews() {
         [logoImageView,
          explanationLabel,
          firstNameStackView,
@@ -132,28 +215,11 @@ class InformationEntryViewController: UIViewController {
          dateOfBirthStackView,
          genderStackView,
          passwordStackView,
+         errorLabel,
          enterButton
         ].forEach { view in
             constrainEdgesToMainStackView(view: view, constant: 0)
         }
-    }
-    
-    //MARK: - Constraints
-    private func addConstraints() {
-        NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-            
-            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
-        ])
-        
-        constrainLogoImageView()
     }
     
     private func constrainEdgesToMainStackView(view: UIView, constant: CGFloat) {
@@ -179,7 +245,8 @@ class InformationEntryViewController: UIViewController {
     }
     
     @objc private func donePressedForDate() {
-        dateOfBirthStackView.textFieldText = "\(datePicker.date)"
+        let formattedDate = viewModel.formatted(date: datePicker.date)
+        dateOfBirthStackView.textFieldText = formattedDate
         view.endEditing(true)
     }
     

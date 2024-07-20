@@ -24,7 +24,7 @@ struct EndPointCreator: EndPoint {
         ]
     }
     
-    var body: Data?
+    var body: Encodable?
     
     var host: String
     

@@ -9,7 +9,25 @@ import UIKit
 
 class EmailEntryViewController: UIViewController {
     //MARK: - Properties
-    private var viewModel: EmailEntryViewModel = EmailEntryViewModel()
+    private lazy var viewModel: EmailEntryViewModel = {
+        let viewModel = EmailEntryViewModel()
+        
+        viewModel.didSendAnEmail = { errorMessage in
+            DispatchQueue.main.async {
+                if let errorMessage {
+                    self.errorLabel.text = errorMessage
+                    self.errorLabel.isHidden = false
+                    
+                } else {
+                    self.errorLabel.isHidden = true
+                    
+                    self.navigationController?.pushViewController(CodeEntryViewController(email: self.emailStackView.textFieldText ?? ""), animated: true)
+                }
+            }
+        }
+        return viewModel
+    }()
+    
     private var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -34,19 +52,21 @@ class EmailEntryViewController: UIViewController {
         return stackView
     }()
     
+    private var errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .red
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     private lazy var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
             guard let self else { return }
-                viewModel.sendCodeTo("example@example.com") { message in
-                if let message = message {
-                    print("Error: \(message)")
-                } else {
-                    DispatchQueue.main.async {
-                        self.navigationController?.pushViewController(CodeEntryViewController(email: self.emailStackView.textFieldText ?? ""), animated: true)
-                    }
-                }
-            }
+            viewModel.sendCodeTo(emailStackView.textFieldText ?? "")
         }, for: .touchUpInside)
         
         return button
@@ -74,27 +94,25 @@ class EmailEntryViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(mainStackView)
         
+        addMainStackViewSubViews()
+    }
+    
+    private func addMainStackViewSubViews() {
         mainStackView.addArranged(subviews: [
             logoImageView,
             explanationLabel,
             emailStackView,
             UIView(),
+            errorLabel,
             enterButton,
         ])
-        
-        [logoImageView,
-         explanationLabel,
-         emailStackView,
-         enterButton
-        ].forEach { view in
-            constrainEdgesToMainStackView(view: view, constant: 0)
-        }
     }
     
     //MARK: - Constraints
     private func addConstrains() {
         constrainMainStackView()
         constrainLogoImageView()
+        constrainMainStackViewSubviews()
     }
     
     private func constrainMainStackView() {
@@ -104,6 +122,17 @@ class EmailEntryViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
+    }
+    
+    private func constrainMainStackViewSubviews() {
+        [logoImageView,
+         explanationLabel,
+         emailStackView,
+         errorLabel,
+         enterButton
+        ].forEach { view in
+            constrainEdgesToMainStackView(view: view, constant: 0)
+        }
     }
     
     private func constrainEdgesToMainStackView(view: UIView, constant: CGFloat) {

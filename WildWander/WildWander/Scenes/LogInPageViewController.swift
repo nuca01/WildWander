@@ -60,12 +60,9 @@ class LogInPageViewController: UIViewController {
         let button = UIButton.wildWanderGrayButton(titled: "Sign up")
         button.addAction(UIAction { [weak self] _ in
             DispatchQueue.main.async {
-                self?.navigationController?.pushViewController(InformationEntryViewController(), animated: true)
+                self?.navigationController?.pushViewController(EmailEntryViewController(), animated: true)
             }
         }, for: .touchUpInside)
-        
-//        button.layer.borderWidth = 2
-//        button.layer.borderColor = UIColor.wildWanderGreen.cgColor
         
         return button
     }()
@@ -93,6 +90,10 @@ class LogInPageViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(mainStackView)
         
+        addMainStackViewSubViews()
+    }
+    
+    private func addMainStackViewSubViews() {
         mainStackView.addArranged(subviews: [
             logoImageView,
             explanationLabel,
@@ -102,18 +103,6 @@ class LogInPageViewController: UIViewController {
             dividerView,
             signUpButton
         ])
-        
-        [logoImageView,
-         explanationLabel,
-         emailStackView,
-         passwordStackView,
-         signUpButton
-        ].forEach { view in
-            constrainEdgesToMainStackView(view: view, constant: 0)
-        }
-        
-        constrainEdgesToMainStackView(view: dividerView, constant: 40)
-        constrainEdgesToMainStackView(view: enterButton, constant: 120)
     }
     
     //MARK: - Constraints
@@ -122,16 +111,28 @@ class LogInPageViewController: UIViewController {
         constrainDividerView()
         constrainEnterButton()
         constrainLogoImageView()
+        constrainMainStackViewSubviews()
+        constrainEdgesToMainStackView(view: dividerView, constant: 40)
+        constrainEdgesToMainStackView(view: enterButton, constant: 120)
     }
     
     private func constrainMainStackView() {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
+    }
+    
+    private func constrainMainStackViewSubviews() {
+        [logoImageView,
+         explanationLabel,
+         emailStackView,
+         passwordStackView,
+         signUpButton
+        ].forEach { view in
+            constrainEdgesToMainStackView(view: view, constant: 0)
+        }
     }
     
     private func constrainEdgesToMainStackView(view: UIView, constant: CGFloat) {

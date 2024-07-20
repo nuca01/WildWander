@@ -42,6 +42,16 @@ class CodeEntryViewController: UIViewController {
         return stackView
     }()
     
+    private var errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .red
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
+    
     private lazy var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
@@ -74,9 +84,17 @@ class CodeEntryViewController: UIViewController {
         viewModel = CodeEntryViewModel(email: email)
         super.init(nibName: nil, bundle: nil)
         viewModel.didCheckCode = { [weak self] (didPassChecking, error) in
-            if didPassChecking {
-                DispatchQueue.main.async {
-                    self?.navigationController?.pushViewController(InformationEntryViewController(), animated: true)
+            DispatchQueue.main.async {
+                if didPassChecking {
+                    self?.errorLabel.isHidden = true
+                    self?.navigationController?.pushViewController(InformationEntryViewController(email: email), animated: true)
+                } else {
+                    if let error {
+                        self?.errorLabel.text = error
+                    } else {
+                        self?.errorLabel.text = "wrong code entered"
+                    }
+                    self?.errorLabel.isHidden = false
                 }
             }
         }
@@ -90,32 +108,40 @@ class CodeEntryViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(mainStackView)
         
+        addMainStackViewSubViews()
+    }
+    
+    private func addMainStackViewSubViews() {
         mainStackView.addArranged(subviews: [
             logoImageView,
             explanationLabel,
             codeStackView,
+            errorLabel,
             enterButton,
         ])
-        
-        [logoImageView,
-         explanationLabel,
-         enterButton
-        ].forEach { view in
-            constrainEdgesToMainStackView(view: view, constant: 0)
-        }
     }
     
     //MARK: - Constraints
     private func addConstrains() {
         constrainMainStackView()
         constrainLogoImageView()
+        constrainMainStackViewSubviews()
+    }
+    
+    private func constrainMainStackViewSubviews() {
+        [logoImageView,
+         explanationLabel,
+         errorLabel,
+         enterButton
+        ].forEach { view in
+            constrainEdgesToMainStackView(view: view, constant: 0)
+        }
     }
     
     private func constrainMainStackView() {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-//            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
@@ -164,7 +190,6 @@ class CodeEntryViewController: UIViewController {
     
     private func changeToNextResponder(for textField: UITextField) -> UITextField? {
         if let nextField = view.viewWithTag(textField.tag + 1) as? UITextField {
-            viewModel.ChangeCodeNumber(for: textField.tag, with: textField.text ?? "")
             nextField.becomeFirstResponder()
             return nextField
         } else {
@@ -189,11 +214,13 @@ extension CodeEntryViewController: UITextFieldDelegate {
         if updatedText.count > 1 {
             if let nextField = changeToNextResponder(for: textField) {
                 nextField.text = string
+                viewModel.ChangeCodeNumber(for: textField.tag + 1, with: string)
             }
             return false
         }
         
         if string.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil || string.isEmpty {
+            viewModel.ChangeCodeNumber(for: textField.tag, with: string)
             return true
         } else {
             return false

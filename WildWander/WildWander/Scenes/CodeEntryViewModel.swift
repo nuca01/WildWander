@@ -57,7 +57,16 @@ class CodeEntryViewModel {
                     didCheckCode?(responseModel, nil)
                     
                 case .failure(let error):
-                    didCheckCode?(false, error.localizedDescription)
+                    var message = ""
+                    switch error {
+                    case .unknown:
+                        message = "unknown error has occurred"
+                    case .decode, .invalidURL:
+                        message = "internal error has occurred"
+                    case .unexpectedStatusCode(let errorDescription):
+                        message = errorDescription
+                    }
+                    didCheckCode?(false, message)
                 }
             }
         }
