@@ -21,7 +21,7 @@ class EmailEntryViewModel {
         if isValidEmail(email: email) {
             endPointCreator.body = email.data(using: .utf8)
             
-            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { (result: Result<TrailContainer, NetworkError>) in
+            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { (result: Result<Int, NetworkError>) in
                 switch result {
                 case .success(_):
                     completion(nil)

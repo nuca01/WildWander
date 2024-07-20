@@ -16,6 +16,7 @@ class CodeEntryViewModel {
         !code.contains(".")
     }
     private var endPointCreator = EndPointCreator(path: "/api/User/ValidateUserCode", method: "GET", accessToken: "")
+    var didCheckCode: ((_: Bool, _: String?) -> Void)?
     
     //MARK: - Initializer
     init(email: String) {
@@ -52,10 +53,11 @@ class CodeEntryViewModel {
                 guard let self else { return }
                 
                 switch result {
-                case .success(let responseModel): break
+                case .success(let responseModel): 
+                    didCheckCode?(responseModel, nil)
                     
                 case .failure(let error):
-                    print("Error: \(error)")
+                    didCheckCode?(false, error.localizedDescription)
                 }
             }
         }

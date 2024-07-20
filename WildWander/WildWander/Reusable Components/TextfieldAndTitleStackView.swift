@@ -13,7 +13,12 @@ class TextfieldAndTitleStackView: UIStackView {
     private var titleLabel: UILabel
     
     var textFieldText: String? {
-        textField.text
+        get {
+            return textField.text
+        }
+        set {
+            textField.text = newValue
+        }
     }
     
     //MARK: - Initializers
@@ -48,5 +53,13 @@ class TextfieldAndTitleStackView: UIStackView {
     func setupSecureEntryOnTextfield() {
         textField.toggleVisibility()
         textField.setButtonForSecureEntry()
+    }
+    
+    func setTextFieldsInputView(to picker: UIView) {
+        textField.inputView = picker
+    }
+    
+    func setTextFieldsInputAccessoryView(to toolbar: UIToolbar) {
+        textField.inputAccessoryView = toolbar
     }
 }

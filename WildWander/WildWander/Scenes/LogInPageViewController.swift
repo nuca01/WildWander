@@ -59,7 +59,9 @@ class LogInPageViewController: UIViewController {
     private lazy var signUpButton: UIButton = {
         let button = UIButton.wildWanderGrayButton(titled: "Sign up")
         button.addAction(UIAction { [weak self] _ in
-            self?.navigationController?.pushViewController(CodeEntryViewController(email: ""), animated: true)
+            DispatchQueue.main.async {
+                self?.navigationController?.pushViewController(InformationEntryViewController(), animated: true)
+            }
         }, for: .touchUpInside)
         
 //        button.layer.borderWidth = 2
@@ -127,7 +129,8 @@ class LogInPageViewController: UIViewController {
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
 //            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
     }
     

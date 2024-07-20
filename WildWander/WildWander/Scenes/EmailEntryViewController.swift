@@ -42,7 +42,9 @@ class EmailEntryViewController: UIViewController {
                 if let message = message {
                     print("Error: \(message)")
                 } else {
-                    print("Code sent successfully")
+                    DispatchQueue.main.async {
+                        self.navigationController?.pushViewController(CodeEntryViewController(email: self.emailStackView.textFieldText ?? ""), animated: true)
+                    }
                 }
             }
         }, for: .touchUpInside)
@@ -76,6 +78,7 @@ class EmailEntryViewController: UIViewController {
             logoImageView,
             explanationLabel,
             emailStackView,
+            UIView(),
             enterButton,
         ])
         
@@ -98,7 +101,8 @@ class EmailEntryViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
     }
     

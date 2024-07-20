@@ -73,6 +73,13 @@ class CodeEntryViewController: UIViewController {
     init(email: String) {
         viewModel = CodeEntryViewModel(email: email)
         super.init(nibName: nil, bundle: nil)
+        viewModel.didCheckCode = { [weak self] (didPassChecking, error) in
+            if didPassChecking {
+                DispatchQueue.main.async {
+                    self?.navigationController?.pushViewController(InformationEntryViewController(), animated: true)
+                }
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -108,7 +115,9 @@ class CodeEntryViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
     }
     
@@ -178,13 +187,13 @@ extension CodeEntryViewController: UITextFieldDelegate {
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
         if updatedText.count > 1 {
-            if var nextField = changeToNextResponder(for: textField) {
+            if let nextField = changeToNextResponder(for: textField) {
                 nextField.text = string
             }
             return false
         }
         
-        if string.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil {
+        if string.rangeOfCharacter(from: CharacterSet.decimalDigits) != nil || string.isEmpty {
             return true
         } else {
             return false
