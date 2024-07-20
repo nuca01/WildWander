@@ -82,12 +82,6 @@ class EmailEntryViewController: UIViewController {
         return stackView
     }()
     
-    private var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,9 +92,7 @@ class EmailEntryViewController: UIViewController {
     
     //MARK: - Methods
     private func addSubviews() {
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(mainStackView)
+        view.addSubview(mainStackView)
         
         addMainStackViewSubViews()
     }
@@ -118,29 +110,17 @@ class EmailEntryViewController: UIViewController {
     
     //MARK: - Constraints
     private func addConstrains() {
-        constrainScrollView()
         constrainMainStackView()
         constrainLogoImageView()
         constrainMainStackViewSubviews()
     }
     
-    private func constrainScrollView() {
-        NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-    
-    
     private func constrainMainStackView() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -50),
-            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40)
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
     }
     
