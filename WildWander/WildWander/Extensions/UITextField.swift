@@ -20,6 +20,7 @@ extension UITextField {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.leftViewMode = .always
         textField.rightViewMode = .always
+        textField.autocorrectionType = .no
         
         NSLayoutConstraint.activate([
             textField.heightAnchor.constraint(equalToConstant: 55),

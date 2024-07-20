@@ -1,14 +1,33 @@
 //
-//  LogInPageViewController.swift
+//  EmailEntryViewController.swift
 //  WildWander
 //
-//  Created by nuca on 17.07.24.
+//  Created by nuca on 20.07.24.
 //
 
 import UIKit
 
-class LogInPageViewController: UIViewController {
+class EmailEntryViewController: UIViewController {
     //MARK: - Properties
+    private lazy var viewModel: EmailEntryViewModel = {
+        let viewModel = EmailEntryViewModel()
+        
+        viewModel.didSendAnEmail = { errorMessage in
+            DispatchQueue.main.async {
+                if let errorMessage {
+                    self.errorLabel.text = errorMessage
+                    self.errorLabel.isHidden = false
+                    
+                } else {
+                    self.errorLabel.isHidden = true
+                    
+                    self.navigationController?.pushViewController(CodeEntryViewController(email: self.emailStackView.textFieldText ?? ""), animated: true)
+                }
+            }
+        }
+        return viewModel
+    }()
+    
     private var logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "logo"))
         imageView.contentMode = .scaleAspectFit
@@ -20,53 +39,39 @@ class LogInPageViewController: UIViewController {
     private var explanationLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22)
-        label.text = "Log in or sign up to access your profile"
+        label.text = "Let's start with your Email"
         label.textColor = .wildWanderGreen
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
     
-    private lazy var emailStackView: UIStackView = {
+    private lazy var emailStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Email", placeholder: "ex: user@gmail.com")
         stackView.setTextFieldDelegate(with: self)
         return stackView
     }()
     
-    private lazy var passwordStackView: UIStackView = {
-        let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
-        stackView.setupSecureEntryOnTextfield()
-        return stackView
+    private var errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .red
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
     }()
     
-    private var enterButton: UIButton = {
+    private lazy var enterButton: UIButton = {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
-        button.addAction(UIAction { _ in
-            
-        }, for: .touchUpInside)
-        
-        return button
-    }()
-    
-    private var dividerView: UIView = {
-        let divider = UIView()
-        divider.backgroundColor = .lightGray
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        return divider
-    }()
-    
-    private lazy var signUpButton: UIButton = {
-        let button = UIButton.wildWanderGrayButton(titled: "Sign up")
         button.addAction(UIAction { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.navigationController?.pushViewController(EmailEntryViewController(), animated: true)
-            }
+            guard let self else { return }
+            viewModel.sendCodeTo(emailStackView.textFieldText ?? "")
         }, for: .touchUpInside)
         
         return button
     }()
-    
+
     private var mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -74,7 +79,6 @@ class LogInPageViewController: UIViewController {
         stackView.distribution = .fill
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
     }()
     
@@ -98,29 +102,25 @@ class LogInPageViewController: UIViewController {
             logoImageView,
             explanationLabel,
             emailStackView,
-            passwordStackView,
+            UIView(),
+            errorLabel,
             enterButton,
-            dividerView,
-            signUpButton
         ])
     }
     
     //MARK: - Constraints
     private func addConstrains() {
         constrainMainStackView()
-        constrainDividerView()
-        constrainEnterButton()
         constrainLogoImageView()
         constrainMainStackViewSubviews()
-        constrainEdgesToMainStackView(view: dividerView, constant: 40)
-        constrainEdgesToMainStackView(view: enterButton, constant: 120)
     }
     
     private func constrainMainStackView() {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
     }
     
@@ -128,8 +128,8 @@ class LogInPageViewController: UIViewController {
         [logoImageView,
          explanationLabel,
          emailStackView,
-         passwordStackView,
-         signUpButton
+         errorLabel,
+         enterButton
         ].forEach { view in
             constrainEdgesToMainStackView(view: view, constant: 0)
         }
@@ -141,20 +141,6 @@ class LogInPageViewController: UIViewController {
             view.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -constant),
         ])
     }
-    
-    private func constrainDividerView() {
-        NSLayoutConstraint.activate([
-            dividerView.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 40),
-            dividerView.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -40),
-        ])
-    }
-    
-    private func constrainEnterButton() {
-        NSLayoutConstraint.activate([
-            enterButton.leadingAnchor.constraint(equalTo: mainStackView.leadingAnchor, constant: 120),
-            enterButton.trailingAnchor.constraint(equalTo: mainStackView.trailingAnchor, constant: -120),
-        ])
-    }
 
     private func constrainLogoImageView() {
         NSLayoutConstraint.activate([
@@ -164,7 +150,7 @@ class LogInPageViewController: UIViewController {
 }
 
 //MARK: - UITextFieldDelegate
-extension LogInPageViewController: UITextFieldDelegate {
+extension EmailEntryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

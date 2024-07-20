@@ -37,6 +37,17 @@
 		87876E0F2C47FA6500B439E7 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E0E2C47FA6500B439E7 /* UITextField.swift */; };
 		87876E112C47FBCA00B439E7 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E102C47FBCA00B439E7 /* UILabel.swift */; };
 		87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E122C4ADB3900B439E7 /* ProfilePageViewController.swift */; };
+		87876E152C4B014300B439E7 /* EmailEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E142C4B014300B439E7 /* EmailEntryViewController.swift */; };
+		87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */; };
+		87876E1A2C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */; };
+		87876E1D2C4B1DCF00B439E7 /* CodeEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */; };
+		87876E1F2C4B2ABF00B439E7 /* CodeEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E1E2C4B2ABF00B439E7 /* CodeEntryViewModel.swift */; };
+		87876E222C4B321800B439E7 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E212C4B321800B439E7 /* KeychainHelper.swift */; };
+		87876E242C4B3E8600B439E7 /* InformationEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E232C4B3E8600B439E7 /* InformationEntryViewController.swift */; };
+		87876E272C4B52A000B439E7 /* InformationEntryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E262C4B52A000B439E7 /* InformationEntryViewModel.swift */; };
+		87876E292C4B5B5900B439E7 /* RegisterUserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E282C4B5B5800B439E7 /* RegisterUserInformation.swift */; };
+		87876E2B2C4C161F00B439E7 /* EmailValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2A2C4C161F00B439E7 /* EmailValidation.swift */; };
+		87876E2D2C4C4B5200B439E7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2C2C4C4B5200B439E7 /* Token.swift */; };
 		87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */; };
 		87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718D2C3C31F500D120C0 /* UIColor.swift */; };
 		87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */; };
@@ -83,6 +94,17 @@
 		87876E0E2C47FA6500B439E7 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		87876E102C47FBCA00B439E7 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		87876E122C4ADB3900B439E7 /* ProfilePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewController.swift; sourceTree = "<group>"; };
+		87876E142C4B014300B439E7 /* EmailEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEntryViewController.swift; sourceTree = "<group>"; };
+		87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEntryViewModel.swift; sourceTree = "<group>"; };
+		87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldAndTitleStackView.swift; sourceTree = "<group>"; };
+		87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEntryViewController.swift; sourceTree = "<group>"; };
+		87876E1E2C4B2ABF00B439E7 /* CodeEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEntryViewModel.swift; sourceTree = "<group>"; };
+		87876E212C4B321800B439E7 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		87876E232C4B3E8600B439E7 /* InformationEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationEntryViewController.swift; sourceTree = "<group>"; };
+		87876E262C4B52A000B439E7 /* InformationEntryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationEntryViewModel.swift; sourceTree = "<group>"; };
+		87876E282C4B5B5800B439E7 /* RegisterUserInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUserInformation.swift; sourceTree = "<group>"; };
+		87876E2A2C4C161F00B439E7 /* EmailValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidation.swift; sourceTree = "<group>"; };
+		87876E2C2C4C4B5200B439E7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		87BF718D2C3C31F500D120C0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
@@ -137,6 +159,7 @@
 				87F0ED8C2C41F9C90092A756 /* Models */,
 				876A7A552C335F0B0022B85E /* Resources */,
 				876A7A562C335F1D0022B85E /* Supporting Files */,
+				87876E202C4B31F000B439E7 /* Utilities */,
 				876A7A622C3364740022B85E /* Reusable Components */,
 				876A7A632C3364970022B85E /* Networking */,
 				87876E012C46B96D00B439E7 /* Protocols */,
@@ -183,12 +206,12 @@
 			isa = PBXGroup;
 			children = (
 				876A7A642C3365BD0022B85E /* Launch Page */,
-				876A7A5F2C3360B10022B85E /* Login Page */,
-				876A7A602C3360C30022B85E /* Sign Up Page */,
 				876A7A592C335FFD0022B85E /* Explore Page */,
 				876A7A672C3365F20022B85E /* Navigate Page */,
 				876A7A6A2C33663B0022B85E /* Saved Page */,
 				876A7A682C3365FE0022B85E /* Profile Page */,
+				876A7A5F2C3360B10022B85E /* Login Page */,
+				876A7A602C3360C30022B85E /* Sign Up Page */,
 				876A7A692C3366190022B85E /* Settings Page */,
 				87F0ED7F2C3D69440092A756 /* MapStylePage */,
 				87876DFA2C45EF4C00B439E7 /* Search Page */,
@@ -218,6 +241,9 @@
 		876A7A602C3360C30022B85E /* Sign Up Page */ = {
 			isa = PBXGroup;
 			children = (
+				87876E162C4B065F00B439E7 /* EmailEntry */,
+				87876E1B2C4B1DAE00B439E7 /* CodeEntry */,
+				87876E252C4B3E8D00B439E7 /* InformationEntry */,
 			);
 			name = "Sign Up Page";
 			sourceTree = "<group>";
@@ -231,6 +257,7 @@
 				87F0ED852C3F4C840092A756 /* WildWanderAlertView.swift */,
 				87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */,
 				87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */,
+				87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */,
 			);
 			path = "Reusable Components";
 			sourceTree = "<group>";
@@ -335,6 +362,41 @@
 			path = "Helper Views";
 			sourceTree = "<group>";
 		};
+		87876E162C4B065F00B439E7 /* EmailEntry */ = {
+			isa = PBXGroup;
+			children = (
+				87876E142C4B014300B439E7 /* EmailEntryViewController.swift */,
+				87876E172C4B069C00B439E7 /* EmailEntryViewModel.swift */,
+			);
+			name = EmailEntry;
+			sourceTree = "<group>";
+		};
+		87876E1B2C4B1DAE00B439E7 /* CodeEntry */ = {
+			isa = PBXGroup;
+			children = (
+				87876E1C2C4B1DCF00B439E7 /* CodeEntryViewController.swift */,
+				87876E1E2C4B2ABF00B439E7 /* CodeEntryViewModel.swift */,
+			);
+			name = CodeEntry;
+			sourceTree = "<group>";
+		};
+		87876E202C4B31F000B439E7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				87876E212C4B321800B439E7 /* KeychainHelper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		87876E252C4B3E8D00B439E7 /* InformationEntry */ = {
+			isa = PBXGroup;
+			children = (
+				87876E232C4B3E8600B439E7 /* InformationEntryViewController.swift */,
+				87876E262C4B52A000B439E7 /* InformationEntryViewModel.swift */,
+			);
+			name = InformationEntry;
+			sourceTree = "<group>";
+		};
 		87BF71882C3C29E600D120C0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -374,6 +436,9 @@
 				87F0ED8D2C41F9F60092A756 /* Trail.swift */,
 				87876DD72C42F8CE00B439E7 /* Bounds.swift */,
 				87876DFF2C45F03A00B439E7 /* Location.swift */,
+				87876E282C4B5B5800B439E7 /* RegisterUserInformation.swift */,
+				87876E2A2C4C161F00B439E7 /* EmailValidation.swift */,
+				87876E2C2C4C4B5200B439E7 /* Token.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -458,6 +523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */,
+				87876E2D2C4C4B5200B439E7 /* Token.swift in Sources */,
 				87F0ED8E2C41F9F60092A756 /* Trail.swift in Sources */,
 				87876E002C45F03A00B439E7 /* Location.swift in Sources */,
 				87F0ED932C41FC2B0092A756 /* TrailsView.swift in Sources */,
@@ -467,9 +533,11 @@
 				87CA3AEA2C3C884D00640C58 /* UIImageView.swift in Sources */,
 				87F0ED8A2C418CF50092A756 /* NavigatePageViewController.swift in Sources */,
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
+				87876E242C4B3E8600B439E7 /* InformationEntryViewController.swift in Sources */,
 				87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
 				87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
+				87876E222C4B321800B439E7 /* KeychainHelper.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
@@ -477,24 +545,32 @@
 				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
 				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
+				87876E1F2C4B2ABF00B439E7 /* CodeEntryViewModel.swift in Sources */,
+				87876E1D2C4B1DCF00B439E7 /* CodeEntryViewController.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
 				87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */,
 				87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */,
+				87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
 				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87876DEE2C45947100B439E7 /* String.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
 				87876E112C47FBCA00B439E7 /* UILabel.swift in Sources */,
 				87876E0F2C47FA6500B439E7 /* UITextField.swift in Sources */,
+				87876E292C4B5B5900B439E7 /* RegisterUserInformation.swift in Sources */,
+				87876E152C4B014300B439E7 /* EmailEntryViewController.swift in Sources */,
 				87876DFC2C45EF7500B439E7 /* SearchPageViewController.swift in Sources */,
 				87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */,
 				87876DFE2C45EF9900B439E7 /* SearchPageViewModel.swift in Sources */,
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,
+				87876E2B2C4C161F00B439E7 /* EmailValidation.swift in Sources */,
 				87F0ED972C4283350092A756 /* TrailsCell.swift in Sources */,
 				87F0ED952C41FFE30092A756 /* TrailsViewViewModel.swift in Sources */,
 				87876DDF2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift in Sources */,
+				87876E272C4B52A000B439E7 /* InformationEntryViewModel.swift in Sources */,
+				87876E1A2C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
