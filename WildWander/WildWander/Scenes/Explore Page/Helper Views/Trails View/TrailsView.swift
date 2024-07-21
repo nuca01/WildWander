@@ -31,8 +31,11 @@ class TrailsView: UIViewController {
     }()
     
     var didTapOnCell: ((_: Trail) -> Void)?
+    
     //closure accepts another closure willSave(name, description, savedListId) -> Void and returns Void
     var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
+    
+    var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,16 +92,18 @@ extension TrailsView: UITableViewDataSource {
         let urls = currentTrail.images?.map({ urlString in
             viewModel.generateURL(from: urlString)
         })
+        
         cell.updateCellWith(
             imageUrls: urls ?? [],
-            trailID: currentTrail.id ?? 0,
+            trailID: currentTrail.id!,
             trailTitle: currentTrail.routeIdentifier ?? "",
             address: currentTrail.address ?? "",
             rating: currentTrail.rating ?? 0.0,
             difficulty: currentTrail.difficulty ?? "",
             length: currentTrail.length ?? 0.0,
             isSaved: currentTrail.isSaved ?? false, 
-            didTapSave: didTapSave
+            didTapSave: didTapSave, 
+            errorDidHappen: errorDidHappen
         )
         return cell
     }

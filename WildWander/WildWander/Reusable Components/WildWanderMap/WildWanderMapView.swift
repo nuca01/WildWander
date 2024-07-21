@@ -26,6 +26,7 @@ final class WildWanderMapView: UIView {
         dismissButtonTitle: "Maybe Later"
     )
     
+    
     private lazy var pointAnnotationManager: PointAnnotationManager = {
         let pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
         

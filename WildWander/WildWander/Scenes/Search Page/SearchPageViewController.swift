@@ -52,25 +52,20 @@ class SearchPageViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(stackView)
         view.backgroundColor = .wildWanderExtraLightGray
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-        ])
+        constrainSearchBar()
+        constrainStackView()
+        constrainTableView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         didSelectLocation(nil)
         sheetDidDisappear()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchBar.becomeFirstResponder()
     }
     
     //MARK: - Initializer
@@ -85,6 +80,32 @@ class SearchPageViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Methods
+    private func constrainSearchBar() {
+        NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+        ])
+    }
+    
+    private func constrainStackView() {
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+        ])
+    }
+    
+    private func constrainTableView() {
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: stackView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
+        ])
     }
 }
 

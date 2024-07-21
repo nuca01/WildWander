@@ -33,7 +33,9 @@ class ListsTableView: UITableView {
         register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
         
         viewModel.listDidChange = { [weak self] in
-            self?.reloadData()
+            DispatchQueue.main.async {
+                self?.reloadData()
+            }
         }
     }
     
@@ -59,8 +61,8 @@ extension ListsTableView: UITableViewDataSource {
         if indexPath.row == 0 {
             cell.updateCellWith(title: "Create new list")
         } else {
-            let currentList = viewModel.listOf(index: indexPath.row)
-            cell.updateCellWith(title: currentList.name ?? "", trailCount: currentList.id)
+            let currentList = viewModel.listOf(index: indexPath.row - 1)
+            cell.updateCellWith(title: currentList.name ?? "", trailCount: currentList.savedTrailCount)
         }
         return cell
     }
@@ -73,7 +75,7 @@ extension ListsTableView: UITableViewDelegate {
         if indexPath.row == 0 {
             didTapOnCreateNewList?()
         } else {
-            let listId = viewModel.listOf(index: indexPath.row).id
+            let listId = viewModel.listOf(index: indexPath.row - 1).id
             didTapOnListWithId?(listId)
         }
     }

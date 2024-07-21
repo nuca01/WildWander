@@ -67,12 +67,22 @@ class TrailsCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(UIAction { [weak self] _ in
             guard let self else { return }
-            if button.imageView?.image === UIImage.saveTrail {
-                button.setImage(.trailSaved, for: .normal)
-                didTapSave?(willSave)
+            if viewModel.isSignedIn {
+                if button.imageView?.image === UIImage.saveTrail {
+                    button.setImage(.trailSaved, for: .normal)
+                    didTapSave?(willSave)
+                } else {
+                    button.setImage(.saveTrail, for: .normal)
+                    willSave(nil, nil, nil)
+                }
             } else {
-                button.setImage(.saveTrail, for: .normal)
-                willSave(nil, nil, nil)
+                errorDidHappen?(
+                    "You are not signed in",
+                    "Please sign in to be able to save trails",
+                    nil,
+                    "Understood",
+                    nil
+                )
             }
         }, for: .touchUpInside)
         
@@ -126,6 +136,8 @@ class TrailsCell: UITableViewCell {
     private var willSave: ((_: String?, _: String?, _: Int?) -> Void) = { _, _, _ in
         
     }
+    
+    private var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     
     //MARK: - Initilizers
     required init?(coder: NSCoder) {
@@ -222,7 +234,8 @@ class TrailsCell: UITableViewCell {
         difficulty: String,
         length: Double,
         isSaved: Bool,
-        didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
+        didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?,
+        errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     ) {
         self.didTapSave = didTapSave
         
@@ -233,7 +246,10 @@ class TrailsCell: UITableViewCell {
                 savedListId: savedListId,
                 trailId: trailID
             ))
+            print(trailTitle)
         }
+        
+        self.errorDidHappen = errorDidHappen
         
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
