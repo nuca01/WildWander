@@ -31,6 +31,8 @@ class TrailsView: UIViewController {
     }()
     
     var didTapOnCell: ((_: Trail) -> Void)?
+    //closure accepts another closure willSave(name, description, savedListId) -> Void and returns Void
+    var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +96,9 @@ extension TrailsView: UITableViewDataSource {
             address: currentTrail.address ?? "",
             rating: currentTrail.rating ?? 0.0,
             difficulty: currentTrail.difficulty ?? "",
-            length: currentTrail.length ?? 0.0
+            length: currentTrail.length ?? 0.0,
+            isSaved: currentTrail.isSaved ?? false, 
+            didTapSave: didTapSave
         )
         return cell
     }

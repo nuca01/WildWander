@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let firstViewController = ExplorePageViewController()
         let secondViewController = NavigatePageViewController()
         let thirdViewController = SavedPageViewController()
+        let fourthViewController = ProfilePageViewController()
         
         firstViewController.tabBarItem = UITabBarItem(
             title: "Explore",
@@ -34,11 +35,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         thirdViewController.tabBarItem = UITabBarItem(
             title: "Profile",
+            image: UIImage(systemName: "bookmark"),
+            selectedImage: UIImage(systemName: "bookmark.fill")
+        )
+        
+        fourthViewController.tabBarItem = UITabBarItem(
+            title: "Profile",
             image: UIImage(systemName: "person"),
             selectedImage: UIImage(systemName: "person.fill")
         )
         
-        tabBarController.viewControllers = [firstViewController, secondViewController, thirdViewController]
+        tabBarController.viewControllers = [
+            firstViewController,
+            secondViewController,
+            thirdViewController,
+            fourthViewController
+        ]
+        
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }

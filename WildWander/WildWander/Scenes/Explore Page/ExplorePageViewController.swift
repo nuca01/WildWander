@@ -21,6 +21,16 @@ class ExplorePageViewController: UIViewController {
         return mapView
     }()
     
+//    private func showLocationDisabledAlert() {
+//        let locationDisabledAlert = WildWanderAlertView(
+//            title: "share your location",
+//            message: "in order to access your location you need to grant app the location permission",
+//            dismissButtonTitle: "Maybe Later"
+//        )
+//        
+//        locationDisabledAlert.show(in: self)
+//    }
+    
     private lazy var trailsView: TrailsView = {
         let trailsViewViewModel = TrailsViewViewModel()
         viewModel.trailsDidChange = {[weak self] trails in
@@ -41,6 +51,8 @@ class ExplorePageViewController: UIViewController {
             
         }
         
+        configureDidTapSave(for: trailsView)
+        
         return trailsView
     }()
     
@@ -59,7 +71,7 @@ class ExplorePageViewController: UIViewController {
     } didSelectLocation: { [weak self] location in
         guard let self else { return }
         
-        if let presentedViewController = presentedViewController {
+        if let presentedViewController {
             presentedViewController.dismiss(animated: true)
         }
         
@@ -125,6 +137,70 @@ class ExplorePageViewController: UIViewController {
         viewModel.getTrailsWith(bounds: bounds)
     }
     
+    private func configureDidTapSave(for trailsView: TrailsView) {
+        trailsView.didTapSave = { [weak self] willSave in
+            guard let self else { return }
+            let listsTableView = configureListsTableView(for: trailsView)
+            
+            configureDidTapOnCreateNewList(for: listsTableView)
+            
+            configureDidTapOnListWithId(
+                for: listsTableView,
+                with: willSave
+            )
+            
+            present(listsTableView)
+        }
+    }
+    
+    private func configureListsTableView(for trailsView: TrailsView) -> ListsTableView {
+        let listsTableViewModel = ListsTableViewModel()
+        listsTableViewModel.getSavedLists()
+        
+        return ListsTableView(viewModel: listsTableViewModel)
+    }
+    
+    private func configureDidTapOnCreateNewList(for listsTableView: ListsTableView) {
+        listsTableView.didTapOnCreateNewList = { [weak self] in
+            if let presentedViewController = self?.presentedViewController {
+                DispatchQueue.main.async {
+                    presentedViewController.dismiss(animated: true)
+                    
+                }
+            }
+        }
+    }
+    
+    private func configureDidTapOnListWithId(
+        for listsTableView: ListsTableView,
+        with willSave: @escaping (String?, String?, Int?) -> Void
+    ) {
+        listsTableView.didTapOnListWithId = { [weak self] id in
+            guard let self else { return }
+            if let presentedViewController {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    presentedViewController.dismiss(animated: true)
+                    willSave(nil, nil, id)
+                    self.presentConstantView()
+                    self.viewModel.getTrailsWith(bounds: self.mapBounds)
+                }
+            }
+        }
+    }
+    
+    private func present(_ listsTableView: ListsTableView) {
+        let controller = UITableViewController()
+        controller.tableView = listsTableView
+        
+        if let presentedViewController {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                presentedViewController.dismiss(animated: true)
+                present(controller, animated: true)
+            }
+        }
+    }
 }
 
 //MARK: - ExplorePageViewController
@@ -140,7 +216,7 @@ extension ExplorePageViewController: WildWanderMapViewDelegate {
 //MARK: - ExplorePageViewController
 extension ExplorePageViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if let presentedViewController = presentedViewController {
+        if let presentedViewController {
             presentedViewController.dismiss(animated: true) { [weak self] in
                 self?.presentSearchPage()
             }

@@ -17,6 +17,8 @@
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
 		876A7A792C3468120022B85E /* MapboxNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A782C3468120022B85E /* MapboxNavigation */; };
 		876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */; };
+		8776E01E2C4D42A1007D4F95 /* TrailsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */; };
+		8776E0222C4D45FF007D4F95 /* SaveTrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E0212C4D45FF007D4F95 /* SaveTrail.swift */; };
 		87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DD72C42F8CE00B439E7 /* Bounds.swift */; };
 		87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */; };
 		87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */; };
@@ -80,6 +82,8 @@
 		871C852C2C332FE000F20612 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
+		8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsCellViewModel.swift; sourceTree = "<group>"; };
+		8776E0212C4D45FF007D4F95 /* SaveTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTrail.swift; sourceTree = "<group>"; };
 		87876DD72C42F8CE00B439E7 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSheetPresentationController.swift; sourceTree = "<group>"; };
 		87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetPresentationController.Detent.swift; sourceTree = "<group>"; };
@@ -324,6 +328,24 @@
 			path = "Saved Page";
 			sourceTree = "<group>";
 		};
+		8776E01F2C4D42B3007D4F95 /* Trails Cell */ = {
+			isa = PBXGroup;
+			children = (
+				87F0ED962C4283350092A756 /* TrailsCell.swift */,
+				8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */,
+			);
+			path = "Trails Cell";
+			sourceTree = "<group>";
+		};
+		8776E0202C4D42C5007D4F95 /* Trails View */ = {
+			isa = PBXGroup;
+			children = (
+				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
+				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
+			);
+			path = "Trails View";
+			sourceTree = "<group>";
+		};
 		87876DE22C4433B500B439E7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,9 +383,8 @@
 		87876E0A2C47077C00B439E7 /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
-				87F0ED962C4283350092A756 /* TrailsCell.swift */,
-				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
-				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
+				8776E0202C4D42C5007D4F95 /* Trails View */,
+				8776E01F2C4D42B3007D4F95 /* Trails Cell */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -465,6 +486,7 @@
 				87876E2A2C4C161F00B439E7 /* EmailValidation.swift */,
 				87876E2C2C4C4B5200B439E7 /* Token.swift */,
 				87B8D0792C4C95D2006858EE /* SavedList.swift */,
+				8776E0212C4D45FF007D4F95 /* SaveTrail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -597,11 +619,13 @@
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,
 				87876E2B2C4C161F00B439E7 /* EmailValidation.swift in Sources */,
+				8776E0222C4D45FF007D4F95 /* SaveTrail.swift in Sources */,
 				87F0ED972C4283350092A756 /* TrailsCell.swift in Sources */,
 				87F0ED952C41FFE30092A756 /* TrailsViewViewModel.swift in Sources */,
 				87B8D07A2C4C95D2006858EE /* SavedList.swift in Sources */,
 				87876DDF2C4335B000B439E7 /* UISheetPresentationController.Detent.Identifier.swift in Sources */,
 				87876E272C4B52A000B439E7 /* InformationEntryViewModel.swift in Sources */,
+				8776E01E2C4D42A1007D4F95 /* TrailsCellViewModel.swift in Sources */,
 				87876E1A2C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift in Sources */,
 				871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */,
 			);
