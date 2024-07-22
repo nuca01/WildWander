@@ -64,7 +64,7 @@ class SavedPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if viewModel.isUserLoggedIn {
+        if viewModel.userLoggedIn {
             listsTableView.isHidden = false
             listsTableViewModel.getSavedLists()
         } else {

@@ -13,7 +13,7 @@ class SavedPageViewModel {
         KeychainHelper.retrieveToken(forKey: "authorizationToken")
     }
     
-    var isUserLoggedIn: Bool {
+    var userLoggedIn: Bool {
         token == nil ? false: true
     }
     
