@@ -10,13 +10,11 @@ import NetworkingService
 
 class ListsTableViewModel {
     private var savedLists: [SavedList] = []
-    private var endPointCreator = {
-        let token = KeychainHelper.retrieveToken(forKey: "authorizationToken")
-        
-        let endPointCreator = EndPointCreator(path: "/api/trail/GetSavedLists", method: "GET", accessToken: token ?? "")
-        
-        return endPointCreator
-    }()
+    private var token: String? {
+        KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
+    
+    private lazy var endPointCreator = EndPointCreator(path: "/api/trail/GetSavedLists", method: "GET", accessToken: token ?? "")
     
     var listsCount: Int {
         savedLists.count
@@ -31,6 +29,7 @@ class ListsTableViewModel {
     func getSavedLists() {
         endPointCreator.path = "/api/trail/GetSavedLists"
         endPointCreator.method = "GET"
+        endPointCreator.changeAccessToken(accessToken: token)
         
         NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<AllSavedList, NetworkError>) in
             guard let self else { return }
@@ -52,6 +51,7 @@ class ListsTableViewModel {
         
         endPointCreator.path = "/api/trail/DeleteList/\(id)"
         endPointCreator.method = "POST"
+        endPointCreator.changeAccessToken(accessToken: token)
         
         NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
             guard let self else { return }

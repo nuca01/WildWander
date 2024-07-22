@@ -8,7 +8,7 @@
 import Foundation
 import NetworkingService
 
-struct EndPointCreator: EndPoint {
+class EndPointCreator: EndPoint {
     //MARK: - Properties
     var pathParams: [String : String]?
     
@@ -35,7 +35,7 @@ struct EndPointCreator: EndPoint {
     
     var host: String
     
-    private let accessToken: String?
+    private var accessToken: String?
     
     //MARK: - Intializer
     init(
@@ -44,7 +44,7 @@ struct EndPointCreator: EndPoint {
         path: String,
         queryItems: [URLQueryItem]? = nil,
         method: String,
-        body: Data? = nil,
+        body: Encodable? = nil,
         accessToken: String
     ) {
         self.host = host
@@ -53,6 +53,11 @@ struct EndPointCreator: EndPoint {
         self.queryItems = queryItems
         self.method = method
         self.body = body
+        self.accessToken = accessToken
+    }
+    
+    //MARK: - Methods
+    func changeAccessToken(accessToken: String?) {
         self.accessToken = accessToken
     }
 }

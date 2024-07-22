@@ -11,9 +11,12 @@ import NetworkingService
 class ExplorePageViewModel {
     private var trails: [Trail] = []
     
-    private lazy var token = KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    private var token: String? {
+        KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
     
     private lazy var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: token ?? "")
+    
     var trailsDidChange: ((_: [Trail]) -> Void)?
     
     init(currentBounds: Bounds) {
@@ -49,5 +52,9 @@ class ExplorePageViewModel {
                 print("Error: \(error)")
             }
         }
+    }
+    
+    func updateLogInStatus() {
+        endPointCreator.changeAccessToken(accessToken: token)
     }
 }

@@ -11,6 +11,7 @@ import CoreLocation
 import SwiftUI
 
 class ExplorePageViewController: UIViewController {
+    //MARK: - Properties
     internal lazy var mapView: WildWanderMapView = {
         let mapView = WildWanderMapView(frame: CGRect(
             x: 0,
@@ -91,7 +92,7 @@ class ExplorePageViewController: UIViewController {
         mapView.visibleBounds
     }
 
-    
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -125,6 +126,12 @@ class ExplorePageViewController: UIViewController {
         didChangeMapBounds(to: mapBounds)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.updateLogInStatus()
+    }
+    
+    //MARK: - Methods
     private func configureSheetNavigationController() {
         sheetNavigationController = UINavigationController(rootViewController: trailsView)
         

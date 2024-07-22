@@ -9,9 +9,9 @@ import Foundation
 import NetworkingService
 
 class SavedPageViewModel {
-    private lazy var token = KeychainHelper.retrieveToken(forKey: "authorizationToken")
-    
-    private lazy var endPointCreator = EndPointCreator(path: "/api/Trail/AddList", method: "POST", accessToken: token ?? "")
+    private var token: String? {
+        KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
     
     var isUserLoggedIn: Bool {
         token == nil ? false: true
@@ -24,11 +24,14 @@ class SavedPageViewModel {
     var trailsDidChange: ((_: [Trail]) -> Void)?
     
     func createList(createListModel: CreateList) {
-        endPointCreator.path = "/api/Trail/AddList"
-        endPointCreator.method = "POST"
-        endPointCreator.body = createListModel
+        let endPoint = getEndPointCreator(
+            path: "/api/Trail/AddList",
+            method: "POST",
+            body: createListModel,
+            queryItems: nil
+        )
         
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
+        NetworkingService.shared.sendRequest(endpoint: endPoint) { [weak self] (result: Result<Bool, NetworkError>) in
             switch result {
             case .success(_): 
                 self?.onTrailCreated?()
@@ -48,20 +51,23 @@ class SavedPageViewModel {
         }
     }
     
-    private func configureEndPointCreatorForGet(listId: Int) {
+    private func configureEndPointCreatorForGet(listId: Int) -> EndPointCreator {
         let queryItems = [
             URLQueryItem(name: "SavedListId", value: "\(listId)")
         ]
-        endPointCreator.path = "/api/trail/gettrails"
-        endPointCreator.method = "GET"
-        endPointCreator.body = nil
-        endPointCreator.queryItems = queryItems
+        
+        return getEndPointCreator(
+            path: "/api/trail/gettrails",
+            method: "GET",
+            body: nil,
+            queryItems: queryItems
+        )
     }
     
     func getTrails(listId: Int) {
-        configureEndPointCreatorForGet(listId: listId)
+        let endPoint = configureEndPointCreatorForGet(listId: listId)
         
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<TrailContainer, NetworkError>) in
+        NetworkingService.shared.sendRequest(endpoint: endPoint) { [weak self] (result: Result<TrailContainer, NetworkError>) in
             guard let self else { return }
             
             switch result {
@@ -72,5 +78,14 @@ class SavedPageViewModel {
                 print("Error: \(error)")
             }
         }
+    }
+    
+    private func getEndPointCreator(
+        path: String,
+        method: String,
+        body: Encodable?,
+        queryItems: [URLQueryItem]?
+    ) -> EndPointCreator {
+        EndPointCreator(path: path, queryItems: queryItems, method: method, body: body, accessToken: token ?? "")
     }
 }

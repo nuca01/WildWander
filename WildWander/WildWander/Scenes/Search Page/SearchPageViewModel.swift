@@ -7,6 +7,7 @@
 
 import Foundation
 import NetworkingService
+
 class SearchPageViewModel {
     //MARK: - Properties
     private var locations: [Location] = []
