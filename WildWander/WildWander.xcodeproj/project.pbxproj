@@ -248,7 +248,6 @@
 			children = (
 				871C85222C332FDE00F20612 /* ExplorePageViewController.swift */,
 				87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */,
-				87876E0A2C47077C00B439E7 /* Helper Views */,
 				87876E042C46BC7E00B439E7 /* Extensions */,
 			);
 			path = "Explore Page";
@@ -276,6 +275,7 @@
 		876A7A622C3364740022B85E /* Reusable Components */ = {
 			isa = PBXGroup;
 			children = (
+				8776E0202C4D42C5007D4F95 /* Trails View */,
 				87F0ED842C3F3EB40092A756 /* WildWanderMap */,
 				87BF718B2C3C2EC800D120C0 /* SearchBarView.swift */,
 				87BF718F2C3C576400D120C0 /* ImageCarouselView.swift */,
@@ -349,6 +349,7 @@
 		8776E0202C4D42C5007D4F95 /* Trails View */ = {
 			isa = PBXGroup;
 			children = (
+				8776E01F2C4D42B3007D4F95 /* Trails Cell */,
 				87F0ED922C41FC2B0092A756 /* TrailsView.swift */,
 				87F0ED942C41FFE30092A756 /* TrailsViewViewModel.swift */,
 			);
@@ -387,15 +388,6 @@
 				87876E052C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		87876E0A2C47077C00B439E7 /* Helper Views */ = {
-			isa = PBXGroup;
-			children = (
-				8776E0202C4D42C5007D4F95 /* Trails View */,
-				8776E01F2C4D42B3007D4F95 /* Trails Cell */,
-			);
-			path = "Helper Views";
 			sourceTree = "<group>";
 		};
 		87876E0B2C4708C700B439E7 /* Helper Views */ = {

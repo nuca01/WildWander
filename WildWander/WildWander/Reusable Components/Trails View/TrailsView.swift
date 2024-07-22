@@ -8,6 +8,7 @@
 import UIKit
 
 class TrailsView: UIViewController {
+    //MARK: - Properties
     private var viewModel: TrailsViewViewModel
     
     lazy var trailsTableView: UITableView = {
@@ -37,12 +38,14 @@ class TrailsView: UIViewController {
     
     var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     
+    //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureNewsTableView()
+        configureTrailsTableView()
     }
     
+    //MARK: - Initializers
     init(viewModel: TrailsViewViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -59,19 +62,24 @@ class TrailsView: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureNewsTableView() {
+    //MARK: - Methods
+    private func configureTrailsTableView() {
         view.addSubview(trailsTableView)
         
+        constrainTrailsTableView()
+        
+        trailsTableView.register(TrailsCell.self, forCellReuseIdentifier: TrailsCell.identifier)
+        
+        trailsTableView.separatorStyle = .none
+    }
+    
+    private func constrainTrailsTableView() {
         NSLayoutConstraint.activate([
             trailsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             trailsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         ])
-        
-        trailsTableView.register(TrailsCell.self, forCellReuseIdentifier: TrailsCell.identifier)
-        
-        trailsTableView.separatorStyle = .none
     }
 }
 
