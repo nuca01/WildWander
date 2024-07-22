@@ -250,7 +250,6 @@ class TrailsCell: UITableViewCell {
                 savedListId: savedListId,
                 trailId: trailID
             ))
-            print(trailTitle)
         }
         
         self.errorDidHappen = errorDidHappen

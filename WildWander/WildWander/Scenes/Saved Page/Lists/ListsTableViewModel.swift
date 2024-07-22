@@ -31,7 +31,6 @@ class ListsTableViewModel {
     func getSavedLists() {
         endPointCreator.path = "/api/trail/GetSavedLists"
         endPointCreator.method = "GET"
-        endPointCreator.pathParams = nil
         
         NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<AllSavedList, NetworkError>) in
             guard let self else { return }
@@ -51,11 +50,10 @@ class ListsTableViewModel {
         
         savedLists.remove(at: index)
         
-        endPointCreator.path = "/api/trail/DeleteList"
+        endPointCreator.path = "/api/trail/DeleteList/\(id)"
         endPointCreator.method = "POST"
-        endPointCreator.pathParams = ["listId": "\(id)"]
         
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Int, NetworkError>) in
+        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
             guard let self else { return }
             
             switch result {
@@ -66,7 +64,8 @@ class ListsTableViewModel {
                 switch error {
                 case .unknown:
                     message = "unknown error has occurred"
-                case .decode: break
+                case .decode:
+                    message = "decode error has occured"
                 case .invalidURL:
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):

@@ -117,6 +117,7 @@ class ExplorePageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         presentConstantView()
+        didChangeMapBounds(to: mapBounds)
     }
     
     override func viewWillLayoutSubviews() {
