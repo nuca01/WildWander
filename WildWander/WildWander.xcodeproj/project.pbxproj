@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		87069EF32C4EF19700F403DA /* ProfilePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF22C4EF19700F403DA /* ProfilePageView.swift */; };
+		87069EF52C4EF28100F403DA /* ProfilePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF42C4EF28100F403DA /* ProfilePageViewModel.swift */; };
+		87069EF72C4EF37400F403DA /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF62C4EF37400F403DA /* UserDetails.swift */; };
 		8707C4DA2C4DCCB4009AA794 /* CreateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4D92C4DCCB4009AA794 /* CreateList.swift */; };
 		8707C4DC2C4DD863009AA794 /* BoolResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4DB2C4DD863009AA794 /* BoolResult.swift */; };
 		871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C851E2C332FDE00F20612 /* AppDelegate.swift */; };
@@ -77,6 +80,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		87069EF22C4EF19700F403DA /* ProfilePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageView.swift; sourceTree = "<group>"; };
+		87069EF42C4EF28100F403DA /* ProfilePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewModel.swift; sourceTree = "<group>"; };
+		87069EF62C4EF37400F403DA /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		8707C4D92C4DCCB4009AA794 /* CreateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateList.swift; sourceTree = "<group>"; };
 		8707C4DB2C4DD863009AA794 /* BoolResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolResult.swift; sourceTree = "<group>"; };
 		871C851B2C332FDE00F20612 /* WildWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,6 +322,8 @@
 			isa = PBXGroup;
 			children = (
 				87876E122C4ADB3900B439E7 /* ProfilePageViewController.swift */,
+				87069EF22C4EF19700F403DA /* ProfilePageView.swift */,
+				87069EF42C4EF28100F403DA /* ProfilePageViewModel.swift */,
 			);
 			path = "Profile Page";
 			sourceTree = "<group>";
@@ -491,6 +499,7 @@
 				8776E0212C4D45FF007D4F95 /* SaveTrail.swift */,
 				8707C4D92C4DCCB4009AA794 /* CreateList.swift */,
 				8707C4DB2C4DD863009AA794 /* BoolResult.swift */,
+				87069EF62C4EF37400F403DA /* UserDetails.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -587,7 +596,9 @@
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
 				87876E242C4B3E8600B439E7 /* InformationEntryViewController.swift in Sources */,
 				87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
+				87069EF32C4EF19700F403DA /* ProfilePageView.swift in Sources */,
 				87876E2F2C4C57E500B439E7 /* LogInPageViewModel.swift in Sources */,
+				87069EF52C4EF28100F403DA /* ProfilePageViewModel.swift in Sources */,
 				87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */,
 				87F0ED832C3F3E650092A756 /* WildWanderMapViewModel.swift in Sources */,
 				87876E222C4B321800B439E7 /* KeychainHelper.swift in Sources */,
@@ -601,6 +612,7 @@
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
 				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
 				87876E1F2C4B2ABF00B439E7 /* CodeEntryViewModel.swift in Sources */,
+				87069EF72C4EF37400F403DA /* UserDetails.swift in Sources */,
 				87876E1D2C4B1DCF00B439E7 /* CodeEntryViewController.swift in Sources */,
 				87B8D0782C4C903D006858EE /* ListsTableViewModel.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
