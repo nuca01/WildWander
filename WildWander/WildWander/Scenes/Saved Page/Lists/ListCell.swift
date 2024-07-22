@@ -16,7 +16,8 @@ class ListCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -105,6 +106,8 @@ class ListCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        cellImageView.contentMode = .scaleAspectFit
+        cellImageView.image = nil
         titleAndCountStackView.addArrangedSubview(trailCountLabel)
         titleLabel.textColor = .black
     }
@@ -112,10 +115,16 @@ class ListCell: UITableViewCell {
     //MARK: - Methods
     func updateCellWith(
         title: String,
-        trailCount: Int
-    ) {            
+        trailCount: Int,
+        imageUrl: URL?
+    ) {
         titleLabel.text = title
-        cellImageView.image = UIImage(named: "savedList")
+        if let imageUrl {
+            cellImageView.load(url: imageUrl)
+        } else {
+            cellImageView.image = UIImage(named: "savedList")
+        }
+        cellImageView.contentMode = .scaleToFill
         trailCountLabel.text = "\(trailCount) trails"
     }
     

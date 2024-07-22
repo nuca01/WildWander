@@ -9,7 +9,7 @@ import UIKit
 
 class ProfilePageViewController: UIViewController {
     private lazy var sheetNavigationController: UINavigationController = {
-        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController())
+        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController(explanationLabelText: "Sign in to access your profile"))
         
         sheetNavigationController.modalPresentationStyle = .custom
         sheetNavigationController.transitioningDelegate = self
