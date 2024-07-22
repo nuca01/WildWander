@@ -79,4 +79,21 @@ extension ListsTableView: UITableViewDelegate {
             didTapOnListWithId?(listId)
         }
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.row != 0 {
+            return .delete
+        } else {
+            return .none
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if indexPath.row != 0 {
+            beginUpdates()
+            viewModel.deleteList(index: indexPath.row - 1)
+            deleteRows(at: [indexPath], with: .fade)
+            endUpdates()
+        }
+    }
 }
