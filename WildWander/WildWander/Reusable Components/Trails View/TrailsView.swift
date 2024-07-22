@@ -27,9 +27,14 @@ class TrailsView: UIViewController {
         label.text = " Trails: \(viewModel.trailCount)"
         label.textColor = .wildWanderGreen
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         label.font = .systemFont(ofSize: 30)
         return label
     }()
+    
+    private var topAnchorConstantOfTableView: CGFloat
+    
+    private var headerLabelLeadingConstraint: NSLayoutConstraint?
     
     var didTapOnCell: ((_: Trail) -> Void)?
     
@@ -42,13 +47,17 @@ class TrailsView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        configureHeaderLabel()
         configureTrailsTableView()
     }
     
     //MARK: - Initializers
     init(viewModel: TrailsViewViewModel) {
         self.viewModel = viewModel
+        self.topAnchorConstantOfTableView = -40
+        
         super.init(nibName: nil, bundle: nil)
+        
         viewModel.trailsDidChange = { [weak self] in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -58,11 +67,36 @@ class TrailsView: UIViewController {
         }
     }
     
+    init(viewModel: TrailsViewViewModel, name: String, description: String?) {
+        self.viewModel = viewModel
+        self.topAnchorConstantOfTableView = 0
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        viewModel.trailsDidChange = { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.trailsTableView.reloadData()
+            }
+        }
+        headerLabelLeadingConstraint = headerLabel.leadingAnchor.constraint(equalTo: trailsTableView.leadingAnchor, constant: 20)
+        
+        changeHeaderLabel(name: name, description: description)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - Methods
+    private func configureHeaderLabel() {
+        if let headerLabelLeadingConstraint {
+            NSLayoutConstraint.activate([
+                headerLabelLeadingConstraint,
+                headerLabel.widthAnchor.constraint(equalToConstant: view.bounds.width - 40)
+            ])
+        }
+    }
     private func configureTrailsTableView() {
         view.addSubview(trailsTableView)
         
@@ -75,11 +109,54 @@ class TrailsView: UIViewController {
     
     private func constrainTrailsTableView() {
         NSLayoutConstraint.activate([
-            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: topAnchorConstantOfTableView),
             trailsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         ])
+    }
+    
+    func changeHeaderLabel(name: String, description: String?) {
+        
+        let combinedAttributedString = NSMutableAttributedString()
+        
+        add(name: name, to: combinedAttributedString)
+        
+        if let description {
+           add(description, to: combinedAttributedString)
+        }
+        
+        combinedAttributedString.append(NSAttributedString(string: "\n"))
+        
+        headerLabel.numberOfLines = 0
+        headerLabel.attributedText = combinedAttributedString
+    }
+    
+    func add(name: String, to combinedAttributedString: NSMutableAttributedString) {
+        let nameAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 24, weight: .bold),
+            .foregroundColor: UIColor.black
+        ]
+        
+        let attributedName = NSAttributedString(string: name, attributes: nameAttributes)
+        combinedAttributedString.append(attributedName)
+    }
+    
+    func add(_ description: String, to combinedAttributedString: NSMutableAttributedString) {
+        let descriptionAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 14, weight: .regular),
+            .foregroundColor: UIColor.gray
+        ]
+        let attributedDescription = NSAttributedString(string: "\n\(description)", attributes: descriptionAttributes)
+        combinedAttributedString.append(attributedDescription)
+    }
+    
+    private func updateHeaderLabelFrame() {
+        headerLabel.sizeToFit()
+        headerLabel.layoutIfNeeded()
+        let headerSize = headerLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        headerLabel.frame = CGRect(origin: .zero, size: headerSize)
+        trailsTableView.tableHeaderView = headerLabel
     }
 }
 

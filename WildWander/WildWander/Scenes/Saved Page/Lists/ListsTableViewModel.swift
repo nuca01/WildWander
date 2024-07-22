@@ -75,4 +75,8 @@ class ListsTableViewModel {
             }
         }
     }
+    
+    func generateURL(from string: String) -> URL? {
+        return URL(string: string)
+    }
 }

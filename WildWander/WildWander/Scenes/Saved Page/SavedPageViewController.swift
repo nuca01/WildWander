@@ -24,7 +24,7 @@ class SavedPageViewController: UIViewController {
         viewModel.onTrailCreated = { self.listsTableViewModel.getSavedLists() }
         
         listsTableView.didTapOnCreateNewList = configureDidTapOnCreateNewList()
-        listsTableView.didTapOnListWithId = { [weak self] id in
+        listsTableView.didTapOnList = { [weak self] (id, name, description) in
             var trailsViewModel = TrailsViewViewModel()
             self?.viewModel.trailsDidChange = { trails in
                 trailsViewModel.changeTrails(to: trails)
@@ -32,7 +32,7 @@ class SavedPageViewController: UIViewController {
             self?.viewModel.getTrails(listId: id)
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                let trailsView = TrailsView(viewModel: trailsViewModel)
+                let trailsView = TrailsView(viewModel: trailsViewModel, name: name, description: description)
                 navigationController?.pushViewController(trailsView, animated: true)
             }
         }

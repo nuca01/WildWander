@@ -11,17 +11,17 @@ class ListsTableView: UITableView {
     //MARK: - Properties
     var viewModel: ListsTableViewModel
     var didTapOnCreateNewList: (() -> Void)?
-    var didTapOnListWithId: ((_: Int) -> Void)?
+    var didTapOnList: ((_: Int, _: String, _: String?) -> Void)?
     
     //MARK: - Initializers
     init(
         viewModel: ListsTableViewModel,
         didTapOnCreateNewList: ( () -> Void)? = nil,
-        didTapOnListWithId: ( (_: Int) -> Void)? = nil
+        didTapOnListWithId: ((_: Int, _: String, _: String?) -> Void)? = nil
     ) {
         self.viewModel = viewModel
         self.didTapOnCreateNewList = didTapOnCreateNewList
-        self.didTapOnListWithId = didTapOnListWithId
+        self.didTapOnList = didTapOnListWithId
         
         super.init(frame: .zero, style: .plain)
         
@@ -62,7 +62,11 @@ extension ListsTableView: UITableViewDataSource {
             cell.updateCellAsCreateAList()
         } else {
             let currentList = viewModel.listOf(index: indexPath.row - 1)
-            cell.updateCellWith(title: currentList.name ?? "", trailCount: currentList.savedTrailCount ?? 0)
+            cell.updateCellWith(
+                title: currentList.name ?? "",
+                trailCount: currentList.savedTrailCount ?? 0,
+                imageUrl: viewModel.generateURL(from: currentList.imageUrl ?? "")
+            )
         }
         return cell
     }
@@ -75,8 +79,9 @@ extension ListsTableView: UITableViewDelegate {
         if indexPath.row == 0 {
             didTapOnCreateNewList?()
         } else {
+            let list = viewModel.listOf(index: indexPath.row - 1)
             let listId = viewModel.listOf(index: indexPath.row - 1).id
-            didTapOnListWithId?(listId)
+            didTapOnList?(list.id, list.name ?? "name unavailable", list.description)
         }
     }
     

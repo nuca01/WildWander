@@ -189,7 +189,7 @@ class ExplorePageViewController: UIViewController {
         for listsTableView: ListsTableView,
         with willSave: @escaping (String?, String?, Int?) -> Void
     ) {
-        listsTableView.didTapOnListWithId = { [weak self] id in
+        listsTableView.didTapOnList = { [weak self] (id, _, _) in
             guard let self else { return }
             if let presentedViewController {
                 DispatchQueue.main.async { [weak self] in

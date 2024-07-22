@@ -12,6 +12,7 @@ class SavedList: Decodable {
     var name: String?
     var description: String?
     var savedTrailCount: Int?
+    var imageUrl: String?
 }
 
 class AllSavedList: Decodable {
