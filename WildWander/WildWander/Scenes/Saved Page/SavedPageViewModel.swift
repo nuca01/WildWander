@@ -13,6 +13,10 @@ class SavedPageViewModel {
     
     private lazy var endPointCreator = EndPointCreator(path: "/api/Trail/AddList", method: "POST", accessToken: token ?? "")
     
+    var isUserLoggedIn: Bool {
+        token == nil ? false: true
+    }
+    
     var onTrailCreated: (() -> Void)?
     
     private var trails: [Trail] = []

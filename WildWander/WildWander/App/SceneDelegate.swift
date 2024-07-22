@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
         
         thirdViewController.tabBarItem = UITabBarItem(
-            title: "Profile",
+            title: "Saved",
             image: UIImage(systemName: "bookmark"),
             selectedImage: UIImage(systemName: "bookmark.fill")
         )

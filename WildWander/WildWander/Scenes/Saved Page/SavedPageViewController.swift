@@ -40,13 +40,23 @@ class SavedPageViewController: UIViewController {
         return listsTableView
     }()
     
+    private lazy var sheetNavigationController: UINavigationController = {
+        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController(explanationLabelText: "Sign in to save trails"))
+        
+        sheetNavigationController.modalPresentationStyle = .custom
+        sheetNavigationController.transitioningDelegate = self
+        sheetNavigationController.isModalInPresentation = true
+        
+        return sheetNavigationController
+    }()
+    
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(listsTableView)
         view.backgroundColor = .white
         constrainListsTableView()
-        
         DispatchQueue.main.async { [weak self] in
             self?.listsTableView.reloadData()
         }
@@ -54,7 +64,19 @@ class SavedPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        listsTableViewModel.getSavedLists()
+        if viewModel.isUserLoggedIn {
+            listsTableViewModel.getSavedLists()
+        } else {
+            listsTableView.isHidden = true
+            present(sheetNavigationController, animated: true)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
     }
 
     //MARK: - Methods
@@ -69,8 +91,7 @@ class SavedPageViewController: UIViewController {
     
     private func configureDidTapOnCreateNewList() -> (() -> Void) {
         { [weak self] in
-            
-            var createAListView = CreateAListView() { [weak self] (name, description) in
+            let createAListView = CreateAListView() { [weak self] (name, description) in
                 self?.viewModel.createList(createListModel: CreateList(name: name, description: description))
                 
                 self?.dismissCreateAListView()
@@ -93,5 +114,20 @@ class SavedPageViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             self?.present(controller, animated: true)
         }
+    }
+}
+
+extension SavedPageViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)
+        tabSheetPresentationController.detents = [
+            .large()
+        ]
+        tabSheetPresentationController.largestUndimmedDetentIdentifier = .large
+        tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+        tabSheetPresentationController.selectedDetentIdentifier = .large
+
+        return tabSheetPresentationController
     }
 }
