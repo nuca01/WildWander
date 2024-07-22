@@ -33,7 +33,8 @@ class EmailEntryViewModel {
                     switch error {
                     case .unknown:
                         message = "unknown error has occurred"
-                    case .decode, .invalidURL:
+                    case .decode: break
+                    case .invalidURL:
                         message = "internal error has occurred"
                     case .unexpectedStatusCode(let errorDescription):
                         message = errorDescription

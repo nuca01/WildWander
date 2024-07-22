@@ -10,7 +10,10 @@ import NetworkingService
 
 class ExplorePageViewModel {
     private var trails: [Trail] = []
-    private var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: "")
+    
+    private lazy var token = KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    
+    private lazy var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: token ?? "")
     var trailsDidChange: ((_: [Trail]) -> Void)?
     
     init(currentBounds: Bounds) {

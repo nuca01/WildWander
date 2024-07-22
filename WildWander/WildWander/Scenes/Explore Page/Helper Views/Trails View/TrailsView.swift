@@ -32,10 +32,20 @@ class TrailsView: UIViewController {
     
     var didTapOnCell: ((_: Trail) -> Void)?
     
+    //closure accepts another closure willSave(name, description, savedListId) -> Void and returns Void
+    var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
+    
+    var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNewsTableView()
+    }
+    
+    init(viewModel: TrailsViewViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
         viewModel.trailsDidChange = { [weak self] in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -43,11 +53,6 @@ class TrailsView: UIViewController {
                 self.headerLabel.text = " Trails: \(self.viewModel.trailCount)"
             }
         }
-    }
-    
-    init(viewModel: TrailsViewViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -58,7 +63,7 @@ class TrailsView: UIViewController {
         view.addSubview(trailsTableView)
         
         NSLayoutConstraint.activate([
-            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: -40),
+            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             trailsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
@@ -87,14 +92,18 @@ extension TrailsView: UITableViewDataSource {
         let urls = currentTrail.images?.map({ urlString in
             viewModel.generateURL(from: urlString)
         })
+        
         cell.updateCellWith(
             imageUrls: urls ?? [],
-            trailID: currentTrail.id ?? 0,
+            trailID: currentTrail.id!,
             trailTitle: currentTrail.routeIdentifier ?? "",
             address: currentTrail.address ?? "",
             rating: currentTrail.rating ?? 0.0,
             difficulty: currentTrail.difficulty ?? "",
-            length: currentTrail.length ?? 0.0
+            length: currentTrail.length ?? 0.0,
+            isSaved: currentTrail.isSaved ?? false, 
+            didTapSave: didTapSave, 
+            errorDidHappen: errorDidHappen
         )
         return cell
     }

@@ -8,6 +8,7 @@
 import UIKit
 import MapboxMaps
 import CoreLocation
+import SwiftUI
 
 class ExplorePageViewController: UIViewController {
     internal lazy var mapView: WildWanderMapView = {
@@ -41,6 +42,18 @@ class ExplorePageViewController: UIViewController {
             
         }
         
+        configureDidTapSave(for: trailsView)
+        
+        trailsView.errorDidHappen = { [weak self] (title, message, firstButtonTitle, dismissButtonTitle, onFirstButtonTapped) in
+            self?.showLocationDisabledAlert(
+                title: title,
+                message: message,
+                firstButtonTitle: "djjdj",
+                dismissButtonTitle: dismissButtonTitle) {
+                    
+                }
+        }
+        
         return trailsView
     }()
     
@@ -59,7 +72,7 @@ class ExplorePageViewController: UIViewController {
     } didSelectLocation: { [weak self] location in
         guard let self else { return }
         
-        if let presentedViewController = presentedViewController {
+        if let presentedViewController {
             presentedViewController.dismiss(animated: true)
         }
         
@@ -125,6 +138,99 @@ class ExplorePageViewController: UIViewController {
         viewModel.getTrailsWith(bounds: bounds)
     }
     
+    private func configureDidTapSave(for trailsView: TrailsView) {
+        trailsView.didTapSave = { [weak self] willSave in
+            guard let self else { return }
+            let listsTableView = configureListsTableView(for: trailsView)
+            
+            configureDidTapOnCreateNewList(for: listsTableView, with: willSave)
+            
+            configureDidTapOnListWithId(
+                for: listsTableView,
+                with: willSave
+            )
+            
+            present(listsTableView)
+        }
+    }
+    
+    private func configureListsTableView(for trailsView: TrailsView) -> ListsTableView {
+        let listsTableViewModel = ListsTableViewModel()
+        listsTableViewModel.getSavedLists()
+        
+        return ListsTableView(viewModel: listsTableViewModel)
+    }
+    
+    private func configureDidTapOnCreateNewList(
+        for listsTableView: ListsTableView,
+        with willSave: @escaping (String?, String?, Int?) -> Void
+    ) {
+        listsTableView.didTapOnCreateNewList = { [weak self] in
+            if let presentedViewController = self?.presentedViewController {
+                let createAListView = CreateAListView() { (name, description) in
+                    willSave(name, description, nil)
+                    DispatchQueue.main.async {
+                        self?.presentedViewController?.dismiss(animated: true)
+                        self?.presentConstantView()
+                    }
+                }
+                
+                let controller = UIHostingController(rootView: createAListView)
+                DispatchQueue.main.async {
+                    presentedViewController.dismiss(animated: true)
+                    self?.present(controller, animated: true)
+                }
+            }
+        }
+    }
+    
+    private func configureDidTapOnListWithId(
+        for listsTableView: ListsTableView,
+        with willSave: @escaping (String?, String?, Int?) -> Void
+    ) {
+        listsTableView.didTapOnListWithId = { [weak self] id in
+            guard let self else { return }
+            if let presentedViewController {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    presentedViewController.dismiss(animated: true)
+                    willSave(nil, nil, id)
+                    self.presentConstantView()
+                    self.viewModel.getTrailsWith(bounds: self.mapBounds)
+                }
+            }
+        }
+    }
+    
+    private func showLocationDisabledAlert(
+        title: String,
+        message: String,
+        firstButtonTitle: String?,
+        dismissButtonTitle: String,
+        onFirstButtonTapped: (() -> Void)?
+    ) {
+        let locationDisabledAlert = WildWanderAlertView(
+            title: title,
+            message: message,
+            firstButtonTitle: firstButtonTitle ?? "",
+            dismissButtonTitle: dismissButtonTitle
+        )
+        
+        locationDisabledAlert.show(in: self.view)
+    }
+    
+    private func present(_ listsTableView: ListsTableView) {
+        let controller = UITableViewController()
+        controller.tableView = listsTableView
+        
+        if let presentedViewController {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                presentedViewController.dismiss(animated: true)
+                present(controller, animated: true)
+            }
+        }
+    }
 }
 
 //MARK: - ExplorePageViewController
@@ -140,7 +246,7 @@ extension ExplorePageViewController: WildWanderMapViewDelegate {
 //MARK: - ExplorePageViewController
 extension ExplorePageViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if let presentedViewController = presentedViewController {
+        if let presentedViewController {
             presentedViewController.dismiss(animated: true) { [weak self] in
                 self?.presentSearchPage()
             }

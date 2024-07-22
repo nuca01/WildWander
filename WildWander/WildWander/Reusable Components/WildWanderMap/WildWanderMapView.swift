@@ -25,6 +25,8 @@ final class WildWanderMapView: UIView {
         firstButtonTitle: "Go To Settings",
         dismissButtonTitle: "Maybe Later"
     )
+    
+    
     private lazy var pointAnnotationManager: PointAnnotationManager = {
         let pointAnnotationManager = mapView.mapView.annotations.makePointAnnotationManager()
         
@@ -260,7 +262,7 @@ final class WildWanderMapView: UIView {
         if let routeGeometry {
             coordinates = routeGeometry.decodePolyline() ?? []
         }
-        var polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
+        let polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
         
         
         drawRoute(with: polyLineAnnotationLineString)

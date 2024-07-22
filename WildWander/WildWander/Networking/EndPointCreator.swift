@@ -19,9 +19,16 @@ struct EndPointCreator: EndPoint {
     var method: String
     
     var headers: [String : String]? {
-        [
-            "Content-Type": "application/json"
-        ]
+        if let accessToken, !accessToken.isEmpty {
+            [
+                "Content-Type": "application/json",
+                "Authorization": "Bearer \(accessToken)"
+            ]
+        } else {
+            [
+                "Content-Type": "application/json"
+            ]
+        }
     }
     
     var body: Encodable?
