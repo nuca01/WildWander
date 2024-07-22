@@ -76,8 +76,9 @@ struct CreateAListView: View {
         .foregroundStyle(.white)
         .frame(maxWidth: .infinity)
         .frame(height: 50)
-        .background(Color.init(uiColor: .wildWanderGreen))
+        .background(name.isEmpty ? .gray: Color.init(uiColor: .wildWanderGreen))
         .clipShape(RoundedRectangle(cornerRadius: 25))
+        .disabled(name.isEmpty)
     }
     
     //MARK: - Methods

@@ -27,6 +27,7 @@ class TrailsCell: UITableViewCell {
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
+        label.text = "unavailable"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,6 +38,7 @@ class TrailsCell: UITableViewCell {
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
+        label.text = "unavailable"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -47,6 +49,7 @@ class TrailsCell: UITableViewCell {
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
+        label.text = "unavailable"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -224,6 +227,7 @@ class TrailsCell: UITableViewCell {
         
         informationLabel.text = text
     }
+    
     //MARK: - Methods
     func updateCellWith(
         imageUrls: [URL?],
@@ -253,7 +257,6 @@ class TrailsCell: UITableViewCell {
         
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            updateImagesCarouselViewImages(with: imageUrls)
             titleLabel.text = trailTitle
             locationLabel.text = address
             formatInformationTextLabelWith(
@@ -267,6 +270,8 @@ class TrailsCell: UITableViewCell {
             } else {
                 saveButtonView.setImage(.saveTrail, for: .normal)
             }
+            
+            updateImagesCarouselViewImages(with: imageUrls)
         }
     }
 }

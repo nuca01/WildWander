@@ -63,7 +63,7 @@ final class WildWanderAlertView: UIView {
     init(
         title: String,
         message: String,
-        firstButtonTitle: String? = nil,
+        firstButtonTitle: String,
         dismissButtonTitle: String
     ) {
         super.init(frame: .zero)
@@ -72,13 +72,9 @@ final class WildWanderAlertView: UIView {
         configure(
             title: title,
             message: message,
-            firstButtonTitle: firstButtonTitle ?? "",
+            firstButtonTitle: firstButtonTitle,
             dismissButtonTitle: dismissButtonTitle
         )
-        
-        if firstButtonTitle == nil {
-            firstButton.removeFromSuperview()
-        }
     }
     
     required init?(coder: NSCoder) {

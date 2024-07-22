@@ -103,23 +103,26 @@ class ListCell: UITableViewCell {
         ])
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleAndCountStackView.addArrangedSubview(trailCountLabel)
+        titleLabel.textColor = .black
+    }
     
     //MARK: - Methods
     func updateCellWith(
         title: String,
-        trailCount: Int? = nil
-    ) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            titleLabel.text = title
-            if let trailCount {
-                cellImageView.image = UIImage(named: "savedList")
-                trailCountLabel.text = "\(trailCount) trails"
-            } else {
-                cellImageView.image = UIImage(named: "addList")
-                titleLabel.textColor = .wildWanderGreen
-                trailCountLabel.removeFromSuperview()
-            }
-        }
+        trailCount: Int
+    ) {            
+        titleLabel.text = title
+        cellImageView.image = UIImage(named: "savedList")
+        trailCountLabel.text = "\(trailCount) trails"
+    }
+    
+    func updateCellAsCreateAList() {
+        titleLabel.text = "Create a List"
+        cellImageView.image = UIImage(named: "addList")
+        titleLabel.textColor = .wildWanderGreen
+        trailCountLabel.removeFromSuperview()
     }
 }

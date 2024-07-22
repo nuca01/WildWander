@@ -59,10 +59,10 @@ extension ListsTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.identifier) as! ListCell
         if indexPath.row == 0 {
-            cell.updateCellWith(title: "Create new list")
+            cell.updateCellAsCreateAList()
         } else {
             let currentList = viewModel.listOf(index: indexPath.row - 1)
-            cell.updateCellWith(title: currentList.name ?? "", trailCount: currentList.savedTrailCount)
+            cell.updateCellWith(title: currentList.name ?? "", trailCount: currentList.savedTrailCount ?? 0)
         }
         return cell
     }

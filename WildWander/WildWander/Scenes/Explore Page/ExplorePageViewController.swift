@@ -48,10 +48,10 @@ class ExplorePageViewController: UIViewController {
             self?.showLocationDisabledAlert(
                 title: title,
                 message: message,
-                firstButtonTitle: firstButtonTitle,
-                dismissButtonTitle: dismissButtonTitle,
-                onFirstButtonTapped: onFirstButtonTapped
-            )
+                firstButtonTitle: "djjdj",
+                dismissButtonTitle: dismissButtonTitle) {
+                    
+                }
         }
         
         return trailsView
@@ -167,7 +167,7 @@ class ExplorePageViewController: UIViewController {
     ) {
         listsTableView.didTapOnCreateNewList = { [weak self] in
             if let presentedViewController = self?.presentedViewController {
-                var createAListView = CreateAListView() { (name, description) in
+                let createAListView = CreateAListView() { (name, description) in
                     willSave(name, description, nil)
                     DispatchQueue.main.async {
                         self?.presentedViewController?.dismiss(animated: true)
@@ -212,11 +212,9 @@ class ExplorePageViewController: UIViewController {
         let locationDisabledAlert = WildWanderAlertView(
             title: title,
             message: message,
-            firstButtonTitle: firstButtonTitle,
+            firstButtonTitle: firstButtonTitle ?? "",
             dismissButtonTitle: dismissButtonTitle
         )
-        
-        locationDisabledAlert.onFirstButtonTapped = onFirstButtonTapped
         
         locationDisabledAlert.show(in: self.view)
     }

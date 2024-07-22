@@ -41,6 +41,11 @@ class TrailsView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNewsTableView()
+    }
+    
+    init(viewModel: TrailsViewViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
         viewModel.trailsDidChange = { [weak self] in
             guard let self else { return }
             DispatchQueue.main.async {
@@ -48,11 +53,6 @@ class TrailsView: UIViewController {
                 self.headerLabel.text = " Trails: \(self.viewModel.trailCount)"
             }
         }
-    }
-    
-    init(viewModel: TrailsViewViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -63,7 +63,7 @@ class TrailsView: UIViewController {
         view.addSubview(trailsTableView)
         
         NSLayoutConstraint.activate([
-            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor, constant: -40),
+            trailsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             trailsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)

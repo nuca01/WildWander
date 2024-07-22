@@ -262,7 +262,7 @@ final class WildWanderMapView: UIView {
         if let routeGeometry {
             coordinates = routeGeometry.decodePolyline() ?? []
         }
-        var polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
+        let polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
         
         
         drawRoute(with: polyLineAnnotationLineString)

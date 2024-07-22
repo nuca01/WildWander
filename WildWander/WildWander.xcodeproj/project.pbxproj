@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8707C4DA2C4DCCB4009AA794 /* CreateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4D92C4DCCB4009AA794 /* CreateList.swift */; };
+		8707C4DC2C4DD863009AA794 /* BoolResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4DB2C4DD863009AA794 /* BoolResult.swift */; };
 		871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C851E2C332FDE00F20612 /* AppDelegate.swift */; };
 		871C85212C332FDE00F20612 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85202C332FDE00F20612 /* SceneDelegate.swift */; };
 		871C85232C332FDE00F20612 /* ExplorePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C85222C332FDE00F20612 /* ExplorePageViewController.swift */; };
@@ -20,6 +22,7 @@
 		8776E01E2C4D42A1007D4F95 /* TrailsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */; };
 		8776E0222C4D45FF007D4F95 /* SaveTrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E0212C4D45FF007D4F95 /* SaveTrail.swift */; };
 		8776E0242C4D7C4D007D4F95 /* CreateAListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E0232C4D7C4D007D4F95 /* CreateAListView.swift */; };
+		8776E0262C4DCA86007D4F95 /* SavedPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8776E0252C4DCA86007D4F95 /* SavedPageViewModel.swift */; };
 		87876DD82C42F8CE00B439E7 /* Bounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DD72C42F8CE00B439E7 /* Bounds.swift */; };
 		87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */; };
 		87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */; };
@@ -74,6 +77,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8707C4D92C4DCCB4009AA794 /* CreateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateList.swift; sourceTree = "<group>"; };
+		8707C4DB2C4DD863009AA794 /* BoolResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolResult.swift; sourceTree = "<group>"; };
 		871C851B2C332FDE00F20612 /* WildWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		871C851E2C332FDE00F20612 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		871C85202C332FDE00F20612 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +91,7 @@
 		8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsCellViewModel.swift; sourceTree = "<group>"; };
 		8776E0212C4D45FF007D4F95 /* SaveTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTrail.swift; sourceTree = "<group>"; };
 		8776E0232C4D7C4D007D4F95 /* CreateAListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAListView.swift; sourceTree = "<group>"; };
+		8776E0252C4DCA86007D4F95 /* SavedPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPageViewModel.swift; sourceTree = "<group>"; };
 		87876DD72C42F8CE00B439E7 /* Bounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bounds.swift; sourceTree = "<group>"; };
 		87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSheetPresentationController.swift; sourceTree = "<group>"; };
 		87876DDC2C43359000B439E7 /* UISheetPresentationController.Detent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISheetPresentationController.Detent.swift; sourceTree = "<group>"; };
@@ -325,6 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				87B8D0722C4C8AAF006858EE /* SavedPageViewController.swift */,
+				8776E0252C4DCA86007D4F95 /* SavedPageViewModel.swift */,
 				87B8D0762C4C9017006858EE /* Lists */,
 			);
 			path = "Saved Page";
@@ -490,6 +497,8 @@
 				87876E2C2C4C4B5200B439E7 /* Token.swift */,
 				87B8D0792C4C95D2006858EE /* SavedList.swift */,
 				8776E0212C4D45FF007D4F95 /* SaveTrail.swift */,
+				8707C4D92C4DCCB4009AA794 /* CreateList.swift */,
+				8707C4DB2C4DD863009AA794 /* BoolResult.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -595,6 +604,7 @@
 				87B8D0752C4C8E47006858EE /* ListsTableView.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
 				87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */,
+				8707C4DC2C4DD863009AA794 /* BoolResult.swift in Sources */,
 				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
 				87876DDD2C43359000B439E7 /* UISheetPresentationController.Detent.swift in Sources */,
 				87876DE12C4431D500B439E7 /* UIButton.swift in Sources */,
@@ -603,6 +613,7 @@
 				87B8D0782C4C903D006858EE /* ListsTableViewModel.swift in Sources */,
 				876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */,
 				87F0ED812C3DCE9A0092A756 /* MapStylePageViewController.swift in Sources */,
+				8707C4DA2C4DCCB4009AA794 /* CreateList.swift in Sources */,
 				87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */,
 				87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
@@ -620,6 +631,7 @@
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87B8D07C2C4C9AB9006858EE /* ListCell.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
+				8776E0262C4DCA86007D4F95 /* SavedPageViewModel.swift in Sources */,
 				87BF71902C3C576400D120C0 /* ImageCarouselView.swift in Sources */,
 				87876E2B2C4C161F00B439E7 /* EmailValidation.swift in Sources */,
 				8776E0222C4D45FF007D4F95 /* SaveTrail.swift in Sources */,
