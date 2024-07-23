@@ -52,4 +52,42 @@ extension String {
 
         return coordinates
     }
+    
+    static func encodePolyline(from coordinates: [CLLocationCoordinate2D]) -> String {
+        var encodedString = ""
+        var previousLatitude = 0
+        var previousLongitude = 0
+
+        for coordinate in coordinates {
+            let latitude = Int(round(coordinate.latitude * 1e5))
+            let longitude = Int(round(coordinate.longitude * 1e5))
+
+            let deltaLatitude = latitude - previousLatitude
+            let deltaLongitude = longitude - previousLongitude
+
+            encodedString += encodeValue(deltaLatitude)
+            encodedString += encodeValue(deltaLongitude)
+
+            previousLatitude = latitude
+            previousLongitude = longitude
+        }
+
+        return encodedString
+    }
+
+    private static func encodeValue(_ value: Int) -> String {
+        var value = value < 0 ? ~(value << 1) : (value << 1)
+        var encodedString = ""
+
+        while value >= 0x20 {
+            let nextValue = (0x20 | (value & 0x1f)) + 63
+            encodedString.append(Character(UnicodeScalar(nextValue)!))
+            value >>= 5
+        }
+
+        value += 63
+        encodedString.append(Character(UnicodeScalar(value)!))
+
+        return encodedString
+    }
 }

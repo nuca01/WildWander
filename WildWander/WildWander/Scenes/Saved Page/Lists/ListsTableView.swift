@@ -74,7 +74,6 @@ extension ListsTableView: UITableViewDelegate {
             didTapOnCreateNewList?()
         } else {
             let list = viewModel.listOf(index: indexPath.row - 1)
-            let listId = viewModel.listOf(index: indexPath.row - 1).id
             didTapOnList?(list.id, list.name ?? "name unavailable", list.description)
         }
     }

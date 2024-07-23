@@ -9,6 +9,7 @@ import UIKit
 
 class TrailShownViewController: UIViewController {
     //MARK: - Properties
+    var viewModel: TrailShownViewModel = TrailShownViewModel()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -113,9 +114,16 @@ class TrailShownViewController: UIViewController {
             didTapFinishNavigation()
         }
         
-        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
+        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishAction, rightAction: pauseNavigationAction)
         
-        return generateDeleteStackView(with: pauseAndFinish)
+        let deleteButton = generateAdditionalButtonForStackView(
+            title: "Delete",
+            action: deleteButtonAction,
+            backgroundColor: UIColor.with(red: 183, green: 80, blue: 60, alpha: 30),
+            titleColor: UIColor.with(red: 192, green: 35, blue: 0, alpha: 100)
+        )
+        
+        return generateDeleteStackView(with: pauseAndFinish, and: deleteButton)
     }()
     
     private lazy var deleteButtonAction: UIAction = UIAction { [weak self] _ in
@@ -132,13 +140,26 @@ class TrailShownViewController: UIViewController {
         self.didTapOnCancelButton()
     }
     
-    lazy var finishNavigationAction = UIAction { [weak self] _ in
+    lazy var finishAction = UIAction { [weak self] _ in
         guard let self else { return }
         pauseAndFinishStackView.removeFromSuperview()
         resumeAndFinishStackView.removeFromSuperview()
         addToMainStackView(makeTrailAndChooseTrailStackView)
-        informationStackView.finishObserving()
         didTapFinishNavigation()
+        informationStackView.finishObserving()
+        didTapOnCancelButton()
+        if viewModel.userLoggedIn {
+            didFinish(!trailsAdded) { [weak self] trailDetails in
+                guard let self else { return }
+                if trailsAdded {
+                    informationStackView.tryToSaveInformation(trailDetails: nil, trailId: trailID)
+                } else {
+                    informationStackView.tryToSaveInformation(trailDetails: trailDetails, trailId: nil)
+                }
+            }
+        } else {
+            informationStackView.deleteActivity()
+        }
     }
     
     private lazy var resumeAndFinishStackView: UIStackView = {
@@ -151,9 +172,15 @@ class TrailShownViewController: UIViewController {
             }
         }
         
-        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishNavigationAction, rightAction: resumeNavigationAction)
+        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishAction, rightAction: resumeNavigationAction)
         
-        return generateDeleteStackView(with: resumeAndFinish)
+        let deleteButton = generateAdditionalButtonForStackView(
+            title: "Delete",
+            action: deleteButtonAction,
+            backgroundColor: UIColor.with(red: 183, green: 80, blue: 60, alpha: 30),
+            titleColor: UIColor.with(red: 192, green: 35, blue: 0, alpha: 100))
+        
+        return generateDeleteStackView(with: resumeAndFinish, and: deleteButton)
     }()
     
     private lazy var mainStackView: UIStackView = {
@@ -170,6 +197,7 @@ class TrailShownViewController: UIViewController {
     }()
     
     private lazy var informationStackView = NavigationInformationStackView()
+    
     //MARK: - customTrailNavigationStackView
     private lazy var customTrailNavigationStackView: UIStackView = {
         let editTrailAction = UIAction { [weak self] _ in
@@ -177,8 +205,24 @@ class TrailShownViewController: UIViewController {
             self?.configureCustomTrailView()
         }
         
-        return ButtonsStackView(leftTitle: "Edit Trail", rightTitle: "Start Trail", leftAction: editTrailAction, rightAction: startTrailAction)
+        let editAndStartStackView =  ButtonsStackView(leftTitle: "Edit Trail", rightTitle: "Start Trail", leftAction: editTrailAction, rightAction: startTrailAction)
+        
+        if viewModel.userLoggedIn {
+            let publishButton = generateAdditionalButtonForStackView(
+                title: "Publish",
+                action: publishButtonAction,
+                backgroundColor: UIColor.with(red: 222, green: 111, blue: 31, alpha: 100)
+            )
+            return generateDeleteStackView(with: editAndStartStackView, and: publishButton)
+        }
+        return editAndStartStackView
     }()
+    
+    lazy var publishButtonAction = UIAction { [weak self] _ in
+        guard let self else { return }
+        let trailDetails = willPublishTrail()
+        informationStackView.publishTrail(trailDetails: trailDetails)
+    }
     
     lazy var startTrailAction = UIAction { [weak self] _ in
         guard let self else { return }
@@ -199,16 +243,7 @@ class TrailShownViewController: UIViewController {
         
         return searchBar
     }()
-//    private lazy var customTrailStackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .vertical
-//        stackView.alignment = .trailing
-//        stackView.distribution = .fill
-//        stackView.spacing = 20
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        return stackView
-//    }()
-//    
+    
     private var activeButtonIndex: Int? {
         didSet {
             if let activeButtonIndex {
@@ -220,6 +255,8 @@ class TrailShownViewController: UIViewController {
     private var labels: [UILabel] = []
     
     private var trailsAdded: Bool = false
+    
+    var trailID: Int?
     
     //MARK: - Closures
     var didTapOnChooseOnTheMap: (_: Int) -> Bool
@@ -236,7 +273,11 @@ class TrailShownViewController: UIViewController {
     
     var didTapFinishNavigation: () -> Void
     
+    var didFinish: (_: Bool, _: @escaping ((TrailDetails?) -> Void)) -> Void
+    
     var didTapAddTrail: () -> Void
+    
+    var willPublishTrail: () -> TrailDetails
     
     //MARK: - Initializers
     init(didTapOnChooseOnTheMap: (
@@ -247,7 +288,9 @@ class TrailShownViewController: UIViewController {
          willAddCustomTrail: @escaping () -> Void,
          didTapStartNavigation: @escaping () -> Bool,
          didTapFinishNavigation: @escaping () -> Void,
-         didTapAddTrail: @escaping () -> Void
+         didFinish:  @escaping (_: Bool, _: @escaping ((TrailDetails?) -> Void)) -> Void,
+         didTapAddTrail: @escaping () -> Void,
+         willPublishTrail: @escaping () -> TrailDetails
     ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap
         self.didDeleteCheckpoint = didDeleteCheckpoint
@@ -256,7 +299,9 @@ class TrailShownViewController: UIViewController {
         self.willAddCustomTrail = willAddCustomTrail
         self.didTapStartNavigation = didTapStartNavigation
         self.didTapFinishNavigation = didTapFinishNavigation
+        self.didFinish = didFinish
         self.didTapAddTrail = didTapAddTrail
+        self.willPublishTrail = willPublishTrail
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -294,7 +339,7 @@ class TrailShownViewController: UIViewController {
         pauseAndFinishStackView.removeFromSuperview()
         resumeAndFinishStackView.removeFromSuperview()
         informationStackView.finishObserving()
-        didTapFinishNavigation()
+        _ = didTapFinishNavigation()
     }
     
     func onTrailAdded() {
@@ -521,23 +566,14 @@ class TrailShownViewController: UIViewController {
         ])
     }
     
-    private func generateDeleteStackView(with stackView: UIStackView) -> UIStackView {
+    private func generateDeleteStackView(with stackView: UIStackView, and button: UIButton) -> UIStackView {
         let deleteStackView = UIStackView()
         deleteStackView.alignment = .center
         deleteStackView.spacing = 20
         deleteStackView.axis = .vertical
         deleteStackView.distribution = .fill
         
-        let deleteButton = UIButton.wildWanderGrayButton(titled: "Delete")
-        deleteButton.addAction(deleteButtonAction, for: .touchUpInside)
-        deleteButton.backgroundColor = UIColor.with(red: 183, green: 80, blue: 60, alpha: 30)
-        deleteButton.setTitleColor(UIColor.with(red: 192, green: 35, blue: 0, alpha: 100), for: .normal)
-        
-        NSLayoutConstraint.activate([
-            deleteButton.widthAnchor.constraint(equalToConstant: 100),
-        ])
-        
-        deleteStackView.addArranged(subviews: [stackView, deleteButton])
+        deleteStackView.addArranged(subviews: [stackView, button])
         
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: deleteStackView.leadingAnchor),
@@ -547,6 +583,30 @@ class TrailShownViewController: UIViewController {
         deleteStackView.translatesAutoresizingMaskIntoConstraints = false
         
         return deleteStackView
+    }
+    
+    private func generateAdditionalButtonForStackView(
+        title: String,
+        action: UIAction,
+        backgroundColor: UIColor? = nil,
+        titleColor: UIColor? = nil
+    ) -> UIButton {
+        let deleteButton = UIButton.wildWanderGreenButton(titled: title)
+        deleteButton.addAction(deleteButtonAction, for: .touchUpInside)
+        
+        if let backgroundColor {
+            deleteButton.backgroundColor = backgroundColor
+        }
+        
+        if let titleColor {
+            deleteButton.setTitleColor(titleColor, for: .normal)
+        }
+        
+        NSLayoutConstraint.activate([
+            deleteButton.widthAnchor.constraint(equalToConstant: 100),
+        ])
+        
+        return deleteButton
     }
 }
 
