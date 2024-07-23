@@ -9,6 +9,7 @@ import Foundation
 import NetworkingService
 
 final class ProfilePageViewModel: ObservableObject {
+    //MARK: - Properties
     private var token: String? {
         KeychainHelper.retrieveToken(forKey: "authorizationToken")
     }
@@ -21,10 +22,13 @@ final class ProfilePageViewModel: ObservableObject {
     
     @Published var userDetails: UserDetails?
     
+    var didLogOut: (() -> Void)?
+    //MARK: - Initializer
     init() {
         endPointCreator = EndPointCreator(path: "/api/User/GetUserDetails", method: "GET", accessToken: token ?? "")
     }
     
+    //MARK: - Methods
     func getUserInformation() {
         NetworkingService.shared.sendRequest(endpoint: endPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
             guard let self else { return }
@@ -53,5 +57,11 @@ final class ProfilePageViewModel: ObservableObject {
     
     func updateLogInStatus() {
         endPointCreator!.changeAccessToken(accessToken: token)
+    }
+    
+    func logOut() {
+        _ = KeychainHelper.deleteToken(forKey: "authorizationToken")
+        updateLogInStatus()
+        didLogOut?()
     }
 }

@@ -39,6 +39,8 @@ struct ProfilePageView: View {
             
             statsVStack
             
+            logoutButton
+            
             Spacer()
         }
         .padding(.horizontal)
@@ -98,6 +100,19 @@ struct ProfilePageView: View {
         .padding(14)
         .background(darkGreen.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 25.0))
+    }
+    
+    private var logoutButton: some View {
+        Button("log out") {
+            viewModel.logOut()
+        }
+        .frame(maxWidth: .infinity)
+        .foregroundStyle(.red)
+        .font(.system(size: 15, weight: .bold))
+        .clipShape(RoundedRectangle(cornerRadius: 25))
+        .padding()
+        .background(.red.opacity(0.3))
+        .clipShape(RoundedRectangle(cornerRadius: 25))
     }
     
     //MARK: - Initializer

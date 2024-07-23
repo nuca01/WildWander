@@ -19,6 +19,7 @@ class LogInPageViewController: UIViewController {
                 } else {
                     self?.errorLabel.isHidden = true
                     self?.dismiss(animated: true)
+                    self?.didLogIn?()
                 }
             }
         }
@@ -115,6 +116,8 @@ class LogInPageViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
+    
+    var didLogIn: (() -> Void)?
     
     //MARK: - Initializers
     init(explanationLabelText: String) {
