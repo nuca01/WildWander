@@ -203,16 +203,7 @@ class TrailShownViewController: UIViewController {
         
         return searchBar
     }()
-//    private lazy var customTrailStackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .vertical
-//        stackView.alignment = .trailing
-//        stackView.distribution = .fill
-//        stackView.spacing = 20
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        return stackView
-//    }()
-//    
+    
     private var activeButtonIndex: Int? {
         didSet {
             if let activeButtonIndex {

@@ -19,6 +19,7 @@ class NavigationInformationStackViewModel {
     var lastAltitude: CLLocationDistance?
     var elevationGain: CLLocationDistance = 0.0
     var timeDidChangeTo: ((_: String) -> Void)?
+    var savingFailed: (() -> Void)?
     var timeInSeconds: Int = 0
     
     private var token: String? {
@@ -111,6 +112,8 @@ class NavigationInformationStackViewModel {
                     print("Error: \(error)")
                 }
             }
+        } else {
+            savingFailed?()
         }
     }
     

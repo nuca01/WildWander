@@ -29,6 +29,10 @@ class NavigationInformationStackView: UIStackView {
             self?.timeValueLabel.text = time
         }
         
+        viewModel.savingFailed = { [weak self] in
+            self?.deleteActivity()
+        }
+        
         return viewModel
     }()
     
