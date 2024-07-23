@@ -110,10 +110,10 @@ class TrailShownViewController: UIViewController {
             pauseAndFinishStackView.removeFromSuperview()
             addToMainStackView(resumeAndFinishStackView)
             informationStackView.pauseObserving()
-            _ = didTapFinishNavigation()
+            didTapFinishNavigation()
         }
         
-        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
+        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishAction, rightAction: pauseNavigationAction)
         
         return generateDeleteStackView(with: pauseAndFinish)
     }()
@@ -128,20 +128,24 @@ class TrailShownViewController: UIViewController {
 
         addToMainStackView(makeTrailAndChooseTrailStackView)
         self.trailsAdded = false
-        _ = self.didTapFinishNavigation()
+        self.didTapFinishNavigation()
         self.didTapOnCancelButton()
     }
     
-    lazy var finishNavigationAction = UIAction { [weak self] _ in
+    lazy var finishAction = UIAction { [weak self] _ in
         guard let self else { return }
         pauseAndFinishStackView.removeFromSuperview()
         resumeAndFinishStackView.removeFromSuperview()
         addToMainStackView(makeTrailAndChooseTrailStackView)
+        didTapFinishNavigation()
         informationStackView.finishObserving()
-        if trailsAdded {
-            informationStackView.tryToSaveInformation(polyLine: nil, trailId: trailID)
-        } else {
-            informationStackView.tryToSaveInformation(polyLine: didTapFinishNavigation(), trailId: nil)
+        didFinish(!trailsAdded) { [weak self] trailDetails in
+            guard let self else { return }
+            if trailsAdded {
+                informationStackView.tryToSaveInformation(trailDetails: nil, trailId: trailID)
+            } else {
+                informationStackView.tryToSaveInformation(trailDetails: trailDetails, trailId: nil)
+            }
         }
     }
     
@@ -155,7 +159,7 @@ class TrailShownViewController: UIViewController {
             }
         }
         
-        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishNavigationAction, rightAction: resumeNavigationAction)
+        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishAction, rightAction: resumeNavigationAction)
         
         return generateDeleteStackView(with: resumeAndFinish)
     }()
@@ -231,7 +235,9 @@ class TrailShownViewController: UIViewController {
     
     var didTapStartNavigation: () -> Bool
     
-    var didTapFinishNavigation: () -> String?
+    var didTapFinishNavigation: () -> Void
+    
+    var didFinish: (_: Bool, _: @escaping ((TrailDetails?) -> Void)) -> Void
     
     var didTapAddTrail: () -> Void
     
@@ -243,7 +249,8 @@ class TrailShownViewController: UIViewController {
          didTapOnCancelButton: @escaping () -> Void,
          willAddCustomTrail: @escaping () -> Void,
          didTapStartNavigation: @escaping () -> Bool,
-         didTapFinishNavigation: @escaping () -> String?,
+         didTapFinishNavigation: @escaping () -> Void,
+         didFinish:  @escaping (_: Bool, _: @escaping ((TrailDetails?) -> Void)) -> Void,
          didTapAddTrail: @escaping () -> Void
     ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap
@@ -253,6 +260,7 @@ class TrailShownViewController: UIViewController {
         self.willAddCustomTrail = willAddCustomTrail
         self.didTapStartNavigation = didTapStartNavigation
         self.didTapFinishNavigation = didTapFinishNavigation
+        self.didFinish = didFinish
         self.didTapAddTrail = didTapAddTrail
         
         super.init(nibName: nil, bundle: nil)

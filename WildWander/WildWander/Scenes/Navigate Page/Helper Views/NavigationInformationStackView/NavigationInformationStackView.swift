@@ -90,8 +90,8 @@ class NavigationInformationStackView: UIStackView {
         locationManager.stopUpdatingLocation()
     }
     
-    func tryToSaveInformation(polyLine: String?, trailId: Int?) {
-        viewModel.completeTrail(polyLine: polyLine, trailId: trailId)
+    func tryToSaveInformation(trailDetails: TrailDetails?, trailId: Int?) {
+        viewModel.complete(trailDetails: trailDetails, trailId: trailId)
     }
     
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {

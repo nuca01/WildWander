@@ -97,23 +97,52 @@ class NavigationInformationStackViewModel {
         finishObserving()
     }
     
-    func completeTrail(polyLine: String?, trailId: Int?) {
+    func complete(trailDetails: TrailDetails?, trailId: Int?) {
         if let accessToken = token {
             endPointCreator.changeAccessToken(accessToken: accessToken)
             
-            endPointCreator.body = CompleteTrail(trailId: trailId, length: Int(distanceTravelled), time: timeInSeconds, routeGeometry: polyLine, elevationGain: Int(elevationGain))
-            
-            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
-                guard let self else { return }
-                
-                switch result {
-                case .success(let responseModel): break
-                case .failure(let error):
-                    print("Error: \(error)")
+            if let trailDetails, let _ = trailDetails.length {
+                publishTrail(trailDetails: trailDetails)
+            } else {
+                if let trailId {
+                    completeTrail(routeGeometry:trailDetails?.routeGeometry, trailId: trailId)
+                } else {
+                    savingFailed?()
                 }
             }
         } else {
             savingFailed?()
+        }
+        
+        deleteActivity()
+    }
+    
+    private func publishTrail(trailDetails: TrailDetails)  {
+        endPointCreator.body = trailDetails
+        endPointCreator.path = "/api/Trail/AddTrail"
+        
+        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Int, NetworkError>) in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let responseModel):
+                completeTrail(routeGeometry: trailDetails.routeGeometry, trailId: responseModel)
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    private func completeTrail(routeGeometry: String? = nil, trailId: Int) {
+        endPointCreator.path = "/api/Trail/CompleteTrail"
+        endPointCreator.body = CompleteTrail(trailId: trailId, length: Int(distanceTravelled), time: timeInSeconds, routeGeometry: routeGeometry, elevationGain: Int(elevationGain))
+        
+        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
+            switch result {
+            case .success(_): break
+            case .failure(let error):
+                print("Error: \(error)")
+            }
         }
     }
     
