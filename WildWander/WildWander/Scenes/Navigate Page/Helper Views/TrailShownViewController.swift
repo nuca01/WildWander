@@ -110,7 +110,7 @@ class TrailShownViewController: UIViewController {
             pauseAndFinishStackView.removeFromSuperview()
             addToMainStackView(resumeAndFinishStackView)
             informationStackView.pauseObserving()
-            didTapFinishNavigation()
+            _ = didTapFinishNavigation()
         }
         
         let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
@@ -128,7 +128,7 @@ class TrailShownViewController: UIViewController {
 
         addToMainStackView(makeTrailAndChooseTrailStackView)
         self.trailsAdded = false
-        self.didTapFinishNavigation()
+        _ = self.didTapFinishNavigation()
         self.didTapOnCancelButton()
     }
     
@@ -291,7 +291,7 @@ class TrailShownViewController: UIViewController {
         pauseAndFinishStackView.removeFromSuperview()
         resumeAndFinishStackView.removeFromSuperview()
         informationStackView.finishObserving()
-        didTapFinishNavigation()
+        _ = didTapFinishNavigation()
     }
     
     func onTrailAdded() {
