@@ -11,12 +11,6 @@ class TrailShownViewController: UIViewController {
     //MARK: - Properties
     var viewModel: TrailShownViewModel = TrailShownViewModel()
     
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
     //MARK: - addTrailAndChooseTrailStackView
     private lazy var makeTrailAndChooseTrailStackView: UIStackView = {
         let makeTrailAction = UIAction { [weak self] _ in
@@ -28,7 +22,6 @@ class TrailShownViewController: UIViewController {
                 activeButtonIndex = 1
                 selectCheckPoint(for: firstCheckPoint)
             }
-            
         }
         
         let chooseTrailAction = UIAction { [weak self] _ in
@@ -390,9 +383,7 @@ class TrailShownViewController: UIViewController {
     }
     
     private func addSubviews() {
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(mainStackView)
+        view.addSubview(mainStackView)
         
         customTrailStackView.addArranged(subviews: [
             checkPointsAndAddRemoveStackView
@@ -489,7 +480,7 @@ extension TrailShownViewController: UITextFieldDelegate {
 //MARK: - Constraints
 extension TrailShownViewController {
     private func setUpConstraints() {
-        constrainScrollView()
+//        constrainScrollView()
         constrainMainStackView()
         constrainCheckPointsScrollView()
         constrainAddAndRemoveButtons()
@@ -498,23 +489,11 @@ extension TrailShownViewController {
     
     private func constrainMainStackView() {
         NSLayoutConstraint.activate([
-            mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            mainStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
-            mainStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
-            mainStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -40),
+            mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            mainStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 15),
         ])
     }
-    
-    private func constrainScrollView() {
-        NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -60),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
-    }
-    
     private func addToMainStackView(_ view: UIView) {
         mainStackView.addArrangedSubview(view)
     }
