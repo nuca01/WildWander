@@ -80,6 +80,14 @@ class NavigationInformationStackView: UIStackView {
         locationManager.startUpdatingLocation()
     }
     
+    func deleteActivity() {
+        nullifyProperties()
+        finishObserving()
+        timeValueLabel.text = "0:0"
+        distanceValueLabel.text = "0,00m"
+        elevationGainValueLabel.text = "0,00m"
+    }
+    
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .vertical

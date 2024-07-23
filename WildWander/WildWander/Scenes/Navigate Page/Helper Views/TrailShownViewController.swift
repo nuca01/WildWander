@@ -112,8 +112,25 @@ class TrailShownViewController: UIViewController {
             informationStackView.pauseObserving()
             didTapFinishNavigation()
         }
-        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
+        
+        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishNavigationAction, rightAction: pauseNavigationAction)
+        
+        return generateDeleteStackView(with: pauseAndFinish)
     }()
+    
+    private lazy var deleteButtonAction: UIAction = UIAction { [weak self] _ in
+        guard let self else {return}
+        informationStackView.deleteActivity()
+        DispatchQueue.main.async {
+            self.pauseAndFinishStackView.removeFromSuperview()
+            self.resumeAndFinishStackView.removeFromSuperview()
+        }
+
+        addToMainStackView(makeTrailAndChooseTrailStackView)
+        self.trailsAdded = false
+        self.didTapFinishNavigation()
+        self.didTapOnCancelButton()
+    }
     
     lazy var finishNavigationAction = UIAction { [weak self] _ in
         guard let self else { return }
@@ -133,7 +150,10 @@ class TrailShownViewController: UIViewController {
                 informationStackView.resumeObserving()
             }
         }
-        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishNavigationAction, rightAction: resumeNavigationAction)
+        
+        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishNavigationAction, rightAction: resumeNavigationAction)
+        
+        return generateDeleteStackView(with: resumeAndFinish)
     }()
     
     private lazy var mainStackView: UIStackView = {
@@ -340,7 +360,7 @@ class TrailShownViewController: UIViewController {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -view.safeAreaInsets.top),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: -60),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
@@ -499,6 +519,34 @@ class TrailShownViewController: UIViewController {
             buttonImage.heightAnchor.constraint(equalToConstant: 50),
             buttonImage.widthAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+    private func generateDeleteStackView(with stackView: UIStackView) -> UIStackView {
+        let deleteStackView = UIStackView()
+        deleteStackView.alignment = .center
+        deleteStackView.spacing = 20
+        deleteStackView.axis = .vertical
+        deleteStackView.distribution = .fill
+        
+        let deleteButton = UIButton.wildWanderGrayButton(titled: "Delete")
+        deleteButton.addAction(deleteButtonAction, for: .touchUpInside)
+        deleteButton.backgroundColor = UIColor.with(red: 183, green: 80, blue: 60, alpha: 30)
+        deleteButton.setTitleColor(UIColor.with(red: 192, green: 35, blue: 0, alpha: 100), for: .normal)
+        
+        NSLayoutConstraint.activate([
+            deleteButton.widthAnchor.constraint(equalToConstant: 100),
+        ])
+        
+        deleteStackView.addArranged(subviews: [stackView, deleteButton])
+        
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: deleteStackView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: deleteStackView.trailingAnchor),
+        ])
+        
+        deleteStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return deleteStackView
     }
 }
 
