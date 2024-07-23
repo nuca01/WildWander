@@ -10,7 +10,7 @@ import UIKit
 extension UISheetPresentationController.Detent {
     class func small() -> UISheetPresentationController.Detent {
         return UISheetPresentationController.Detent.custom(identifier: .small) { context in
-            return 60
+            return 70
         }
     }
 

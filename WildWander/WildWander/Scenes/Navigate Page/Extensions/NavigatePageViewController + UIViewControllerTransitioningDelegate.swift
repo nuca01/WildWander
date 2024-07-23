@@ -19,7 +19,7 @@ extension NavigatePageViewController: UIViewControllerTransitioningDelegate {
         tabSheetPresentationController.prefersGrabberVisible = true
         tabSheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
         tabSheetPresentationController.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-        tabSheetPresentationController.selectedDetentIdentifier = .interactiveMedium
+        tabSheetPresentationController.selectedDetentIdentifier = .smallThanMedium
 
         return tabSheetPresentationController
     }

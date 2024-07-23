@@ -50,10 +50,19 @@ class NavigatePageViewController: UIViewController {
         return self.mapView.startNavigation()
     } didTapFinishNavigation: { [weak self] in
         self?.mapView.finishNavigation()
+    } didFinish: { [weak self] (customTrailCreated, saveInformation) in
+        if customTrailCreated {
+            self?.showPublishTrailAlert(with: saveInformation)
+        } else {
+            saveInformation(nil)
+        }
+        
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
         }
+    } willPublishTrail: { [weak self] in
+        self?.mapView.viewModel?.customTrail ?? TrailDetails()
     }
     
     private var trailToDraw: Trail?
@@ -80,6 +89,48 @@ class NavigatePageViewController: UIViewController {
         }
         trailToDraw = nil
     }
+    
+    //MARK: - Methods
+    private func showPublishTrailAlert(
+        with saveInformation: @escaping (_: TrailDetails) -> Void
+    ) {
+        let dimmedView = dimPresentedView()
+        
+        let publishTrailAlert = WildWanderAlertView(
+            title: "Do you want to publish the trail you just completed?",
+            message: "Publishing the trail means it will be available for everyone to see and complete.",
+            firstButtonTitle: "Publish the trail",
+            dismissButtonTitle: "Not this time"
+        )
+        
+        publishTrailAlert.onFirstButtonTapped = { [weak self] in
+            guard let self else { return }
+            
+            saveInformation(mapView.viewModel?.customTrail ?? TrailDetails())
+            dimmedView.removeFromSuperview()
+        }
+        
+        publishTrailAlert.onCancelTapped = { [weak self] in
+            guard let self else { return }
+            mapView.viewModel?.customTrail?.length = nil
+            mapView.viewModel?.customTrail?.time = nil
+            
+            saveInformation(mapView.viewModel?.customTrail ?? TrailDetails())
+            dimmedView.removeFromSuperview()
+        }
+        
+        publishTrailAlert.show(in: view)
+    }
+    
+    private func dimPresentedView() -> UIView {
+        let dimmedView = UIView()
+        dimmedView.frame = makeCustomTrailViewController.view.bounds
+        dimmedView.backgroundColor = .black.withAlphaComponent(0.6)
+        makeCustomTrailViewController.view.addSubview(dimmedView)
+        sheetNavigationController.sheetPresentationController?.selectedDetentIdentifier = .small
+        
+        return dimmedView
+    }
 }
 
 //MARK: - WildWanderMapViewDelegate
@@ -96,5 +147,6 @@ extension NavigatePageViewController: TrailAddable {
     func addTrail(_ trail: Trail) {
         trailToDraw = trail
         makeCustomTrailViewController.onTrailAdded()
+        makeCustomTrailViewController.trailID = trail.id
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class TrailsView: UIViewController {
     //MARK: - Properties
@@ -32,6 +33,13 @@ class TrailsView: UIViewController {
         return label
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
     private var topAnchorConstantOfTableView: CGFloat
     
     private var headerLabelLeadingConstraint: NSLayoutConstraint?
@@ -49,6 +57,14 @@ class TrailsView: UIViewController {
         view.backgroundColor = .white
         configureHeaderLabel()
         configureTrailsTableView()
+        if let loaderView {
+            view.addSubview(loaderView)
+            constrainLoaderView()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loaderView?.isHidden = false
     }
     
     //MARK: - Initializers
@@ -62,6 +78,7 @@ class TrailsView: UIViewController {
             guard let self else { return }
             DispatchQueue.main.async {
                 self.trailsTableView.reloadData()
+                self.loaderView?.isHidden = true
                 self.headerLabel.text = " Trails: \(self.viewModel.trailCount)"
             }
         }
@@ -77,6 +94,7 @@ class TrailsView: UIViewController {
             guard let self else { return }
             DispatchQueue.main.async {
                 self.trailsTableView.reloadData()
+                self.loaderView?.isHidden = true
             }
         }
         headerLabelLeadingConstraint = headerLabel.leadingAnchor.constraint(equalTo: trailsTableView.leadingAnchor, constant: 20)
@@ -114,6 +132,17 @@ class TrailsView: UIViewController {
             trailsTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             trailsTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
         ])
+    }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
     }
     
     func changeHeaderLabel(name: String, description: String?) {
@@ -157,6 +186,10 @@ class TrailsView: UIViewController {
         let headerSize = headerLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         headerLabel.frame = CGRect(origin: .zero, size: headerSize)
         trailsTableView.tableHeaderView = headerLabel
+    }
+    
+    func trailsWillChange() {
+        loaderView?.isHidden = false
     }
 }
 

@@ -31,12 +31,6 @@ class ListsTableView: UITableView {
         dataSource = self
         delegate = self
         register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
-        
-        viewModel.listDidChange = { [weak self] in
-            DispatchQueue.main.async {
-                self?.reloadData()
-            }
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -80,7 +74,6 @@ extension ListsTableView: UITableViewDelegate {
             didTapOnCreateNewList?()
         } else {
             let list = viewModel.listOf(index: indexPath.row - 1)
-            let listId = viewModel.listOf(index: indexPath.row - 1).id
             didTapOnList?(list.id, list.name ?? "name unavailable", list.description)
         }
     }

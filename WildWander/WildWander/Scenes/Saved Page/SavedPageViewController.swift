@@ -12,7 +12,6 @@ class SavedPageViewController: UIViewController {
     //MARK: - Properties
     private lazy var viewModel: SavedPageViewModel = {
         let viewModel = SavedPageViewModel()
-        
         return viewModel
     }()
     
@@ -21,15 +20,26 @@ class SavedPageViewController: UIViewController {
     private lazy var listsTableView: ListsTableView = {
         let listsTableView = ListsTableView(viewModel: listsTableViewModel)
         
+        listsTableViewModel.listDidChange = { [weak self] in
+            DispatchQueue.main.async {
+                listsTableView.reloadData()
+                self?.loaderView?.isHidden = true
+            }
+        }
+        
         viewModel.onTrailCreated = { self.listsTableViewModel.getSavedLists() }
         
         listsTableView.didTapOnCreateNewList = configureDidTapOnCreateNewList()
+        
         listsTableView.didTapOnList = { [weak self] (id, name, description) in
+            guard let self else { return }
+            viewModel.getTrails(listId: id)
             var trailsViewModel = TrailsViewViewModel()
-            self?.viewModel.trailsDidChange = { trails in
+            
+            viewModel.trailsDidChange = { [weak self] trails in
                 trailsViewModel.changeTrails(to: trails)
             }
-            self?.viewModel.getTrails(listId: id)
+            
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 let trailsView = TrailsView(viewModel: trailsViewModel, name: name, description: description)
@@ -50,11 +60,23 @@ class SavedPageViewController: UIViewController {
         return sheetNavigationController
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(listsTableView)
+        
+        if let loaderView {
+            view.addSubview(loaderView)
+            constrainLoaderView()
+        }
+        
         view.backgroundColor = .white
         constrainListsTableView()
         DispatchQueue.main.async { [weak self] in
@@ -64,12 +86,20 @@ class SavedPageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if !viewModel.userLoggedIn {
+            present(sheetNavigationController, animated: true)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         if viewModel.userLoggedIn {
+            loaderView?.isHidden = false
             listsTableView.isHidden = false
             listsTableViewModel.getSavedLists()
         } else {
             listsTableView.isHidden = true
-            present(sheetNavigationController, animated: true)
         }
     }
     
@@ -81,6 +111,17 @@ class SavedPageViewController: UIViewController {
     }
 
     //MARK: - Methods
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
+    
     private func constrainListsTableView() {
         NSLayoutConstraint.activate([
             listsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

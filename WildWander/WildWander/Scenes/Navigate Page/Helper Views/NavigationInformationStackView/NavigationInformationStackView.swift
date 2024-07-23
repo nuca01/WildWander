@@ -9,6 +9,7 @@ import UIKit
 import CoreLocation
 
 class NavigationInformationStackView: UIStackView {
+    //MARK: - Properties
     private lazy var timeValueLabel: UILabel = generateTitleLabel(with: "0:0", and: 23)
     private lazy var distanceValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 23)
     private lazy var elevationGainValueLabel: UILabel = generateTitleLabel(with: "0,00m", and: 23)
@@ -17,19 +18,25 @@ class NavigationInformationStackView: UIStackView {
         locationManager.requestWhenInUseAuthorization()
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 50
+        locationManager.distanceFilter = 10
         
         return locationManager
     }()
     
-    private var distanceTravelled: CLLocationDistance = 0.0
-    private var startTime: Date?
-    private var timer: Timer?
-    private var pauseTime: Date?
-    private var justStarted: Bool = true
-    private var lastAltitude: CLLocationDistance?
-    private var elevationGain: CLLocationDistance = 0.0
+    private lazy var viewModel = {
+        let viewModel = NavigationInformationStackViewModel()
+        viewModel.timeDidChangeTo = { [weak self] time in
+            self?.timeValueLabel.text = time
+        }
+        
+        viewModel.savingFailed = { [weak self] in
+            self?.deleteActivity()
+        }
+        
+        return viewModel
+    }()
     
+    //MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -49,35 +56,52 @@ class NavigationInformationStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Deinitializer
     deinit {
-        stopTimer()
+        viewModel.stopTimer()
     }
     
+    //MARK: - Methods
     func startObserving() {
-        nullifyProperties()
-        startTime = Date()
-        startTimer()
+        viewModel.startObserving()
         locationManager.startUpdatingLocation()
     }
     
     func finishObserving() {
-        startTime = nil
-        stopTimer()
+        viewModel.finishObserving()
         locationManager.stopUpdatingLocation()
     }
     
     func pauseObserving() {
-        pauseTime = Date()
-        stopTimer()
+        viewModel.pauseObserving()
         locationManager.stopUpdatingLocation()
     }
     
     func resumeObserving() {
-        startTime = Date().addingTimeInterval(-Date().timeIntervalSince(pauseTime ?? Date()))
-        pauseTime = nil
-        startTimer()
-        justStarted = true
+        viewModel.resumeObserving()
         locationManager.startUpdatingLocation()
+    }
+    
+    func deleteActivity() {
+        viewModel.deleteActivity()
+        nullifyLabels()
+    }
+    
+    private func nullifyLabels() {
+        timeValueLabel.text = "0:0"
+        distanceValueLabel.text = "0,00m"
+        elevationGainValueLabel.text = "0,00m"
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func tryToSaveInformation(trailDetails: TrailDetails?, trailId: Int?) {
+        viewModel.complete(trailDetails: trailDetails, trailId: trailId)
+        nullifyLabels()
+    }
+    
+    func publishTrail(trailDetails: TrailDetails) {
+        viewModel.publishTrail(trailDetails: trailDetails, trailCompleted: false)
+        nullifyLabels()
     }
     
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {
@@ -101,57 +125,25 @@ class NavigationInformationStackView: UIStackView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
-    
-    private func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimeLabel), userInfo: nil, repeats: true)
-    }
-
-    private func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
-    
-    private func formatDistance(metres: Double) -> String {
-        if metres >= 1000 {
-            String(format: "%.2fkm", metres / 1000)
-        } else {
-            String(format: "%.2fm", metres)
-        }
-    }
-    
-    private func nullifyProperties() {
-        distanceTravelled = 0.0
-        justStarted = true
-        lastAltitude = nil
-        elevationGain = 0.0
-    }
-
-    @objc private func updateTimeLabel() {
-        guard let startTime = startTime else { return }
-        let elapsedTime = Date().timeIntervalSince(startTime)
-        let hours = Int(elapsedTime) / 3600
-        let minutes = Int(elapsedTime) / 60 % 60
-        let seconds = Int(elapsedTime) % 60
-        timeValueLabel.text = String(format: "%02i:%02i:%02i", hours, minutes, seconds)
-    }
 }
 
+//MARK: - CLLocationManagerDelegate
 extension NavigationInformationStackView: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let lastLocation = locations.last {
             let currentAltitude = lastLocation.altitude
             
-            if !justStarted {
-                elevationGain += (lastAltitude ?? 0.0) - lastLocation.altitude
-                elevationGainValueLabel.text = formatDistance(metres: elevationGain)
+            if !viewModel.justStarted {
+                viewModel.elevationGain += (viewModel.lastAltitude ?? 0.0) - lastLocation.altitude
+                elevationGainValueLabel.text = viewModel.formatDistance(metres: viewModel.elevationGain)
                 
-                distanceTravelled += 50
-                distanceValueLabel.text = formatDistance(metres: distanceTravelled)
+                viewModel.distanceTravelled += 10
+                distanceValueLabel.text = viewModel.formatDistance(metres: viewModel.distanceTravelled)
             } else {
-                justStarted = false
+                viewModel.justStarted = false
             }
             
-            lastAltitude = currentAltitude
+            viewModel.lastAltitude = currentAltitude
         }
     }
 }
