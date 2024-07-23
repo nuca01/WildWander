@@ -12,6 +12,7 @@ final class WildWanderMapViewModel {
     private let view: WildWanderMapView
     private let locationManager = CLLocationManager()
     var activeAnnotationsId: String = ""
+    var customTrailPolyline: String?
     
     var userLocationIsEnabled: Bool {
         let authorizationStatus = locationManager.authorizationStatus

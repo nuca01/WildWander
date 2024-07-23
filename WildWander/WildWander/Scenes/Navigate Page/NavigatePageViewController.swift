@@ -50,6 +50,7 @@ class NavigatePageViewController: UIViewController {
         return self.mapView.startNavigation()
     } didTapFinishNavigation: { [weak self] in
         self?.mapView.finishNavigation()
+        return self?.mapView.viewModel?.customTrailPolyline
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
@@ -96,5 +97,6 @@ extension NavigatePageViewController: TrailAddable {
     func addTrail(_ trail: Trail) {
         trailToDraw = trail
         makeCustomTrailViewController.onTrailAdded()
+        makeCustomTrailViewController.trailID = trail.id
     }
 }

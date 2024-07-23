@@ -86,6 +86,10 @@ class NavigationInformationStackView: UIStackView {
         locationManager.stopUpdatingLocation()
     }
     
+    func tryToSaveInformation(polyLine: String?, trailId: Int?) {
+        viewModel.completeTrail(polyLine: polyLine, trailId: trailId)
+    }
+    
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .vertical

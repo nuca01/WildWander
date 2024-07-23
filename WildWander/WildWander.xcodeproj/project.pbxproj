@@ -19,6 +19,7 @@
 		871C85282C332FE000F20612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 871C85272C332FE000F20612 /* Assets.xcassets */; };
 		871C852B2C332FE000F20612 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 871C852A2C332FE000F20612 /* Base */; };
 		8721055A2C4F4A250000C574 /* NavigationInformationStackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872105592C4F4A250000C574 /* NavigationInformationStackViewModel.swift */; };
+		8721055D2C4F5D8D0000C574 /* CompleteTrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
 		876A7A722C3448250022B85E /* NetworkingService in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A712C3448250022B85E /* NetworkingService */; };
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
@@ -96,6 +97,7 @@
 		871C852A2C332FE000F20612 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		871C852C2C332FE000F20612 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		872105592C4F4A250000C574 /* NavigationInformationStackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationInformationStackViewModel.swift; sourceTree = "<group>"; };
+		8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTrail.swift; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
 		8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsCellViewModel.swift; sourceTree = "<group>"; };
@@ -190,11 +192,11 @@
 			children = (
 				876A7A542C335EE20022B85E /* App */,
 				876A7A582C335FC30022B85E /* Scenes */,
+				876A7A622C3364740022B85E /* Reusable Components */,
 				87F0ED8C2C41F9C90092A756 /* Models */,
 				876A7A552C335F0B0022B85E /* Resources */,
 				876A7A562C335F1D0022B85E /* Supporting Files */,
 				87876E202C4B31F000B439E7 /* Utilities */,
-				876A7A622C3364740022B85E /* Reusable Components */,
 				876A7A632C3364970022B85E /* Networking */,
 				87876E012C46B96D00B439E7 /* Protocols */,
 				87BF71882C3C29E600D120C0 /* Extensions */,
@@ -415,8 +417,8 @@
 		87876E0B2C4708C700B439E7 /* Helper Views */ = {
 			isa = PBXGroup;
 			children = (
-				8721055B2C4F4DE70000C574 /* NavigationInformationStackView */,
 				87F0ED872C4151520092A756 /* TrailShownViewController.swift */,
+				8721055B2C4F4DE70000C574 /* NavigationInformationStackView */,
 			);
 			path = "Helper Views";
 			sourceTree = "<group>";
@@ -514,6 +516,7 @@
 				8707C4D92C4DCCB4009AA794 /* CreateList.swift */,
 				8707C4DB2C4DD863009AA794 /* BoolResult.swift */,
 				87069EF62C4EF37400F403DA /* UserDetails.swift */,
+				8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */,
 				87B8D0752C4C8E47006858EE /* ListsTableView.swift in Sources */,
+				8721055D2C4F5D8D0000C574 /* CompleteTrail.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
 				87069EF92C4F225600F403DA /* LoaderView.swift in Sources */,
 				87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */,

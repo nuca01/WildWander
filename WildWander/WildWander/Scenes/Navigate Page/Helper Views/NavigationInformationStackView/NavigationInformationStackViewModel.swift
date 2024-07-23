@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import NetworkingService
 
 class NavigationInformationStackViewModel {
     //MARK: - Properties
@@ -17,8 +18,14 @@ class NavigationInformationStackViewModel {
     var justStarted: Bool = true
     var lastAltitude: CLLocationDistance?
     var elevationGain: CLLocationDistance = 0.0
-    
     var timeDidChangeTo: ((_: String) -> Void)?
+    var timeInSeconds: Int = 0
+    
+    private var token: String? {
+        KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
+    
+    private lazy var endPointCreator = EndPointCreator(path: "/api/Trail/CompleteTrail", method: "POST", accessToken: token ?? "")
     
     //MARK: - Deinitializer
     deinit {
@@ -53,6 +60,7 @@ class NavigationInformationStackViewModel {
     @objc private func updateTimeLabel() {
         guard let startTime = startTime else { return }
         let elapsedTime = Date().timeIntervalSince(startTime)
+        timeInSeconds = Int(elapsedTime)
         let hours = Int(elapsedTime) / 3600
         let minutes = Int(elapsedTime) / 60 % 60
         let seconds = Int(elapsedTime) % 60
@@ -87,4 +95,23 @@ class NavigationInformationStackViewModel {
         nullifyProperties()
         finishObserving()
     }
+    
+    func completeTrail(polyLine: String?, trailId: Int?) {
+        if let accessToken = token {
+            endPointCreator.changeAccessToken(accessToken: accessToken)
+            
+            endPointCreator.body = CompleteTrail(trailId: trailId, length: Int(distanceTravelled), time: timeInSeconds, routeGeometry: polyLine, elevationGain: Int(elevationGain))
+            
+            NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
+                guard let self else { return }
+                
+                switch result {
+                case .success(let responseModel): break
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            }
+        }
+    }
+    
 }

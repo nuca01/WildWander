@@ -221,6 +221,8 @@ class TrailShownViewController: UIViewController {
     
     private var trailsAdded: Bool = false
     
+    var trailID: Int?
+    
     //MARK: - Closures
     var didTapOnChooseOnTheMap: (_: Int) -> Bool
     
@@ -234,7 +236,7 @@ class TrailShownViewController: UIViewController {
     
     var didTapStartNavigation: () -> Bool
     
-    var didTapFinishNavigation: () -> Void
+    var didTapFinishNavigation: () -> String?
     
     var didTapAddTrail: () -> Void
     
@@ -246,7 +248,7 @@ class TrailShownViewController: UIViewController {
          didTapOnCancelButton: @escaping () -> Void,
          willAddCustomTrail: @escaping () -> Void,
          didTapStartNavigation: @escaping () -> Bool,
-         didTapFinishNavigation: @escaping () -> Void,
+         didTapFinishNavigation: @escaping () -> String?,
          didTapAddTrail: @escaping () -> Void
     ) {
         self.didTapOnChooseOnTheMap = didTapOnChooseOnTheMap

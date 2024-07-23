@@ -261,7 +261,13 @@ final class WildWanderMapView: UIView {
         var coordinates: [CLLocationCoordinate2D] = routeCoordinates ?? []
         if let routeGeometry {
             coordinates = routeGeometry.decodePolyline() ?? []
+            viewModel?.customTrailPolyline = nil
+        } else {
+            if let routeCoordinates {
+                viewModel?.customTrailPolyline = String.encodePolyline(from: routeCoordinates)
+            }
         }
+        
         let polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
         
         
@@ -473,11 +479,13 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
                 waypoints.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)))
             }
         let routeOptions = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        
         Directions.shared.calculate(routeOptions) {[weak self] session, result in
             switch result {
             case .failure(let error):
                 print(error)
-            case .success(let response):                self?.drawStaticAnnotationRouteWith(routeCoordinates: response.routes?.first?.shape?.coordinates)
+            case .success(let response):                
+                self?.drawStaticAnnotationRouteWith(routeCoordinates: response.routes?.first?.shape?.coordinates)
             }
         }
     }
