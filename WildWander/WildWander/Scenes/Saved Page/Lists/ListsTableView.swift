@@ -31,12 +31,6 @@ class ListsTableView: UITableView {
         dataSource = self
         delegate = self
         register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
-        
-        viewModel.listDidChange = { [weak self] in
-            DispatchQueue.main.async {
-                self?.reloadData()
-            }
-        }
     }
     
     required init?(coder: NSCoder) {

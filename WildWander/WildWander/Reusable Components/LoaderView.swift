@@ -10,6 +10,7 @@ import SwiftUI
 struct LoaderView: View {
     var body: some View {
         ProgressView()
+            .background(.clear)
     }
 }
 

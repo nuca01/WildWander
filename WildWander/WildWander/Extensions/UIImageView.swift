@@ -26,6 +26,7 @@ extension UIImageView {
     func addLoader() -> UIView? {
         let loaderView = UIHostingController(rootView: LoaderView()).view
         loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
         if let loaderView {
             addSubview(loaderView)
             NSLayoutConstraint.activate([
