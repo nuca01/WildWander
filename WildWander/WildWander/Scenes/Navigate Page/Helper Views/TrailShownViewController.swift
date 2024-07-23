@@ -138,7 +138,11 @@ class TrailShownViewController: UIViewController {
         resumeAndFinishStackView.removeFromSuperview()
         addToMainStackView(makeTrailAndChooseTrailStackView)
         informationStackView.finishObserving()
-        didTapFinishNavigation()
+        if trailsAdded {
+            informationStackView.tryToSaveInformation(polyLine: nil, trailId: trailID)
+        } else {
+            informationStackView.tryToSaveInformation(polyLine: didTapFinishNavigation(), trailId: nil)
+        }
     }
     
     private lazy var resumeAndFinishStackView: UIStackView = {
