@@ -143,6 +143,7 @@ class ExplorePageViewController: UIViewController {
     }
     
     private func didChangeMapBounds(to bounds: Bounds) {
+        trailsView.trailsWillChange()
         viewModel.getTrailsWith(bounds: bounds)
     }
     

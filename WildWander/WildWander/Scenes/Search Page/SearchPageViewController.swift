@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SearchPageViewController: UIViewController {
     //MARK: - Properties
     private lazy var viewModel = SearchPageViewModel(didGetData: { [weak self] in
         DispatchQueue.main.async {
             self?.tableView.reloadData()
+            self?.loaderView?.isHidden = true
         }
     })
     private lazy var searchBar: SearchBarView = {
@@ -44,6 +46,13 @@ class SearchPageViewController: UIViewController {
         return stackView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
     var sheetDidDisappear: () -> Void
     var didSelectLocation: (_: Location?) -> Void
 
@@ -55,6 +64,10 @@ class SearchPageViewController: UIViewController {
         constrainSearchBar()
         constrainStackView()
         constrainTableView()
+        if let loaderView {
+            view.addSubview(loaderView)
+            constrainLoaderView()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -66,6 +79,7 @@ class SearchPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         searchBar.becomeFirstResponder()
+        loaderView?.isHidden = true
     }
     
     //MARK: - Initializer
@@ -107,6 +121,17 @@ class SearchPageViewController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
         ])
     }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -135,6 +160,7 @@ extension SearchPageViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder();
         viewModel.search(with: textField.text ?? "")
+        loaderView?.isHidden = false
         return true
     }
     

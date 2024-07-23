@@ -10,6 +10,7 @@
 		87069EF32C4EF19700F403DA /* ProfilePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF22C4EF19700F403DA /* ProfilePageView.swift */; };
 		87069EF52C4EF28100F403DA /* ProfilePageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF42C4EF28100F403DA /* ProfilePageViewModel.swift */; };
 		87069EF72C4EF37400F403DA /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF62C4EF37400F403DA /* UserDetails.swift */; };
+		87069EF92C4F225600F403DA /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87069EF82C4F225600F403DA /* LoaderView.swift */; };
 		8707C4DA2C4DCCB4009AA794 /* CreateList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4D92C4DCCB4009AA794 /* CreateList.swift */; };
 		8707C4DC2C4DD863009AA794 /* BoolResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8707C4DB2C4DD863009AA794 /* BoolResult.swift */; };
 		871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 871C851E2C332FDE00F20612 /* AppDelegate.swift */; };
@@ -83,6 +84,7 @@
 		87069EF22C4EF19700F403DA /* ProfilePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageView.swift; sourceTree = "<group>"; };
 		87069EF42C4EF28100F403DA /* ProfilePageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePageViewModel.swift; sourceTree = "<group>"; };
 		87069EF62C4EF37400F403DA /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
+		87069EF82C4F225600F403DA /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
 		8707C4D92C4DCCB4009AA794 /* CreateList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateList.swift; sourceTree = "<group>"; };
 		8707C4DB2C4DD863009AA794 /* BoolResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolResult.swift; sourceTree = "<group>"; };
 		871C851B2C332FDE00F20612 /* WildWander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WildWander.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -289,6 +291,7 @@
 				87876DDA2C43356200B439E7 /* TabSheetPresentationController.swift */,
 				87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */,
 				87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */,
+				87069EF82C4F225600F403DA /* LoaderView.swift */,
 			);
 			path = "Reusable Components";
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */,
 				87B8D0752C4C8E47006858EE /* ListsTableView.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
+				87069EF92C4F225600F403DA /* LoaderView.swift in Sources */,
 				87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */,
 				8707C4DC2C4DD863009AA794 /* BoolResult.swift in Sources */,
 				87876DE82C4435B900B439E7 /* UIStackView.swift in Sources */,
