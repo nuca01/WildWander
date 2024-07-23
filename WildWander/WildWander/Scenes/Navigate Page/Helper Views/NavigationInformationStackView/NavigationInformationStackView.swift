@@ -94,6 +94,10 @@ class NavigationInformationStackView: UIStackView {
         viewModel.complete(trailDetails: trailDetails, trailId: trailId)
     }
     
+    func publishTrail(trailDetails: TrailDetails) {
+        viewModel.publishTrail(trailDetails: trailDetails, trailCompleted: false)
+    }
+    
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {
         let stackView = UIStackView()
         stackView.axis = .vertical

@@ -61,6 +61,8 @@ class NavigatePageViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
         }
+    } willPublishTrail: { [weak self] in
+        self?.mapView.viewModel?.customTrail ?? TrailDetails()
     }
     
     private var trailToDraw: Trail?
@@ -92,7 +94,7 @@ class NavigatePageViewController: UIViewController {
     private func showPublishTrailAlert(
         with saveInformation: @escaping (_: TrailDetails) -> Void
     ) {
-        var dimmedView = dimPresentedView()
+        let dimmedView = dimPresentedView()
         
         let publishTrailAlert = WildWanderAlertView(
             title: "Do you want to publish the trail you just completed?",
@@ -120,7 +122,7 @@ class NavigatePageViewController: UIViewController {
     }
     
     private func dimPresentedView() -> UIView {
-        var dimmedView = UIView()
+        let dimmedView = UIView()
         dimmedView.frame = makeCustomTrailViewController.view.bounds
         dimmedView.backgroundColor = .black.withAlphaComponent(0.6)
         makeCustomTrailViewController.view.addSubview(dimmedView)

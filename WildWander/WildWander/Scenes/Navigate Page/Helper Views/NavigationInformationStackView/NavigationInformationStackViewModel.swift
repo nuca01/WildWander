@@ -102,7 +102,7 @@ class NavigationInformationStackViewModel {
             endPointCreator.changeAccessToken(accessToken: accessToken)
             
             if let trailDetails, let _ = trailDetails.length {
-                publishTrail(trailDetails: trailDetails)
+                publishTrail(trailDetails: trailDetails, trailCompleted: true)
             } else {
                 if let trailId {
                     completeTrail(routeGeometry:trailDetails?.routeGeometry, trailId: trailId)
@@ -117,7 +117,7 @@ class NavigationInformationStackViewModel {
         deleteActivity()
     }
     
-    private func publishTrail(trailDetails: TrailDetails)  {
+    func publishTrail(trailDetails: TrailDetails, trailCompleted: Bool)  {
         endPointCreator.body = trailDetails
         endPointCreator.path = "/api/Trail/AddTrail"
         
@@ -126,7 +126,9 @@ class NavigationInformationStackViewModel {
             
             switch result {
             case .success(let responseModel):
-                completeTrail(routeGeometry: trailDetails.routeGeometry, trailId: responseModel)
+                if trailCompleted {
+                    completeTrail(routeGeometry: trailDetails.routeGeometry, trailId: responseModel)
+                }
             case .failure(let error):
                 print("Error: \(error)")
             }
@@ -137,7 +139,7 @@ class NavigationInformationStackViewModel {
         endPointCreator.path = "/api/Trail/CompleteTrail"
         endPointCreator.body = CompleteTrail(trailId: trailId, length: Int(distanceTravelled), time: timeInSeconds, routeGeometry: routeGeometry, elevationGain: Int(elevationGain))
         
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
+        NetworkingService.shared.sendRequest(endpoint: endPointCreator) {(result: Result<Bool, NetworkError>) in
             switch result {
             case .success(_): break
             case .failure(let error):

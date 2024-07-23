@@ -21,6 +21,7 @@
 		8721055A2C4F4A250000C574 /* NavigationInformationStackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872105592C4F4A250000C574 /* NavigationInformationStackViewModel.swift */; };
 		8721055D2C4F5D8D0000C574 /* CompleteTrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */; };
 		8721055F2C4FE2C80000C574 /* TrailDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721055E2C4FE2C80000C574 /* TrailDetails.swift */; };
+		872105612C50133A0000C574 /* TrailShownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872105602C50133A0000C574 /* TrailShownViewModel.swift */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
 		876A7A722C3448250022B85E /* NetworkingService in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A712C3448250022B85E /* NetworkingService */; };
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
@@ -100,6 +101,7 @@
 		872105592C4F4A250000C574 /* NavigationInformationStackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationInformationStackViewModel.swift; sourceTree = "<group>"; };
 		8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTrail.swift; sourceTree = "<group>"; };
 		8721055E2C4FE2C80000C574 /* TrailDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailDetails.swift; sourceTree = "<group>"; };
+		872105602C50133A0000C574 /* TrailShownViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailShownViewModel.swift; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
 		8776E01D2C4D42A1007D4F95 /* TrailsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailsCellViewModel.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				87F0ED872C4151520092A756 /* TrailShownViewController.swift */,
+				872105602C50133A0000C574 /* TrailShownViewModel.swift */,
 				8721055B2C4F4DE70000C574 /* NavigationInformationStackView */,
 			);
 			path = "Helper Views";
@@ -656,6 +659,7 @@
 				87876DEC2C44B4DB00B439E7 /* NavigationInformationStackView.swift in Sources */,
 				87876DFE2C45EF9900B439E7 /* SearchPageViewModel.swift in Sources */,
 				8721055F2C4FE2C80000C574 /* TrailDetails.swift in Sources */,
+				872105612C50133A0000C574 /* TrailShownViewModel.swift in Sources */,
 				87F0ED912C41FB580092A756 /* ExplorePageViewModel.swift in Sources */,
 				87B8D07C2C4C9AB9006858EE /* ListCell.swift in Sources */,
 				87876DDB2C43356200B439E7 /* TabSheetPresentationController.swift in Sources */,
