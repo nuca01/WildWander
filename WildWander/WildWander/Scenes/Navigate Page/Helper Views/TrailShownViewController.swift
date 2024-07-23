@@ -9,7 +9,7 @@ import UIKit
 
 class TrailShownViewController: UIViewController {
     //MARK: - Properties
-    private var viewModel: TrailShownViewModel = TrailShownViewModel()
+    var viewModel: TrailShownViewModel = TrailShownViewModel()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -147,13 +147,18 @@ class TrailShownViewController: UIViewController {
         addToMainStackView(makeTrailAndChooseTrailStackView)
         didTapFinishNavigation()
         informationStackView.finishObserving()
-        didFinish(!trailsAdded) { [weak self] trailDetails in
-            guard let self else { return }
-            if trailsAdded {
-                informationStackView.tryToSaveInformation(trailDetails: nil, trailId: trailID)
-            } else {
-                informationStackView.tryToSaveInformation(trailDetails: trailDetails, trailId: nil)
+        didTapOnCancelButton()
+        if viewModel.userLoggedIn {
+            didFinish(!trailsAdded) { [weak self] trailDetails in
+                guard let self else { return }
+                if trailsAdded {
+                    informationStackView.tryToSaveInformation(trailDetails: nil, trailId: trailID)
+                } else {
+                    informationStackView.tryToSaveInformation(trailDetails: trailDetails, trailId: nil)
+                }
             }
+        } else {
+            informationStackView.deleteActivity()
         }
     }
     

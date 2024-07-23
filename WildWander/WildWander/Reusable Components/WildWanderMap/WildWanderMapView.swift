@@ -486,8 +486,8 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
                 print(error)
             case .success(let response):
                 let firstRoute = response.routes?.first
-                self?.drawStaticAnnotationRouteWith(routeCoordinates: firstRoute?.shape?.coordinates)
                 self?.viewModel?.customTrail = TrailDetails(length: firstRoute?.distance, time: Int(firstRoute?.expectedTravelTime ?? 0))
+                self?.drawStaticAnnotationRouteWith(routeCoordinates: firstRoute?.shape?.coordinates)
             }
         }
     }

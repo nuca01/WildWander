@@ -84,6 +84,10 @@ class NavigationInformationStackView: UIStackView {
     
     func deleteActivity() {
         viewModel.deleteActivity()
+        nullifyLabels()
+    }
+    
+    private func nullifyLabels() {
         timeValueLabel.text = "0:0"
         distanceValueLabel.text = "0,00m"
         elevationGainValueLabel.text = "0,00m"
@@ -92,10 +96,12 @@ class NavigationInformationStackView: UIStackView {
     
     func tryToSaveInformation(trailDetails: TrailDetails?, trailId: Int?) {
         viewModel.complete(trailDetails: trailDetails, trailId: trailId)
+        nullifyLabels()
     }
     
     func publishTrail(trailDetails: TrailDetails) {
         viewModel.publishTrail(trailDetails: trailDetails, trailCompleted: false)
+        nullifyLabels()
     }
     
     private func generateStackView(with title: String, and valueLabel: UILabel) -> UIStackView {

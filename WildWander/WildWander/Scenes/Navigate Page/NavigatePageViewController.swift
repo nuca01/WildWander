@@ -105,8 +105,6 @@ class NavigatePageViewController: UIViewController {
         
         publishTrailAlert.onFirstButtonTapped = { [weak self] in
             guard let self else { return }
-            mapView.viewModel?.customTrail?.length = nil
-            mapView.viewModel?.customTrail?.time = nil
             
             saveInformation(mapView.viewModel?.customTrail ?? TrailDetails())
             dimmedView.removeFromSuperview()
@@ -114,6 +112,9 @@ class NavigatePageViewController: UIViewController {
         
         publishTrailAlert.onCancelTapped = { [weak self] in
             guard let self else { return }
+            mapView.viewModel?.customTrail?.length = nil
+            mapView.viewModel?.customTrail?.time = nil
+            
             saveInformation(mapView.viewModel?.customTrail ?? TrailDetails())
             dimmedView.removeFromSuperview()
         }
