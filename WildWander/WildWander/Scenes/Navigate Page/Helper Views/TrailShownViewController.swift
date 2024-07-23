@@ -51,7 +51,7 @@ class TrailShownViewController: UIViewController {
     
     private lazy var addRemoveStackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +63,12 @@ class TrailShownViewController: UIViewController {
         button.setImage(UIImage(named: "plus"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(UIAction { [weak self] _ in
-            self?.addCheckPoint()
+            guard let self else { return }
+            self.addCheckPoint()
+            checkPointsScrollView.layoutIfNeeded()
+            
+            let rightOffset = CGPoint(x: self.checkPointsScrollView.contentSize.width - self.checkPointsScrollView.bounds.size.width, y: 0)
+            self.checkPointsScrollView.setContentOffset(rightOffset, animated: true)
         }, for: .touchUpInside)
         return button
     }()
@@ -100,6 +105,19 @@ class TrailShownViewController: UIViewController {
         ])
         
         return scrollView
+    }()
+    
+    private lazy var checkPointsAndAddRemoveStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 10
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackView.addArranged(subviews: [addRemoveStackView, checkPointsScrollView])
+        
+        return stackView
     }()
     
     //MARK: - Navigation Views
@@ -377,8 +395,7 @@ class TrailShownViewController: UIViewController {
         scrollView.addSubview(mainStackView)
         
         customTrailStackView.addArranged(subviews: [
-            checkPointsScrollView,
-            addRemoveStackView,
+            checkPointsAndAddRemoveStackView
         ])
         
         addRemoveStackView.addArranged(subviews: [
@@ -474,8 +491,9 @@ extension TrailShownViewController {
     private func setUpConstraints() {
         constrainScrollView()
         constrainMainStackView()
-        constrainCheckPointsStackView()
+        constrainCheckPointsScrollView()
         constrainAddAndRemoveButtons()
+        constrainCheckPointsAndAddRemoveStackView()
     }
     
     private func constrainMainStackView() {
@@ -501,10 +519,17 @@ extension TrailShownViewController {
         mainStackView.addArrangedSubview(view)
     }
     
-    private func constrainCheckPointsStackView() {
+    private func constrainCheckPointsAndAddRemoveStackView() {
         NSLayoutConstraint.activate([
-            checkPointsScrollView.leadingAnchor.constraint(equalTo: customTrailStackView.leadingAnchor),
-            checkPointsScrollView.trailingAnchor.constraint(equalTo: customTrailStackView.trailingAnchor),
+            checkPointsAndAddRemoveStackView.leadingAnchor.constraint(equalTo: customTrailStackView.leadingAnchor),
+            checkPointsAndAddRemoveStackView.trailingAnchor.constraint(equalTo: customTrailStackView.trailingAnchor),
+        ])
+    }
+    
+    private func constrainCheckPointsScrollView() {
+        NSLayoutConstraint.activate([
+            checkPointsScrollView.leadingAnchor.constraint(equalTo: addRemoveStackView.trailingAnchor, constant: 10),
+            checkPointsScrollView.trailingAnchor.constraint(equalTo: checkPointsAndAddRemoveStackView.trailingAnchor),
             checkPointsScrollView.heightAnchor.constraint(equalToConstant: 70)
         ])
     }
@@ -642,7 +667,7 @@ extension TrailShownViewController {
         titleColor: UIColor? = nil
     ) -> UIButton {
         let deleteButton = UIButton.wildWanderGreenButton(titled: title)
-        deleteButton.addAction(deleteButtonAction, for: .touchUpInside)
+        deleteButton.addAction(action, for: .touchUpInside)
         
         if let backgroundColor {
             deleteButton.backgroundColor = backgroundColor

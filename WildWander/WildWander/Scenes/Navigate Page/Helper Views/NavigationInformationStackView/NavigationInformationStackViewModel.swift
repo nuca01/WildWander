@@ -105,7 +105,7 @@ class NavigationInformationStackViewModel {
                 publishTrail(trailDetails: trailDetails, trailCompleted: true)
             } else {
                 if let trailId {
-                    completeTrail(routeGeometry:trailDetails?.routeGeometry, trailId: trailId)
+                    completeTrail(routeGeometry: trailDetails?.routeGeometry, trailId: trailId)
                 } else {
                     savingFailed?()
                 }
