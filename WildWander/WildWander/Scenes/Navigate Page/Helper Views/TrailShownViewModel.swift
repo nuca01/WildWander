@@ -12,7 +12,15 @@ class TrailShownViewModel {
         KeychainHelper.retrieveToken(forKey: "authorizationToken")
     }
     
+    var onTokenChangedToNil: (() -> Void)?
+    
     var userLoggedIn: Bool {
         token == nil ? false: true
+    }
+    
+    func checkIfTokenChangedToNil() {
+        if !userLoggedIn {
+            onTokenChangedToNil?()
+        }
     }
 }

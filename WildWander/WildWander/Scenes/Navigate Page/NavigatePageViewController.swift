@@ -56,7 +56,6 @@ class NavigatePageViewController: UIViewController {
         } else {
             saveInformation(nil)
         }
-        
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
@@ -88,6 +87,11 @@ class NavigatePageViewController: UIViewController {
             presentedViewController.dismiss(animated: true)
         }
         trailToDraw = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        makeCustomTrailViewController.viewModel.checkIfTokenChangedToNil()
     }
     
     //MARK: - Methods

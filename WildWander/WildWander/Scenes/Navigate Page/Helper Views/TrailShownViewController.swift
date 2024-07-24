@@ -9,7 +9,14 @@ import UIKit
 
 class TrailShownViewController: UIViewController {
     //MARK: - Properties
-    var viewModel: TrailShownViewModel = TrailShownViewModel()
+    lazy var viewModel: TrailShownViewModel = {
+        let viewModel = TrailShownViewModel()
+        viewModel.onTokenChangedToNil = { [weak self] in
+            self?.publishButton.removeFromSuperview()
+        }
+        
+        return viewModel
+    }()
     
     //MARK: - addTrailAndChooseTrailStackView
     private lazy var makeTrailAndChooseTrailStackView: UIStackView = {
@@ -264,6 +271,12 @@ class TrailShownViewController: UIViewController {
     private lazy var informationStackView = NavigationInformationStackView()
     
     //MARK: - customTrailNavigationStackView
+    private lazy var  publishButton = generateAdditionalButtonForStackView(
+        title: "Publish",
+        action: publishButtonAction,
+        backgroundColor: UIColor.with(red: 222, green: 111, blue: 31, alpha: 100)
+    )
+    
     private lazy var customTrailNavigationStackView: UIStackView = {
         let editTrailAction = UIAction { [weak self] _ in
             self?.customTrailNavigationStackView.removeFromSuperview()
@@ -273,13 +286,9 @@ class TrailShownViewController: UIViewController {
         let editAndStartStackView =  ButtonsStackView(leftTitle: "Edit Trail", rightTitle: "Start Trail", leftAction: editTrailAction, rightAction: startTrailAction)
         
         if viewModel.userLoggedIn {
-            let publishButton = generateAdditionalButtonForStackView(
-                title: "Publish",
-                action: publishButtonAction,
-                backgroundColor: UIColor.with(red: 222, green: 111, blue: 31, alpha: 100)
-            )
             return generateAdditionalStackView(with: editAndStartStackView, and: publishButton)
         }
+        
         return editAndStartStackView
     }()
     
