@@ -18,6 +18,14 @@ final class ProfilePageViewModel: ObservableObject {
         token == nil ? false: true
     }
     
+    var currentYear: String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        let currentYear = dateFormatter.string(from: date)
+        return currentYear
+    }
+    
     private var endPointCreator: EndPointCreator?
     
     @Published var userDetails: UserDetails?
@@ -83,5 +91,9 @@ final class ProfilePageViewModel: ObservableObject {
     
     func deleteProfileData() {
         UserDefaults.standard.removeObject(forKey: "profileData")
+    }
+    
+    func userDetailsLengthInKilometres() -> Int {
+        userDetails?.completedLength ?? 0 / 1000
     }
 }

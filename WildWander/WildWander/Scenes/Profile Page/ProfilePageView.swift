@@ -13,14 +13,6 @@ struct ProfilePageView: View {
     private var darkGreen = Color(uiColor: .darkGreen)
     private var wildWanderGreen = Color(uiColor: .wildWanderGreen)
     
-    private var currentYear: String {
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy"
-        let currentYear = dateFormatter.string(from: date)
-        return currentYear
-    }
-    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -73,9 +65,10 @@ struct ProfilePageView: View {
     private var statsHStack: some View {
         HStack {
             activityInformationVStack(
-                value: viewModel.userDetails?.completedTrailCount ?? 0,
+                value: viewModel.userDetails?.completedLength ?? 0,
                 title: "Activities"
             )
+            
             Spacer()
             
             Divider()
@@ -83,7 +76,7 @@ struct ProfilePageView: View {
             Spacer()
                 .frame(maxWidth: 40)
             activityInformationVStack(
-                value: viewModel.userDetails?.completedLength ?? 0,
+                value: viewModel.userDetailsLengthInKilometres(),
                 title: "Kilometres"
             )
             
@@ -95,7 +88,7 @@ struct ProfilePageView: View {
     
     private var statsVStack: some View {
         VStack(alignment: .leading) {
-            Text("\(currentYear) Stats")
+            Text("\(viewModel.currentYear) Stats")
                 .font(.system(size: 20, weight: .bold))
                 .foregroundStyle(wildWanderGreen)
             
@@ -127,10 +120,9 @@ struct ProfilePageView: View {
     
     //MARK: - Method
     private func activityInformationVStack(value: Int, title: String) -> some View {
-        
         VStack(alignment: .leading) {
             Text("\(value)")
-                .font(.system(size: 60, weight: .bold))
+                .font(.system(size: 50, weight: .bold))
             
             Text(title)
                 .foregroundStyle(wildWanderGreen)
