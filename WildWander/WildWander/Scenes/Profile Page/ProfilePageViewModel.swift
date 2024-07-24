@@ -94,6 +94,20 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func userDetailsLengthInKilometres() -> Int {
-        userDetails?.completedLength ?? 0 / 1000
+        (userDetails?.completedLength ?? 0) / 1000
+    }
+    
+    func getAge() -> Int? {
+        let dateFormatter = ISO8601DateFormatter()
+        
+        guard let date = dateFormatter.date(from: userDetails?.dateOfBirth ?? "") else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let ageComponents = calendar.dateComponents([.year], from: date, to: currentDate)
+        
+        return ageComponents.year
     }
 }

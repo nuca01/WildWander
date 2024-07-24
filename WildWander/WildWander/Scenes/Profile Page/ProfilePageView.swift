@@ -17,28 +17,39 @@ struct ProfilePageView: View {
         ScrollView {
             VStack(alignment: .leading) {
                 Spacer()
-                    .frame(maxHeight: 50)
+                    .frame(height: 50)
                 
                 profileIcon
                 
                 nameText
+                
+                Spacer()
+                    .frame(height: 10)
+                
+                ageText
+                
+                Spacer()
+                    .frame(height: 25)
                 
                 Divider()
                     .frame(height: 3)
                     .background(.black.opacity(0.1))
                 
                 Spacer()
-                    .frame(maxHeight: 30)
+                    .frame(height: 25)
                 
                 statsVStack
                 
-                logoutButton
+                
                 
                 Spacer()
+                
+                logoutButton
             }
             .padding(.horizontal)
             .foregroundStyle(darkGreen)
         }
+        .frame(maxHeight: .infinity)
         .refreshable {
             viewModel.getUserInformation()
         }
@@ -58,14 +69,20 @@ struct ProfilePageView: View {
     }
     
     private var nameText: some View {
-        Text("\(viewModel.userDetails?.firstName ?? "") \(viewModel.userDetails?.lastName ?? "") ")
-            .font(.system(size: 32, weight: .semibold))
+        Text("\(viewModel.userDetails?.firstName ?? "") \(viewModel.userDetails?.lastName ?? "fddd") ")
+            .font(.system(size: 36, weight: .semibold))
+    }
+    
+    private var ageText: some View {
+        Text("Age: \(viewModel.getAge() ?? 0) years old")
+            .font(.system(size: 14, weight: .bold))
+            .foregroundStyle(.gray)
     }
     
     private var statsHStack: some View {
         HStack {
             activityInformationVStack(
-                value: viewModel.userDetails?.completedLength ?? 0,
+                value: viewModel.userDetails?.completedTrailCount ?? 0,
                 title: "Activities"
             )
             
