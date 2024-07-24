@@ -60,6 +60,7 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func logOut() {
+        userDetails = nil
         _ = KeychainHelper.deleteToken(forKey: "authorizationToken")
         updateLogInStatus()
         didLogOut?()
