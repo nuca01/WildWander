@@ -55,7 +55,10 @@ class SavedPageViewController: UIViewController {
         let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         logInPageViewController.didLogIn = { [weak self] in
-            self?.showOrHideListsTableView()
+            guard let self else { return }
+            if showListsTableView() {
+                listsTableViewModel.getSavedLists()
+            }
         }
         
         sheetNavigationController.modalPresentationStyle = .custom
@@ -99,7 +102,9 @@ class SavedPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        showOrHideListsTableView()
+        if showListsTableView() {
+            listsTableViewModel.getSavedLists()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -157,13 +162,14 @@ class SavedPageViewController: UIViewController {
         }
     }
     
-    private func showOrHideListsTableView() {
+    private func showListsTableView() -> Bool {
         if viewModel.userLoggedIn {
             loaderView?.isHidden = false
             listsTableView.isHidden = false
-            listsTableViewModel.getSavedLists()
+            return true
         } else {
             listsTableView.isHidden = true
+            return false
         }
     }
 }
