@@ -35,11 +35,23 @@ class TrailShownViewController: UIViewController {
     private lazy var customTrailStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .trailing
+        stackView.alignment = .leading
         stackView.distribution = .fill
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
+    }()
+    
+    private lazy var checkPointLimitLabel: UILabel = {
+        let label = UILabel()
+        label.text = "mark up to 25 checkpoints on the map"
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.numberOfLines = 0
+        label.textColor = .gray
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
     }()
     
     private lazy var addRemoveStackView: UIStackView = {
@@ -57,11 +69,17 @@ class TrailShownViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addAction(UIAction { [weak self] _ in
             guard let self else { return }
-            self.addCheckPoint()
-            checkPointsScrollView.layoutIfNeeded()
+            if checkPointsStackView.subviews.count == 2 {
+                removeButton.isEnabled = true
+            }
             
-            let rightOffset = CGPoint(x: self.checkPointsScrollView.contentSize.width - self.checkPointsScrollView.bounds.size.width, y: 0)
-            self.checkPointsScrollView.setContentOffset(rightOffset, animated: true)
+            self.addCheckPoint()
+            
+            scrollToRight()
+            
+            if checkPointsStackView.subviews.count == 25 {
+                button.isEnabled = false
+            }
         }, for: .touchUpInside)
         return button
     }()
@@ -70,8 +88,19 @@ class TrailShownViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "minus"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isEnabled = false
         button.addAction(UIAction { [weak self] _ in
-            self?.removeCheckPoint()
+            guard let self else { return }
+            
+            if checkPointsStackView.subviews.count == 25 {
+                addButton.isEnabled = true
+            }
+            
+            removeCheckPoint()
+            
+            if checkPointsStackView.subviews.count == 2 {
+                button.isEnabled = false
+            }
         }, for: .touchUpInside)
         return button
     }()
@@ -224,7 +253,7 @@ class TrailShownViewController: UIViewController {
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
-        stackView.spacing = 20
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         stackView.addArrangedSubview(informationStackView)
@@ -386,8 +415,11 @@ class TrailShownViewController: UIViewController {
         view.addSubview(mainStackView)
         
         customTrailStackView.addArranged(subviews: [
+            checkPointLimitLabel,
             checkPointsAndAddRemoveStackView
         ])
+        
+        customTrailStackView.setCustomSpacing(5, after: checkPointLimitLabel)
         
         addRemoveStackView.addArranged(subviews: [
             addButton,
@@ -426,6 +458,8 @@ class TrailShownViewController: UIViewController {
         while (checkPointsStackView.subviews.count > 2) {
             checkPointsStackView.subviews.last?.removeFromSuperview()
         }
+        
+        removeButton.isEnabled = false
     }
     
     //MARK: - Button Actions
@@ -439,7 +473,6 @@ class TrailShownViewController: UIViewController {
     
     private func removeCheckPoint() {
         if let activeButtonIndex {
-            if checkPointsStackView.subviews.count == 2 { return }
             let futureActiveIndex = didDeleteCheckpoint(activeButtonIndex)
             checkPointsStackView.subviews[activeButtonIndex].removeFromSuperview()
             labels.remove(at: activeButtonIndex)
@@ -459,6 +492,12 @@ class TrailShownViewController: UIViewController {
         if didChangeCheckpoint {
             changeBorderColor(for: button)
         }
+    }
+    
+    private func scrollToRight() {
+        checkPointsScrollView.layoutIfNeeded()
+        let rightOffset = CGPoint(x: self.checkPointsScrollView.contentSize.width - self.checkPointsScrollView.bounds.size.width, y: 0)
+        self.checkPointsScrollView.setContentOffset(rightOffset, animated: true)
     }
 }
 
@@ -480,7 +519,6 @@ extension TrailShownViewController: UITextFieldDelegate {
 //MARK: - Constraints
 extension TrailShownViewController {
     private func setUpConstraints() {
-//        constrainScrollView()
         constrainMainStackView()
         constrainCheckPointsScrollView()
         constrainAddAndRemoveButtons()
