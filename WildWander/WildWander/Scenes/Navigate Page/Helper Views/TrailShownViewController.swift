@@ -22,6 +22,7 @@ class TrailShownViewController: UIViewController {
     private lazy var makeTrailAndChooseTrailStackView: UIStackView = {
         let makeTrailAction = UIAction { [weak self] _ in
             guard let self else { return }
+            trailsAdded = false
             makeTrailAndChooseTrailStackView.removeFromSuperview()
             revertCheckPointStackView()
             configureCustomTrailView()
@@ -234,6 +235,7 @@ class TrailShownViewController: UIViewController {
         } else {
             informationStackView.deleteActivity()
         }
+        trailsAdded = false
     }
     
     private lazy var resumeAndFinishStackView: UIStackView = {
@@ -303,7 +305,6 @@ class TrailShownViewController: UIViewController {
     lazy var startTrailAction = UIAction { [weak self] _ in
         guard let self else { return }
         if didTapStartNavigation() {
-            trailsAdded = false
             startAndCancelStackView.removeFromSuperview()
             customTrailNavigationStackView.removeFromSuperview()
             addToMainStackView(pauseAndFinishStackView)
@@ -397,9 +398,8 @@ class TrailShownViewController: UIViewController {
         setUpConstraints()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if trailsAdded {
             cancelAnyPreviousActivity()
             
