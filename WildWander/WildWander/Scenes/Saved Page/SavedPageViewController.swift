@@ -51,7 +51,12 @@ class SavedPageViewController: UIViewController {
     }()
     
     private lazy var sheetNavigationController: UINavigationController = {
-        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController(explanationLabelText: "Sign in to save trails"))
+        let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to save trails")
+        let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
+        
+        logInPageViewController.didLogIn = { [weak self] in
+            self?.showOrHideListsTableView()
+        }
         
         sheetNavigationController.modalPresentationStyle = .custom
         sheetNavigationController.transitioningDelegate = self
@@ -94,13 +99,7 @@ class SavedPageViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if viewModel.userLoggedIn {
-            loaderView?.isHidden = false
-            listsTableView.isHidden = false
-            listsTableViewModel.getSavedLists()
-        } else {
-            listsTableView.isHidden = true
-        }
+        showOrHideListsTableView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -155,6 +154,16 @@ class SavedPageViewController: UIViewController {
         let controller = UIHostingController(rootView: createAListView)
         DispatchQueue.main.async { [weak self] in
             self?.present(controller, animated: true)
+        }
+    }
+    
+    private func showOrHideListsTableView() {
+        if viewModel.userLoggedIn {
+            loaderView?.isHidden = false
+            listsTableView.isHidden = false
+            listsTableViewModel.getSavedLists()
+        } else {
+            listsTableView.isHidden = true
         }
     }
 }
