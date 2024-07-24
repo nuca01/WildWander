@@ -157,7 +157,7 @@ class TrailShownViewController: UIViewController {
             addToMainStackView(customTrailNavigationStackView)
             didTapOnFinishButton()
         }
-        return ButtonsStackView(leftTitle: "Finish", rightTitle: "Cancel", leftAction: finishMakingTrailAction, rightAction: cancelButtonAction)
+        return ButtonsStackView(leftTitle: "Cancel", rightTitle: "Finish", leftAction: cancelButtonAction, rightAction: finishMakingTrailAction)
     }()
     
     private lazy var cancelButtonAction: UIAction = UIAction { [weak self] _ in
@@ -174,7 +174,7 @@ class TrailShownViewController: UIViewController {
     }
     
     private lazy var startAndCancelStackView: UIStackView = {
-        return ButtonsStackView(leftTitle: "Start", rightTitle: "Cancel", leftAction: startTrailAction, rightAction: cancelButtonAction)
+        return ButtonsStackView(leftTitle: "Cancel", rightTitle: "Start", leftAction: cancelButtonAction, rightAction: startTrailAction)
     }()
     
     private lazy var pauseAndFinishStackView: UIStackView = {
@@ -186,7 +186,7 @@ class TrailShownViewController: UIViewController {
             didTapFinishNavigation()
         }
         
-        let pauseAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Pause", leftAction: finishAction, rightAction: pauseNavigationAction)
+        let pauseAndFinish = ButtonsStackView(leftTitle: "Pause", rightTitle: "Finish", leftAction: pauseNavigationAction, rightAction: finishAction)
         
         let deleteButton = generateAdditionalButtonForStackView(
             title: "Delete",
@@ -217,9 +217,11 @@ class TrailShownViewController: UIViewController {
         pauseAndFinishStackView.removeFromSuperview()
         resumeAndFinishStackView.removeFromSuperview()
         addToMainStackView(makeTrailAndChooseTrailStackView)
+        
         didTapFinishNavigation()
-        informationStackView.finishObserving()
         didTapOnCancelButton()
+        informationStackView.finishObserving()
+        
         if viewModel.userLoggedIn {
             didFinish(!trailsAdded) { [weak self] trailDetails in
                 guard let self else { return }
@@ -244,7 +246,7 @@ class TrailShownViewController: UIViewController {
             }
         }
         
-        let resumeAndFinish = ButtonsStackView(leftTitle: "Finish", rightTitle: "Resume", leftAction: finishAction, rightAction: resumeNavigationAction)
+        let resumeAndFinish = ButtonsStackView(leftTitle: "Resume", rightTitle: "Finish", leftAction: resumeNavigationAction, rightAction: finishAction)
         
         let deleteButton = generateAdditionalButtonForStackView(
             title: "Delete",
