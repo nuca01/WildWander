@@ -31,7 +31,7 @@ final class ProfilePageViewModel: ObservableObject {
     //MARK: - Methods
     func getUserInformation() {
         NetworkingService.shared.sendRequest(endpoint: endPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
-            guard let self else { return }
+            guard let self = self else { return }
             
             switch result {
             case .success(let responseModel):
@@ -44,7 +44,7 @@ final class ProfilePageViewModel: ObservableObject {
                 case .unknown:
                     message = "unknown error has occurred"
                 case .decode:
-                    message = "decode error has occured"
+                    message = "decode error has occurred"
                 case .invalidURL:
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):

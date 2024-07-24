@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserDetails: Decodable {
+struct UserDetails: Codable {
     var firstName: String?
     var lastName: String?
     var imgUrl: String?

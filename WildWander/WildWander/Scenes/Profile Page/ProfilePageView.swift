@@ -22,29 +22,34 @@ struct ProfilePageView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Spacer()
-                .frame(maxHeight: 50)
-            
-            profileIcon
-            
-            nameText
-            
-            Divider()
-                .frame(height: 3)
-                .background(.black.opacity(0.1))
-            
-            Spacer()
-                .frame(maxHeight: 30)
-            
-            statsVStack
-            
-            logoutButton
-            
-            Spacer()
+        ScrollView {
+            VStack(alignment: .leading) {
+                Spacer()
+                    .frame(maxHeight: 50)
+                
+                profileIcon
+                
+                nameText
+                
+                Divider()
+                    .frame(height: 3)
+                    .background(.black.opacity(0.1))
+                
+                Spacer()
+                    .frame(maxHeight: 30)
+                
+                statsVStack
+                
+                logoutButton
+                
+                Spacer()
+            }
+            .padding(.horizontal)
+            .foregroundStyle(darkGreen)
         }
-        .padding(.horizontal)
-        .foregroundStyle(darkGreen)
+        .refreshable {
+            viewModel.getUserInformation()
+        }
     }
     
     private var profileIcon: some View {

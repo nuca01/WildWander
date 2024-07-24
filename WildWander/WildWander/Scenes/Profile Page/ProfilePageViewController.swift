@@ -58,7 +58,7 @@ class ProfilePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateLogInStatus()
+//        viewModel.updateLogInStatus()
         
         showOrHideProfile()
     }
