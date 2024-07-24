@@ -66,7 +66,7 @@ struct ProfilePageView: View {
     }
     
     private var nameText: some View {
-        Text("\(viewModel.userDetails?.firstName ?? "") \(viewModel.userDetails?.lastName ?? "unavailable") ")
+        Text("\(viewModel.userDetails?.firstName ?? "") \(viewModel.userDetails?.lastName ?? "") ")
             .font(.system(size: 32, weight: .semibold))
     }
     

@@ -35,8 +35,9 @@ final class ProfilePageViewModel: ObservableObject {
             
             switch result {
             case .success(let responseModel):
-                DispatchQueue.main.async {
-                    self.userDetails = responseModel
+                DispatchQueue.main.async { [weak self] in
+                    self?.saveUserDetailsLocally(responseModel)
+                    self?.userDetails = responseModel
                 }
             case .failure(let error):
                 var message = ""
@@ -60,9 +61,27 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func logOut() {
+        deleteProfileData()
         userDetails = nil
         _ = KeychainHelper.deleteToken(forKey: "authorizationToken")
         updateLogInStatus()
         didLogOut?()
+    }
+    
+    private func saveUserDetailsLocally(_ userDetails: UserDetails) {
+        if let encodedData = try? JSONEncoder().encode(userDetails) {
+            UserDefaults.standard.set(encodedData, forKey: "userDetails")
+        }
+    }
+    
+    func loadUserDetailsFromLocal() {
+        if let savedData = UserDefaults.standard.data(forKey: "userDetails"),
+           let profileData = try? JSONDecoder().decode(UserDetails.self, from: savedData) {
+            userDetails = profileData
+        }
+    }
+    
+    func deleteProfileData() {
+        UserDefaults.standard.removeObject(forKey: "profileData")
     }
 }

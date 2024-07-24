@@ -13,8 +13,9 @@ class ProfilePageViewController: UIViewController {
         let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to access your profile")
         
         logInPageViewController.didLogIn = { [weak self] in
+            self?.viewModel.updateLogInStatus()
             self?.viewModel.getUserInformation()
-            self?.showOrHideProfile()
+            self?.showOrHideProfile(shouldUpdate: true)
         }
         let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
@@ -29,7 +30,7 @@ class ProfilePageViewController: UIViewController {
         let viewModel = ProfilePageViewModel()
         
         viewModel.didLogOut = { [weak self] in
-            self?.showOrHideProfile()
+            self?.showOrHideProfile(shouldUpdate: false)
             self?.showLogInView()
         }
         
@@ -51,7 +52,12 @@ class ProfilePageViewController: UIViewController {
             profileView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     
+        if viewModel.userLoggedIn {
+            viewModel.loadUserDetailsFromLocal()
+            viewModel.getUserInformation()
+        }
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showLogInView()
@@ -59,9 +65,9 @@ class ProfilePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        viewModel.updateLogInStatus()
+        viewModel.updateLogInStatus()
         
-        showOrHideProfile()
+        showOrHideProfile(shouldUpdate: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,9 +78,11 @@ class ProfilePageViewController: UIViewController {
     }
     
     //MARK: - Methods
-    private func showOrHideProfile() {
+    private func showOrHideProfile(shouldUpdate: Bool) {
         if viewModel.userLoggedIn {
-            viewModel.getUserInformation()
+            if shouldUpdate {
+                viewModel.getUserInformation()
+            }
             profileView.isHidden = false
         } else {
             profileView.isHidden = true
