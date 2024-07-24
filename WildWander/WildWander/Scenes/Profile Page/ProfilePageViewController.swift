@@ -10,7 +10,12 @@ import SwiftUI
 
 class ProfilePageViewController: UIViewController {
     private lazy var sheetNavigationController: UINavigationController = {
-        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController(explanationLabelText: "Sign in to access your profile"))
+        let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to access your profile")
+        
+        logInPageViewController.didLogIn = { [weak self] in
+            self?.showOrHideProfile()
+        }
+        let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         sheetNavigationController.modalPresentationStyle = .custom
         sheetNavigationController.transitioningDelegate = self
@@ -19,7 +24,16 @@ class ProfilePageViewController: UIViewController {
         return sheetNavigationController
     }()
     
-    private let viewModel: ProfilePageViewModel = ProfilePageViewModel()
+    private lazy var viewModel: ProfilePageViewModel = {
+        let viewModel = ProfilePageViewModel()
+        
+        viewModel.didLogOut = { [weak self] in
+            self?.showOrHideProfile()
+            self?.showLogInView()
+        }
+        
+        return viewModel
+    }()
     
     private lazy var profileView: UIView = UIHostingController(rootView: ProfilePageView(viewModel: viewModel)).view
     
@@ -39,16 +53,25 @@ class ProfilePageViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if viewModel.userLoggedIn {
-        } else {
-            present(sheetNavigationController, animated: true)
-        }
+        showLogInView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.updateLogInStatus()
         
+        showOrHideProfile()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismiss(animated: true)
+        }
+    }
+    
+    //MARK: - Methods
+    private func showOrHideProfile() {
         if viewModel.userLoggedIn {
             viewModel.getUserInformation()
             profileView.isHidden = false
@@ -57,10 +80,10 @@ class ProfilePageViewController: UIViewController {
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        if let presentedViewController = presentedViewController {
-            presentedViewController.dismiss(animated: true)
+    private func showLogInView() {
+        if viewModel.userLoggedIn {
+        } else {
+            present(sheetNavigationController, animated: true)
         }
     }
 }
