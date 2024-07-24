@@ -107,7 +107,7 @@ class NavigationInformationStackViewModel {
                 if let trailId {
                     completeTrail(routeGeometry: trailDetails?.routeGeometry, trailId: trailId)
                 } else {
-                    savingFailed?()
+                    completeTrail(routeGeometry: trailDetails?.routeGeometry, trailId: nil)
                 }
             }
         } else {
@@ -135,7 +135,7 @@ class NavigationInformationStackViewModel {
         }
     }
     
-    private func completeTrail(routeGeometry: String? = nil, trailId: Int) {
+    private func completeTrail(routeGeometry: String? = nil, trailId: Int? = nil) {
         endPointCreator.path = "/api/Trail/CompleteTrail"
         endPointCreator.body = CompleteTrail(trailId: trailId, length: Int(distanceTravelled), time: timeInSeconds, routeGeometry: routeGeometry, elevationGain: Int(elevationGain))
         

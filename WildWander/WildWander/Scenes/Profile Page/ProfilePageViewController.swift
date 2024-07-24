@@ -13,6 +13,7 @@ class ProfilePageViewController: UIViewController {
         let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to access your profile")
         
         logInPageViewController.didLogIn = { [weak self] in
+            self?.viewModel.getUserInformation()
             self?.showOrHideProfile()
         }
         let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
@@ -58,7 +59,7 @@ class ProfilePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateLogInStatus()
+//        viewModel.updateLogInStatus()
         
         showOrHideProfile()
     }

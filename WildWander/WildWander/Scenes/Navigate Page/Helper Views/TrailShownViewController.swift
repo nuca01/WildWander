@@ -286,7 +286,6 @@ class TrailShownViewController: UIViewController {
         }
         
         let editAndStartStackView =  ButtonsStackView(leftTitle: "Edit Trail", rightTitle: "Start Trail", leftAction: editTrailAction, rightAction: startTrailAction)
-        
         if viewModel.userLoggedIn {
             return generateAdditionalStackView(with: editAndStartStackView, and: publishButton)
         }
