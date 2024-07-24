@@ -23,6 +23,24 @@ class NavigatePageViewController: UIViewController {
         return mapView
     }()
     
+    private lazy var searchButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(
+            pointSize: 55, weight: .medium, scale: .default)
+        let image = UIImage(systemName: "magnifyingglass.circle.fill", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.imageView?.tintColor = .white
+        button.addAction(UIAction { [weak self] _ in
+            self?.handleSearchButtonTapped()
+        }, for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .wildWanderGreen
+        button.layer.cornerRadius = 27.5
+        return button
+    }()
+    
+    private var searchPage: SearchPageViewController?
+    
     private lazy var sheetNavigationController: UINavigationController = {
         sheetNavigationController = UINavigationController(rootViewController: makeCustomTrailViewController)
         sheetNavigationController.modalPresentationStyle = .custom
@@ -56,7 +74,6 @@ class NavigatePageViewController: UIViewController {
         } else {
             saveInformation(nil)
         }
-        
     } didTapAddTrail: { [weak self] in
         DispatchQueue.main.async { [weak self] in
             self?.tabBarController?.selectedIndex = 0
@@ -71,9 +88,17 @@ class NavigatePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .white
+        
         view.addSubview(mapView)
         
-        view.backgroundColor = .white
+        view.addSubview(searchButton)
+        
+        view.bringSubviewToFront(searchButton)
+        
+        constrainSearchButton()
+        
+        initializeSearchPage()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,7 +115,21 @@ class NavigatePageViewController: UIViewController {
         trailToDraw = nil
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        makeCustomTrailViewController.viewModel.checkIfTokenChangedToNil()
+    }
+    
     //MARK: - Methods
+    private func constrainSearchButton() {
+        NSLayoutConstraint.activate([
+            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7),
+            searchButton.heightAnchor.constraint(equalToConstant: 55),
+            searchButton.widthAnchor.constraint(equalToConstant: 55)
+        ])
+    }
+    
     private func showPublishTrailAlert(
         with saveInformation: @escaping (_: TrailDetails) -> Void
     ) {
@@ -122,6 +161,24 @@ class NavigatePageViewController: UIViewController {
         publishTrailAlert.show(in: view)
     }
     
+    private func initializeSearchPage() {
+        searchPage = SearchPageViewController { [weak self] in
+            self?.presentConstantView()
+        } didSelectLocation: { [weak self] location in
+            guard let self else { return }
+            
+            if let presentedViewController {
+                presentedViewController.dismiss(animated: true)
+            }
+            
+            if let location {
+                if let latitude = location.latitude, let longitude = location.longitude {
+                    mapView.changeCameraOptions(center: CLLocationCoordinate2D(latitude: Double(latitude) ?? 0, longitude: Double(longitude) ?? 0), zoom: 12, duration: 0.0)
+                }
+            }
+        }
+    }
+    
     private func dimPresentedView() -> UIView {
         let dimmedView = UIView()
         dimmedView.frame = makeCustomTrailViewController.view.bounds
@@ -130,6 +187,25 @@ class NavigatePageViewController: UIViewController {
         sheetNavigationController.sheetPresentationController?.selectedDetentIdentifier = .small
         
         return dimmedView
+    }
+    
+    private func presentSearchPage() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if let searchPage {
+                present(searchPage, animated: true)
+            }
+        }
+    }
+    
+    private func handleSearchButtonTapped() {
+        if let presentedViewController {
+            presentedViewController.dismiss(animated: true) { [weak self] in
+                self?.presentSearchPage()
+            }
+        } else {
+            presentSearchPage()
+        }
     }
 }
 
