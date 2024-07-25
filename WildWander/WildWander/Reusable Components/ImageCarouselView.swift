@@ -56,13 +56,21 @@ final class ImageCarouselView: UIView {
         }
     }
     
-    var didTapOnStaticImage: (() -> Void)?
+    var didTapOnStaticImage: ((_: Int) -> Void)?
     
+    var trailId: Int?
     //MARK: - Initializers
-    init(frame: CGRect, imageURLs: [URL?], staticImageUrl: URL? = nil, didTapOnStaticImage: (() -> Void)? = nil) {
+    init(
+        frame: CGRect,
+        imageURLs: [URL?],
+        staticImageUrl: URL? = nil,
+        didTapOnStaticImage: ((_: Int) -> Void)? = nil,
+        trailId: Int? = nil
+    ) {
         self.imageURLs = imageURLs
         self.staticImageUrl = staticImageUrl
         self.didTapOnStaticImage = didTapOnStaticImage
+        self.trailId = trailId
         
         super.init(frame: frame)
         
@@ -149,7 +157,9 @@ final class ImageCarouselView: UIView {
     }
     
     @objc func imageViewTapped(_ sender: UITapGestureRecognizer) {
-        didTapOnStaticImage?()
+        if let trailId {
+            didTapOnStaticImage?(trailId)
+        }
     }
 }
 

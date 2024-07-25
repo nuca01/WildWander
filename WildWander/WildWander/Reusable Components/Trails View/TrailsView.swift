@@ -51,6 +51,8 @@ class TrailsView: UIViewController {
     
     var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     
+    var didTapOnStaticImage: ((_: Int) -> Void)?
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -223,7 +225,8 @@ extension TrailsView: UITableViewDataSource {
             difficulty: currentTrail.difficulty ?? "",
             length: currentTrail.length ?? 0.0,
             isSaved: currentTrail.isSaved ?? false, 
-            didTapSave: didTapSave, 
+            didTapStaticImage: didTapOnStaticImage,
+            didTapSave: didTapSave,
             errorDidHappen: errorDidHappen
         )
         return cell

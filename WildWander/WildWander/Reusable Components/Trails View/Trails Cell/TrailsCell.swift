@@ -165,6 +165,7 @@ class TrailsCell: UITableViewCell {
         difficulty: String,
         length: Double,
         isSaved: Bool,
+        didTapStaticImage: ((_: Int) -> Void)?,
         didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?,
         errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     ) {
@@ -178,6 +179,8 @@ class TrailsCell: UITableViewCell {
         
         imagesCarouselView.imageURLs = imageUrls
         imagesCarouselView.staticImageUrl = staticMapImage
+        imagesCarouselView.didTapOnStaticImage = didTapStaticImage
+        imagesCarouselView.trailId = trailID
         
         self.didTapSave = didTapSave
         
