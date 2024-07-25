@@ -201,7 +201,7 @@ class CodeEntryViewController: UIViewController {
 
 extension CodeEntryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        changeToNextResponder(for: textField)
+        _ = changeToNextResponder(for: textField)
         return false
     }
     

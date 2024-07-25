@@ -59,6 +59,8 @@ final class WildWanderAlertView: UIView {
     
     var onFirstButtonTapped: (() -> Void)?
     
+    var onCancelTapped: (() -> Void)?
+    
     //MARK: - Initializers
     init(
         title: String,
@@ -211,6 +213,7 @@ final class WildWanderAlertView: UIView {
     }
     
     @objc private func dismissButtonTapped() {
+        onCancelTapped?()
         dismiss()
     }
 }

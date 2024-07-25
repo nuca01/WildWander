@@ -239,7 +239,7 @@ final class WildWanderMapView: UIView {
         trails.forEach { trail in
             let startCoordinate = CLLocationCoordinate2D(latitude: trail.startLatitude ?? 0.0, longitude: trail.startLongitude ?? 0.0)
             var annotation = PointAnnotation(point: Point(startCoordinate))
-            annotation.iconImage = "redMarker"
+            annotation.iconImage = "greenMarker"
             
             if annotation.userInfo == nil {
                 annotation.userInfo = [:]
@@ -261,7 +261,13 @@ final class WildWanderMapView: UIView {
         var coordinates: [CLLocationCoordinate2D] = routeCoordinates ?? []
         if let routeGeometry {
             coordinates = routeGeometry.decodePolyline() ?? []
+            viewModel?.customTrail = nil
+        } else {
+            if let routeCoordinates {
+                viewModel?.customTrail?.routeGeometry = String.encodePolyline(from: routeCoordinates)
+            }
         }
+        
         let polyLineAnnotationLineString = PolylineAnnotation(lineCoordinates: coordinates).lineString
         
         
@@ -309,8 +315,8 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
     }
     
     private func setupAnnotationsIcons() {
-        try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "redMarker")!, id: "redMarker")
-        try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "blueMarker")!, id: "blueMarker")
+        try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "greenMarker")!, id: "greenMarker")
+        try? mapView.mapView.mapboxMap.style.addImage(UIImage(named: "grayMarker")!, id: "grayMarker")
     }
     
     private func setupDynamicAnnotationsGesture() {
@@ -345,7 +351,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
             pointAnnotationManager.annotations = pointAnnotationManager.annotations.map({ annotation in
                 var newAnnotation = annotation
                 if annotation.id == activeAnnotationsId  {
-                    newAnnotation.iconImage = "blueMarker"
+                    newAnnotation.iconImage = "grayMarker"
                 }
                 return newAnnotation
             })
@@ -356,7 +362,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         pointAnnotationManager.annotations = pointAnnotationManager.annotations.map({ annotation in
             var newAnnotation = annotation
             if annotation.id == self.annotations[index].id  {
-                newAnnotation.iconImage = "redMarker"
+                newAnnotation.iconImage = "greenMarker"
             }
             return newAnnotation
         })
@@ -404,7 +410,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
             var newAnnotation = annotation
             if annotation.id != viewModel?.activeAnnotationsId && !futureActiveAnnotationFound {
                 viewModel?.activeAnnotationsId = newAnnotation.id
-                newAnnotation.iconImage = "redMarker"
+                newAnnotation.iconImage = "greenMarker"
                 futureActiveAnnotationFound = true
             }
             return newAnnotation
@@ -416,7 +422,7 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
         
         var annotation = getAnnotationFromPressed(location)
         
-        annotation.iconImage = "redMarker"
+        annotation.iconImage = "greenMarker"
         appendAnnotationsArray(with: annotation)
     }
     
@@ -473,11 +479,15 @@ extension WildWanderMapView: AnnotationInteractionDelegate {
                 waypoints.append(Waypoint(coordinate: CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)))
             }
         let routeOptions = NavigationRouteOptions(waypoints: waypoints, profileIdentifier: .walking)
+        
         Directions.shared.calculate(routeOptions) {[weak self] session, result in
             switch result {
             case .failure(let error):
                 print(error)
-            case .success(let response):                self?.drawStaticAnnotationRouteWith(routeCoordinates: response.routes?.first?.shape?.coordinates)
+            case .success(let response):
+                let firstRoute = response.routes?.first
+                self?.viewModel?.customTrail = TrailDetails(length: firstRoute?.distance, time: Int(firstRoute?.expectedTravelTime ?? 0))
+                self?.drawStaticAnnotationRouteWith(routeCoordinates: firstRoute?.shape?.coordinates)
             }
         }
     }

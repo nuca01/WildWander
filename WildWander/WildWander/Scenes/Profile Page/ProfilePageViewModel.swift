@@ -9,6 +9,7 @@ import Foundation
 import NetworkingService
 
 final class ProfilePageViewModel: ObservableObject {
+    //MARK: - Properties
     private var token: String? {
         KeychainHelper.retrieveToken(forKey: "authorizationToken")
     }
@@ -17,22 +18,42 @@ final class ProfilePageViewModel: ObservableObject {
         token == nil ? false: true
     }
     
-    private var endPointCreator: EndPointCreator?
-    
-    @Published var userDetails: UserDetails?
-    
-    init() {
-        endPointCreator = EndPointCreator(path: "/api/User/GetUserDetails", method: "GET", accessToken: token ?? "")
+    var currentYear: String {
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        let currentYear = dateFormatter.string(from: date)
+        return currentYear
     }
     
+    private var userDetailsEndPointCreator: EndPointCreator?
+    private var completedTrailsEndPointCreator: EndPointCreator?
+    
+    @Published var userDetails: UserDetails?
+    @Published var completedTrails: [CompletedTrail]?
+    
+    var didLogOut: (() -> Void)?
+    //MARK: - Initializer
+    init() {
+        userDetailsEndPointCreator = EndPointCreator(path: "/api/User/GetUserDetails", method: "GET", accessToken: token ?? "")
+        completedTrailsEndPointCreator = EndPointCreator(path: "/api/Trail/GetCompletedTrails", method: "GET", accessToken: token ?? "")
+    }
+    
+    //MARK: - Methods
     func getUserInformation() {
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
-            guard let self else { return }
+        getUserDetails()
+        getCompletedTrails()
+    }
+    
+    private func getUserDetails() {
+        NetworkingService.shared.sendRequest(endpoint: userDetailsEndPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
+            guard let self = self else { return }
             
             switch result {
             case .success(let responseModel):
-                DispatchQueue.main.async {
-                    self.userDetails = responseModel
+                saveUserDetailsLocally(responseModel)
+                DispatchQueue.main.async { [weak self] in
+                    self?.userDetails = responseModel
                 }
             case .failure(let error):
                 var message = ""
@@ -40,7 +61,33 @@ final class ProfilePageViewModel: ObservableObject {
                 case .unknown:
                     message = "unknown error has occurred"
                 case .decode:
-                    message = "decode error has occured"
+                    message = "decode error has occurred"
+                case .invalidURL:
+                    message = "internal error has occurred"
+                case .unexpectedStatusCode(let errorDescription):
+                    message = errorDescription
+                }
+                print(message)
+            }
+        }
+    }
+    
+    private func getCompletedTrails() {
+        NetworkingService.shared.sendRequest(endpoint: completedTrailsEndPointCreator!) { [weak self] (result: Result<CompletedTrailsList, NetworkError>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let responseModel):
+                DispatchQueue.main.async { [weak self] in
+                    self?.completedTrails = responseModel.items
+                }
+            case .failure(let error):
+                var message = ""
+                switch error {
+                case .unknown:
+                    message = "unknown error has occurred"
+                case .decode:
+                    message = "decode error has occurred"
                 case .invalidURL:
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):
@@ -52,6 +99,58 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func updateLogInStatus() {
-        endPointCreator!.changeAccessToken(accessToken: token)
+        userDetailsEndPointCreator?.changeAccessToken(accessToken: token)
+        completedTrailsEndPointCreator?.changeAccessToken(accessToken: token)
+    }
+    
+    func logOut() {
+        deleteProfileData()
+        userDetails = nil
+        _ = KeychainHelper.deleteToken(forKey: "authorizationToken")
+        updateLogInStatus()
+        didLogOut?()
+    }
+    
+    private func saveUserDetailsLocally(_ userDetails: UserDetails) {
+        if let encodedData = try? JSONEncoder().encode(userDetails) {
+            UserDefaults.standard.set(encodedData, forKey: "userDetails")
+        }
+    }
+    
+    func loadUserDetailsFromLocal() {
+        if let savedData = UserDefaults.standard.data(forKey: "userDetails"),
+           let profileData = try? JSONDecoder().decode(UserDetails.self, from: savedData) {
+            userDetails = profileData
+        }
+    }
+    
+    func deleteProfileData() {
+        UserDefaults.standard.removeObject(forKey: "profileData")
+    }
+    
+    func userDetailsLengthInKilometres() -> Int {
+        (userDetails?.completedLength ?? 0) / 1000
+    }
+    
+    func formatDateInWords(_ date: String) -> String{
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        guard let date = dateFormatter.date(from: date) else {
+            return "date unavailable"
+        }
+
+        dateFormatter.dateFormat = "dd MMMM yyyy"
+        return dateFormatter.string(from: date)
+    }
+    
+    func metresToKilometresInString(_ metres: Int) -> String {
+        let kilometres = Double(metres) / 1000.0
+        let formattedDouble = String(format: "%.1f", kilometres)
+        return "\(formattedDouble)km"
+    }
+    
+    func generateURL(from string: String) -> URL? {
+        return URL(string: string)
     }
 }

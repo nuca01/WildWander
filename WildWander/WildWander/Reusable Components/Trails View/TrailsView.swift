@@ -16,7 +16,7 @@ class TrailsView: UIViewController {
         let tableview = UITableView()
         tableview.translatesAutoresizingMaskIntoConstraints = false
         tableview.rowHeight = UITableView.automaticDimension
-        tableview.estimatedRowHeight = 500
+        tableview.estimatedRowHeight = UITableView.automaticDimension
         tableview.dataSource = self
         tableview.delegate = self
         tableview.tableHeaderView = headerLabel
@@ -206,16 +206,18 @@ extension TrailsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TrailsCell.identifier) as! TrailsCell
+        
         let currentTrail = viewModel.trailOf(index: indexPath.row)
+        
         let urls = currentTrail.images?.map({ urlString in
             viewModel.generateURL(from: urlString)
         })
         
         cell.updateCellWith(
             imageUrls: urls ?? [],
-            trailID: currentTrail.id!,
             trailTitle: currentTrail.routeIdentifier ?? "",
             address: currentTrail.address ?? "",
+            trailID: currentTrail.id!,
             rating: currentTrail.rating ?? 0.0,
             difficulty: currentTrail.difficulty ?? "",
             length: currentTrail.length ?? 0.0,
@@ -224,6 +226,10 @@ extension TrailsView: UITableViewDataSource {
             errorDidHappen: errorDidHappen
         )
         return cell
+    }
+    
+    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        return UITableView.automaticDimension
     }
 }
 

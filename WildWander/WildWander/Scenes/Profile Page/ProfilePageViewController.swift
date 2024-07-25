@@ -10,7 +10,14 @@ import SwiftUI
 
 class ProfilePageViewController: UIViewController {
     private lazy var sheetNavigationController: UINavigationController = {
-        let sheetNavigationController = UINavigationController(rootViewController: LogInPageViewController(explanationLabelText: "Sign in to access your profile"))
+        let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to access your profile")
+        
+        logInPageViewController.didLogIn = { [weak self] in
+            self?.viewModel.updateLogInStatus()
+            self?.viewModel.getUserInformation()
+            self?.showOrHideProfile(shouldUpdate: true)
+        }
+        let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         sheetNavigationController.modalPresentationStyle = .custom
         sheetNavigationController.transitioningDelegate = self
@@ -19,7 +26,16 @@ class ProfilePageViewController: UIViewController {
         return sheetNavigationController
     }()
     
-    private let viewModel: ProfilePageViewModel = ProfilePageViewModel()
+    private lazy var viewModel: ProfilePageViewModel = {
+        let viewModel = ProfilePageViewModel()
+        
+        viewModel.didLogOut = { [weak self] in
+            self?.showOrHideProfile(shouldUpdate: false)
+            self?.showLogInView()
+        }
+        
+        return viewModel
+    }()
     
     private lazy var profileView: UIView = UIHostingController(rootView: ProfilePageView(viewModel: viewModel)).view
     
@@ -36,31 +52,47 @@ class ProfilePageViewController: UIViewController {
             profileView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     
+        if viewModel.userLoggedIn {
+            viewModel.loadUserDetailsFromLocal()
+            viewModel.getUserInformation()
+        }
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if viewModel.userLoggedIn {
-        } else {
-            present(sheetNavigationController, animated: true)
-        }
+        showLogInView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.updateLogInStatus()
         
-        if viewModel.userLoggedIn {
-            viewModel.getUserInformation()
-            profileView.isHidden = false
-        } else {
-            profileView.isHidden = true
-        }
+        showOrHideProfile(shouldUpdate: false)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if let presentedViewController = presentedViewController {
             presentedViewController.dismiss(animated: true)
+        }
+    }
+    
+    //MARK: - Methods
+    private func showOrHideProfile(shouldUpdate: Bool) {
+        if viewModel.userLoggedIn {
+            if shouldUpdate {
+                viewModel.getUserInformation()
+            }
+            profileView.isHidden = false
+        } else {
+            profileView.isHidden = true
+        }
+    }
+    
+    private func showLogInView() {
+        if viewModel.userLoggedIn {
+        } else {
+            present(sheetNavigationController, animated: true)
         }
     }
 }
