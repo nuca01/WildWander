@@ -128,8 +128,8 @@ class SavedPageViewController: UIViewController {
     
     private func constrainListsTableView() {
         NSLayoutConstraint.activate([
-            listsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            listsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            listsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            listsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             listsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             listsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])

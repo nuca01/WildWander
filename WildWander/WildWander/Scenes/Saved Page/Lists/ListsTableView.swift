@@ -62,6 +62,10 @@ extension ListsTableView: UITableViewDataSource {
                 imageUrl: viewModel.generateURL(from: currentList.imageUrl ?? "")
             )
         }
+        
+        cell.separatorInset = UIEdgeInsets.init(top: 0.0, left: 25.0, bottom: 0.0, right: 25.0)
+        cell.layoutMargins = UIEdgeInsets.init(top: 0.0, left: 100.0, bottom: 0.0, right: 0.0)
+        
         return cell
     }
 }
