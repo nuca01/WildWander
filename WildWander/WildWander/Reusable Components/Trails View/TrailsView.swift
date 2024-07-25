@@ -16,7 +16,7 @@ class TrailsView: UIViewController {
         let tableview = UITableView()
         tableview.translatesAutoresizingMaskIntoConstraints = false
         tableview.rowHeight = UITableView.automaticDimension
-        tableview.estimatedRowHeight = 500
+        tableview.estimatedRowHeight = UITableView.automaticDimension
         tableview.dataSource = self
         tableview.delegate = self
         tableview.tableHeaderView = headerLabel
@@ -50,6 +50,8 @@ class TrailsView: UIViewController {
     var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
     
     var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
+    
+    var didTapOnStaticImage: ((_: Int) -> Void)?
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -206,24 +208,35 @@ extension TrailsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TrailsCell.identifier) as! TrailsCell
+        
         let currentTrail = viewModel.trailOf(index: indexPath.row)
+        
         let urls = currentTrail.images?.map({ urlString in
             viewModel.generateURL(from: urlString)
         })
         
         cell.updateCellWith(
             imageUrls: urls ?? [],
-            trailID: currentTrail.id!,
             trailTitle: currentTrail.routeIdentifier ?? "",
             address: currentTrail.address ?? "",
+            trailID: currentTrail.id!,
             rating: currentTrail.rating ?? 0.0,
+            staticMapImage: viewModel.generateURL(from: currentTrail.staticMapImage ?? ""),
             difficulty: currentTrail.difficulty ?? "",
             length: currentTrail.length ?? 0.0,
             isSaved: currentTrail.isSaved ?? false, 
-            didTapSave: didTapSave, 
+            didTapStaticImage: didTapOnStaticImage,
+            didTapSave: didTapSave,
             errorDidHappen: errorDidHappen
         )
+        
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        
         return cell
+    }
+    
+    private func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        return UITableView.automaticDimension
     }
 }
 
