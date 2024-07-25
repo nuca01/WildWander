@@ -8,13 +8,10 @@
 import UIKit
 
 class TrailsCell: UITableViewCell {
-    //MARK: - Properties
     static let identifier = "TrailsCell"
-    
-    static var resizeCorrectlyWith: (String, String)?
-    
+
     private var viewModel = TrailsCellViewModel()
-    
+
     private lazy var imagesCarouselView: ImageCarouselView = {
         let imagesFrame = CGRect(x: 0, y: 0, width: imagesFrame.width, height: imagesFrame.height)
         let images = ImageCarouselView(frame: imagesFrame, imageURLs: [])
@@ -23,39 +20,37 @@ class TrailsCell: UITableViewCell {
         images.translatesAutoresizingMaskIntoConstraints = false
         return images
     }()
-    
-    private var titleLabel = {
+
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
-        label.text = "unavailable"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    private var locationLabel: UILabel = {
+
+    private lazy var locationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
-        label.text = "unavailable"
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    private var informationLabel: UILabel = {
+
+    private lazy var informationLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
-        label.text = "unavailable"
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var saveButtonView: UIButton = {
         let button = UIButton()
         button.setImage(.saveTrail, for: .normal)
@@ -80,28 +75,29 @@ class TrailsCell: UITableViewCell {
                 )
             }
         }, for: .touchUpInside)
-        
         return button
     }()
-    
-    private var bottomStackView: UIStackView = {
+
+    private lazy var wholeStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    private var wholeStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
         stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
+    private lazy var bottomStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
+    private var willSave: ((_: String?, _: String?, _: Int?) -> Void) = { _, _, _ in }
+    private var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
+
     private lazy var imagesFrame: CGRect = {
         let width = UIScreen.main.bounds.width + contentView.safeAreaInsets.left + contentView.safeAreaInsets.right - 40
         let height = UIScreen.main.bounds.height / 4
@@ -110,50 +106,31 @@ class TrailsCell: UITableViewCell {
         return frame
     }()
     
-    var didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?
-    
-    private var willSave: ((_: String?, _: String?, _: Int?) -> Void) = { _, _, _ in
-        
-    }
-    
-    private var errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
-    
-    //MARK: - Initilizers
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
-        resizeForFutureUpdates()
     }
-    
-    //MARK: - Methods
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private func setUpUI() {
         backgroundColor = .white
-        addSubViews()
-        addConstraints()
-        contentView.isUserInteractionEnabled = true
-        wholeStackView.isUserInteractionEnabled = true
-    }
-    
-    private func addSubViews() {
         contentView.addSubview(wholeStackView)
-        contentView.addSubview(saveButtonView)
         wholeStackView.addArranged(subviews: [imagesCarouselView, bottomStackView])
         bottomStackView.addArranged(subviews: [titleLabel, locationLabel, informationLabel])
+        contentView.addSubview(saveButtonView)
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        setConstraintsForSaveButtonView()
+        setConstraintsForWholeStackView()
+        setConstraintsToImagesCarouselView()
     }
     
-    private func addConstraints() {
-        constrainSaveButtonView()
-        constrainWholeStackView()
-        constrainBottomStackView()
-        ConstrainImagesCarouselView()
-        constrainLabels()
-    }
-    
-    private func constrainSaveButtonView() {
+    private func setConstraintsForSaveButtonView() {
         NSLayoutConstraint.activate([
             saveButtonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             saveButtonView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
@@ -161,24 +138,8 @@ class TrailsCell: UITableViewCell {
             saveButtonView.widthAnchor.constraint(equalToConstant: 40),
         ])
     }
-    
-    private func constrainLabels() {
-        [titleLabel, locationLabel, informationLabel]
-            .forEach { label in
-                NSLayoutConstraint.activate([
-                    label.widthAnchor.constraint(equalToConstant: imagesFrame.width)
-                ])
-            }
-    }
-    
-    private func constrainBottomStackView() {
-        NSLayoutConstraint.activate([
-            bottomStackView.leadingAnchor.constraint(equalTo: wholeStackView.leadingAnchor),
-            bottomStackView.trailingAnchor.constraint(equalTo: wholeStackView.trailingAnchor),
-        ])
-    }
-    
-    private func constrainWholeStackView() {
+
+    private func setConstraintsForWholeStackView() {
         NSLayoutConstraint.activate([
             wholeStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             wholeStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
@@ -187,43 +148,17 @@ class TrailsCell: UITableViewCell {
         ])
     }
     
-    private func ConstrainImagesCarouselView() {
+    private func setConstraintsToImagesCarouselView() {
         NSLayoutConstraint.activate([
-            self.imagesCarouselView.heightAnchor.constraint(equalToConstant: imagesFrame.height),
-            self.imagesCarouselView.widthAnchor.constraint(equalToConstant: imagesFrame.width),
-            self.imagesCarouselView.centerXAnchor.constraint(equalTo: wholeStackView.centerXAnchor),
+            imagesCarouselView.heightAnchor.constraint(equalToConstant: imagesFrame.height),
+            imagesCarouselView.widthAnchor.constraint(equalTo: wholeStackView.widthAnchor)
         ])
     }
     
-    private func updateImagesCarouselViewImages(with imageURLs: [URL?]) {
-        self.imagesCarouselView.imageURLs = imageURLs
-    }
-    
-    private func formatInformationTextLabelWith(rating: Double, difficulty: String, length: Double) {
-        let text = "★ \(rating) · \(difficulty) : \(length)km"
-        
-        informationLabel.text = text
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        DispatchQueue.main.async { [weak self] in
-            self?.resizeForFutureUpdates()
-        }
-    }
-    
-    private func resizeForFutureUpdates() {
-        if let trailTitle = TrailsCell.resizeCorrectlyWith?.0 {
-            titleLabel.text = trailTitle
-        }
-        
-        if let address = TrailsCell.resizeCorrectlyWith?.1 {
-            locationLabel.text = address
-        }
-    }
-    //MARK: - Methods
     func updateCellWith(
         imageUrls: [URL?],
+        trailTitle: String,
+        address: String,
         trailID: Int,
         rating: Double,
         difficulty: String,
@@ -232,24 +167,15 @@ class TrailsCell: UITableViewCell {
         didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?,
         errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     ) {
+        titleLabel.text = trailTitle
         
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            formatInformationTextLabelWith(
-                rating: rating,
-                difficulty: difficulty,
-                length: length
-            )
-            
-            if isSaved {
-                saveButtonView.setImage(.trailSaved, for: .normal)
-            } else {
-                saveButtonView.setImage(.saveTrail, for: .normal)
-            }
-            
-            updateImagesCarouselViewImages(with: imageUrls)
-        }
+        locationLabel.text = address
         
+        informationLabel.text = "★ \(rating) · \(difficulty) : \(length)km"
+        
+        saveButtonView.setImage(isSaved ? .trailSaved : .saveTrail, for: .normal)
+        
+        imagesCarouselView.imageURLs = imageUrls
         self.didTapSave = didTapSave
         
         willSave = { [weak self] (name, description, savedListId) in

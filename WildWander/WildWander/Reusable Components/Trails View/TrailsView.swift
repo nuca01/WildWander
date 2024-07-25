@@ -205,10 +205,9 @@ extension TrailsView: UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let currentTrail = viewModel.trailOf(index: indexPath.row)
-        TrailsCell.resizeCorrectlyWith = (currentTrail.routeIdentifier ?? "", currentTrail.address ?? "")
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: TrailsCell.identifier) as! TrailsCell
+        
+        let currentTrail = viewModel.trailOf(index: indexPath.row)
         
         let urls = currentTrail.images?.map({ urlString in
             viewModel.generateURL(from: urlString)
@@ -216,6 +215,8 @@ extension TrailsView: UITableViewDataSource {
         
         cell.updateCellWith(
             imageUrls: urls ?? [],
+            trailTitle: currentTrail.routeIdentifier ?? "",
+            address: currentTrail.address ?? "",
             trailID: currentTrail.id!,
             rating: currentTrail.rating ?? 0.0,
             difficulty: currentTrail.difficulty ?? "",
