@@ -63,10 +63,6 @@ extension ListsTableView: UITableViewDataSource {
             )
         }
         
-        cell.separatorInset = UIEdgeInsets.init(top: 0.0, left: 25.0, bottom: 0.0, right: 25.0)
-        cell.layoutMargins = UIEdgeInsets.init(top: 0.0, left: 100.0, bottom: 0.0, right: 0.0)
-        
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 }

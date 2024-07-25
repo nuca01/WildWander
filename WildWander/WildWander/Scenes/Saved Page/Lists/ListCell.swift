@@ -75,6 +75,7 @@ class ListCell: UITableViewCell {
         backgroundColor = .white
         addSubViews()
         addConstraints()
+        configureCell()
     }
     
     private func addSubViews() {
@@ -103,6 +104,13 @@ class ListCell: UITableViewCell {
             wholeStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             wholeStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
         ])
+    }
+    
+    private func configureCell() {
+        separatorInset = UIEdgeInsets.init(top: 0.0, left: 25.0, bottom: 0.0, right: 25.0)
+        layoutMargins = UIEdgeInsets.init(top: 0.0, left: 100.0, bottom: 0.0, right: 0.0)
+        
+        selectionStyle = UITableViewCell.SelectionStyle.none
     }
     
     override func prepareForReuse() {

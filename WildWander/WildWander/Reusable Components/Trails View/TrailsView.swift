@@ -230,8 +230,6 @@ extension TrailsView: UITableViewDataSource {
             errorDidHappen: errorDidHappen
         )
         
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        
         return cell
     }
     
