@@ -11,6 +11,8 @@ class TrailsCell: UITableViewCell {
     //MARK: - Properties
     static let identifier = "TrailsCell"
     
+    static var resizeCorrectlyWith: (String, String)?
+    
     private var viewModel = TrailsCellViewModel()
     
     private lazy var imagesCarouselView: ImageCarouselView = {
@@ -50,18 +52,8 @@ class TrailsCell: UITableViewCell {
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor.wildWanderGreen
         label.text = "unavailable"
-        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-    }()
-    
-    private var nameAndLocationStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 5
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
     }()
     
     private lazy var saveButtonView: UIButton = {
@@ -91,22 +83,6 @@ class TrailsCell: UITableViewCell {
         
         return button
     }()
-//    private var downloadButtonView: UIButton = {
-//        let button = UIButton()
-//        button.setImage(.download, for: .normal)
-//        button.tintColor = .wildWanderGreen
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        return button
-//    }()
-//    
-//    private var nameLocationAndDownloadStackView: UIStackView = {
-//        let stackView = UIStackView()
-//        stackView.axis = .horizontal
-//        stackView.distribution = .fill
-//        stackView.spacing = 10
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        return stackView
-//    }()
     
     private var bottomStackView: UIStackView = {
         let stackView = UIStackView()
@@ -150,8 +126,10 @@ class TrailsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
+        resizeForFutureUpdates()
     }
     
+    //MARK: - Methods
     private func setUpUI() {
         backgroundColor = .white
         addSubViews()
@@ -164,8 +142,7 @@ class TrailsCell: UITableViewCell {
         contentView.addSubview(wholeStackView)
         contentView.addSubview(saveButtonView)
         wholeStackView.addArranged(subviews: [imagesCarouselView, bottomStackView])
-        nameAndLocationStackView.addArranged(subviews: [titleLabel, locationLabel])
-        bottomStackView.addArranged(subviews: [nameAndLocationStackView, informationLabel])
+        bottomStackView.addArranged(subviews: [titleLabel, locationLabel, informationLabel])
     }
     
     private func addConstraints() {
@@ -228,12 +205,26 @@ class TrailsCell: UITableViewCell {
         informationLabel.text = text
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        DispatchQueue.main.async { [weak self] in
+            self?.resizeForFutureUpdates()
+        }
+    }
+    
+    private func resizeForFutureUpdates() {
+        if let trailTitle = TrailsCell.resizeCorrectlyWith?.0 {
+            titleLabel.text = trailTitle
+        }
+        
+        if let address = TrailsCell.resizeCorrectlyWith?.1 {
+            locationLabel.text = address
+        }
+    }
     //MARK: - Methods
     func updateCellWith(
         imageUrls: [URL?],
         trailID: Int,
-        trailTitle: String,
-        address: String,
         rating: Double,
         difficulty: String,
         length: Double,
@@ -241,23 +232,9 @@ class TrailsCell: UITableViewCell {
         didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?,
         errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     ) {
-        self.didTapSave = didTapSave
-        
-        willSave = { [weak self] (name, description, savedListId) in
-            self?.viewModel.save(saveTrailModel: SaveTrail(
-                name: name,
-                description: description,
-                savedListId: savedListId,
-                trailId: trailID
-            ))
-        }
-        
-        self.errorDidHappen = errorDidHappen
         
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            titleLabel.text = trailTitle
-            locationLabel.text = address
             formatInformationTextLabelWith(
                 rating: rating,
                 difficulty: difficulty,
@@ -272,5 +249,18 @@ class TrailsCell: UITableViewCell {
             
             updateImagesCarouselViewImages(with: imageUrls)
         }
+        
+        self.didTapSave = didTapSave
+        
+        willSave = { [weak self] (name, description, savedListId) in
+            self?.viewModel.save(saveTrailModel: SaveTrail(
+                name: name,
+                description: description,
+                savedListId: savedListId,
+                trailId: trailID
+            ))
+        }
+        
+        self.errorDidHappen = errorDidHappen
     }
 }

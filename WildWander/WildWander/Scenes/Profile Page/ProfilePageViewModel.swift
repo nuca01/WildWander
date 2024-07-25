@@ -26,25 +26,33 @@ final class ProfilePageViewModel: ObservableObject {
         return currentYear
     }
     
-    private var endPointCreator: EndPointCreator?
+    private var userDetailsEndPointCreator: EndPointCreator?
+    private var completedTrailsEndPointCreator: EndPointCreator?
     
     @Published var userDetails: UserDetails?
+    @Published var completedTrails: [CompletedTrail]?
     
     var didLogOut: (() -> Void)?
     //MARK: - Initializer
     init() {
-        endPointCreator = EndPointCreator(path: "/api/User/GetUserDetails", method: "GET", accessToken: token ?? "")
+        userDetailsEndPointCreator = EndPointCreator(path: "/api/User/GetUserDetails", method: "GET", accessToken: token ?? "")
+        completedTrailsEndPointCreator = EndPointCreator(path: "/api/Trail/GetCompletedTrails", method: "GET", accessToken: token ?? "")
     }
     
     //MARK: - Methods
     func getUserInformation() {
-        NetworkingService.shared.sendRequest(endpoint: endPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
+        getUserDetails()
+        getCompletedTrails()
+    }
+    
+    private func getUserDetails() {
+        NetworkingService.shared.sendRequest(endpoint: userDetailsEndPointCreator!) { [weak self] (result: Result<UserDetails, NetworkError>) in
             guard let self = self else { return }
             
             switch result {
             case .success(let responseModel):
+                saveUserDetailsLocally(responseModel)
                 DispatchQueue.main.async { [weak self] in
-                    self?.saveUserDetailsLocally(responseModel)
                     self?.userDetails = responseModel
                 }
             case .failure(let error):
@@ -64,8 +72,35 @@ final class ProfilePageViewModel: ObservableObject {
         }
     }
     
+    private func getCompletedTrails() {
+        NetworkingService.shared.sendRequest(endpoint: completedTrailsEndPointCreator!) { [weak self] (result: Result<CompletedTrailsList, NetworkError>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let responseModel):
+                DispatchQueue.main.async { [weak self] in
+                    self?.completedTrails = responseModel.items
+                }
+            case .failure(let error):
+                var message = ""
+                switch error {
+                case .unknown:
+                    message = "unknown error has occurred"
+                case .decode:
+                    message = "decode error has occurred"
+                case .invalidURL:
+                    message = "internal error has occurred"
+                case .unexpectedStatusCode(let errorDescription):
+                    message = errorDescription
+                }
+                print(message)
+            }
+        }
+    }
+    
     func updateLogInStatus() {
-        endPointCreator!.changeAccessToken(accessToken: token)
+        userDetailsEndPointCreator?.changeAccessToken(accessToken: token)
+        completedTrailsEndPointCreator?.changeAccessToken(accessToken: token)
     }
     
     func logOut() {
@@ -97,17 +132,25 @@ final class ProfilePageViewModel: ObservableObject {
         (userDetails?.completedLength ?? 0) / 1000
     }
     
-    func getAge() -> Int? {
-        let dateFormatter = ISO8601DateFormatter()
-        
-        guard let date = dateFormatter.date(from: userDetails?.dateOfBirth ?? "") else {
-            return nil
+    func formatDateInWords(_ date: String) -> String{
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        guard let date = dateFormatter.date(from: date) else {
+            return "date unavailable"
         }
-        
-        let calendar = Calendar.current
-        let currentDate = Date()
-        let ageComponents = calendar.dateComponents([.year], from: date, to: currentDate)
-        
-        return ageComponents.year
+
+        dateFormatter.dateFormat = "dd MMMM yyyy"
+        return dateFormatter.string(from: date)
+    }
+    
+    func metresToKilometresInString(_ metres: Int) -> String {
+        let kilometres = Double(metres) / 1000.0
+        let formattedDouble = String(format: "%.1f", kilometres)
+        return "\(formattedDouble)km"
+    }
+    
+    func generateURL(from string: String) -> URL? {
+        return URL(string: string)
     }
 }

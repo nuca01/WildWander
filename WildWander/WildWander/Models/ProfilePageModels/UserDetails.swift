@@ -11,7 +11,7 @@ struct UserDetails: Codable {
     var firstName: String?
     var lastName: String?
     var imgUrl: String?
-    var dateOfBirth: String?
+    var age: Int?
     var gender: Int?
     var completedTrailCount: Int?
     var completedLength: Int?
