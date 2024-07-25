@@ -29,16 +29,39 @@ final class ImageCarouselView: UIView {
         return pageControl
     }()
     
+    private var staticImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFit
+        image.translatesAutoresizingMaskIntoConstraints = false
+        
+        return image
+    }()
+    
     var imageURLs: [URL?] {
         didSet {
             setupImages()
         }
     }
     
+    private var staticImageUrl: URL? {
+        didSet {
+            if let staticImageUrl {
+                setUpStaticImageView()
+                staticImageView.load(url: staticImageUrl)
+            }
+        }
+    }
+    
+    private var didTapOnStaticImage: (() -> Void)?
+    
     //MARK: - Initializers
-    init(frame: CGRect, imageURLs: [URL?]) {
+    init(frame: CGRect, imageURLs: [URL?], staticImageUrl: URL? = nil, didTapOnStaticImage: (() -> Void)? = nil) {
         self.imageURLs = imageURLs
+        self.staticImageUrl = staticImageUrl
+        self.didTapOnStaticImage = didTapOnStaticImage
+        
         super.init(frame: frame)
+        
         setupScrollView()
         setupPageControl()
         setupImages()
@@ -46,6 +69,13 @@ final class ImageCarouselView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - LifeCycle
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        scrollView.frame = bounds
+        pageControl.frame = CGRect(x: 0, y: bounds.height - 50, width: bounds.width, height: 50)
     }
     
     //MARK: - Methods
@@ -83,12 +113,19 @@ final class ImageCarouselView: UIView {
         }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        scrollView.frame = bounds
-        pageControl.frame = CGRect(x: 0, y: bounds.height - 50, width: bounds.width, height: 50)
+    private func setUpStaticImageView() {
+        addSubview(staticImageView)
+        
+        NSLayoutConstraint.activate([
+            staticImageView.heightAnchor.constraint(equalToConstant: 70),
+            staticImageView.widthAnchor.constraint(equalToConstant: 70),
+            staticImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            staticImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+        ])
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped(_:)))
+        staticImageView.addGestureRecognizer(tapGesture)
     }
-    
     @objc private func pageControlValueChanged(_ sender: UIPageControl) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -105,6 +142,10 @@ final class ImageCarouselView: UIView {
             }
             self.scrollView.contentOffset.x = frame.width * CGFloat(integerLiteral: sender.currentPage)
         }
+    }
+    
+    @objc func imageViewTapped(_ sender: UITapGestureRecognizer) {
+        didTapOnStaticImage?()
     }
 }
 
