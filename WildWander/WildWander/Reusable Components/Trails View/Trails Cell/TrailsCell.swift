@@ -8,6 +8,7 @@
 import UIKit
 
 class TrailsCell: UITableViewCell {
+    //MARK: - Properties
     static let identifier = "TrailsCell"
 
     private var viewModel = TrailsCellViewModel()
@@ -106,6 +107,7 @@ class TrailsCell: UITableViewCell {
         return frame
     }()
     
+    //MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpUI()
@@ -115,6 +117,7 @@ class TrailsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: - Methods
     private func setUpUI() {
         backgroundColor = .white
         contentView.addSubview(wholeStackView)
@@ -161,9 +164,11 @@ class TrailsCell: UITableViewCell {
         address: String,
         trailID: Int,
         rating: Double,
+        staticMapImage: URL?,
         difficulty: String,
         length: Double,
         isSaved: Bool,
+        didTapStaticImage: ((_: Int) -> Void)?,
         didTapSave: ((@escaping (_: String?, _: String?, _: Int?) -> Void) -> Void)?,
         errorDidHappen: ((_: String, _: String, _: String?, _: String, _: (() -> Void)?) -> Void)?
     ) {
@@ -176,6 +181,10 @@ class TrailsCell: UITableViewCell {
         saveButtonView.setImage(isSaved ? .trailSaved : .saveTrail, for: .normal)
         
         imagesCarouselView.imageURLs = imageUrls
+        imagesCarouselView.staticImageUrl = staticMapImage
+        imagesCarouselView.didTapOnStaticImage = didTapStaticImage
+        imagesCarouselView.trailId = trailID
+        
         self.didTapSave = didTapSave
         
         willSave = { [weak self] (name, description, savedListId) in

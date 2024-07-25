@@ -145,6 +145,7 @@ extension SearchPageViewController: UITableViewDataSource {
         cell.textLabel?.text = viewModel.locationFor(index: indexPath.row).displayName
         cell.textLabel?.numberOfLines = 0
         cell.backgroundColor = .wildWanderExtraLightGray
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 }
