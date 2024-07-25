@@ -62,6 +62,8 @@ extension ListsTableView: UITableViewDataSource {
                 imageUrl: viewModel.generateURL(from: currentList.imageUrl ?? "")
             )
         }
+        
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 }

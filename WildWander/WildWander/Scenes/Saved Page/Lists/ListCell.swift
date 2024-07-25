@@ -70,6 +70,7 @@ class ListCell: UITableViewCell {
         setUpUI()
     }
     
+    //MARK: - Methods
     private func setUpUI() {
         backgroundColor = .white
         addSubViews()
@@ -112,7 +113,6 @@ class ListCell: UITableViewCell {
         titleLabel.textColor = .black
     }
     
-    //MARK: - Methods
     func updateCellWith(
         title: String,
         trailCount: Int,

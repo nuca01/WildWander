@@ -229,6 +229,9 @@ extension TrailsView: UITableViewDataSource {
             didTapSave: didTapSave,
             errorDidHappen: errorDidHappen
         )
+        
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        
         return cell
     }
     
