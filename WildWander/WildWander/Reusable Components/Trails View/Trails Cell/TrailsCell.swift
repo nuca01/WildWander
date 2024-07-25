@@ -161,6 +161,7 @@ class TrailsCell: UITableViewCell {
         address: String,
         trailID: Int,
         rating: Double,
+        staticMapImage: URL?,
         difficulty: String,
         length: Double,
         isSaved: Bool,
@@ -176,6 +177,8 @@ class TrailsCell: UITableViewCell {
         saveButtonView.setImage(isSaved ? .trailSaved : .saveTrail, for: .normal)
         
         imagesCarouselView.imageURLs = imageUrls
+        imagesCarouselView.staticImageUrl = staticMapImage
+        
         self.didTapSave = didTapSave
         
         willSave = { [weak self] (name, description, savedListId) in

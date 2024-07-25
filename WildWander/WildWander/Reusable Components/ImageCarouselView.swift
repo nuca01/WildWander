@@ -33,7 +33,11 @@ final class ImageCarouselView: UIView {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
-        
+        image.isUserInteractionEnabled = true
+        image.layer.borderColor = UIColor.white.cgColor
+        image.layer.borderWidth = 3
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 15
         return image
     }()
     
@@ -43,7 +47,7 @@ final class ImageCarouselView: UIView {
         }
     }
     
-    private var staticImageUrl: URL? {
+    var staticImageUrl: URL? {
         didSet {
             if let staticImageUrl {
                 setUpStaticImageView()
@@ -52,7 +56,7 @@ final class ImageCarouselView: UIView {
         }
     }
     
-    private var didTapOnStaticImage: (() -> Void)?
+    var didTapOnStaticImage: (() -> Void)?
     
     //MARK: - Initializers
     init(frame: CGRect, imageURLs: [URL?], staticImageUrl: URL? = nil, didTapOnStaticImage: (() -> Void)? = nil) {
@@ -120,7 +124,7 @@ final class ImageCarouselView: UIView {
             staticImageView.heightAnchor.constraint(equalToConstant: 70),
             staticImageView.widthAnchor.constraint(equalToConstant: 70),
             staticImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
-            staticImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            staticImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15)
         ])
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped(_:)))

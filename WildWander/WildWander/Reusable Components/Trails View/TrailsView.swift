@@ -219,6 +219,7 @@ extension TrailsView: UITableViewDataSource {
             address: currentTrail.address ?? "",
             trailID: currentTrail.id!,
             rating: currentTrail.rating ?? 0.0,
+            staticMapImage: viewModel.generateURL(from: currentTrail.staticMapImage ?? ""),
             difficulty: currentTrail.difficulty ?? "",
             length: currentTrail.length ?? 0.0,
             isSaved: currentTrail.isSaved ?? false, 
