@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class InformationEntryViewController: UIViewController {
     //MARK: - Properties
@@ -128,7 +129,16 @@ class InformationEntryViewController: UIViewController {
         return scrollView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
     lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
+    var didLogIn: (() -> Void)?
     
     //MARK: - Initializers
     init(email: String) {
@@ -142,6 +152,7 @@ class InformationEntryViewController: UIViewController {
                     self.errorLabel.isHidden = false
                 } else {
                     self.errorLabel.isHidden = true
+                    self.didLogIn?()
                     self.dismiss(animated: true, completion: nil)
                 }
             }
@@ -158,6 +169,10 @@ class InformationEntryViewController: UIViewController {
         view.backgroundColor = .white
         addSubviews()
         addConstraints()
+        if let loaderView {
+            view.addSubview(loaderView)
+            constrainLoaderView()
+        }
         view.addGestureRecognizer(resignOnTapGesture)
     }
     
@@ -246,6 +261,17 @@ class InformationEntryViewController: UIViewController {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: doneAction)
         toolbar.setItems([doneButton], animated: true)
         return toolbar
+    }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
     }
     
     @objc private func donePressedForDate() {
