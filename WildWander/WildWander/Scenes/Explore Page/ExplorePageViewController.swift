@@ -40,7 +40,6 @@ class ExplorePageViewController: UIViewController {
             let navigatePage = self.tabBarController?.viewControllers?[1] as! TrailAddable
             navigatePage.addTrail(trail)
             self.tabBarController?.selectedIndex = 1
-            
         }
         
         configureDidTapSave(for: trailsView)
