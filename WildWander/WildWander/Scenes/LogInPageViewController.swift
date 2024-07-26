@@ -53,6 +53,7 @@ class LogInPageViewController: UIViewController {
     
     private lazy var passwordStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
+        stackView.setTextFieldDelegate(with: self)
         stackView.setupSecureEntryOnTextfield()
         return stackView
     }()
@@ -129,12 +130,15 @@ class LogInPageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -228,6 +232,10 @@ class LogInPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

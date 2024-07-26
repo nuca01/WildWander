@@ -82,12 +82,15 @@ class EmailEntryViewController: UIViewController {
         return stackView
     }()
     
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -146,6 +149,10 @@ class EmailEntryViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

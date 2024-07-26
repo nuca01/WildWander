@@ -71,12 +71,15 @@ class CodeEntryViewController: UIViewController {
         return stackView
     }()
     
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Initializers
@@ -196,6 +199,10 @@ class CodeEntryViewController: UIViewController {
             textField.resignFirstResponder()
         }
         return nil
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
