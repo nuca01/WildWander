@@ -45,6 +45,8 @@ class SavedPageViewModel {
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):
                     message = errorDescription
+                case .noInternetConnection:
+                    message = "it seems like you are not connected to internet"
                 }
                 print(message)
             }
