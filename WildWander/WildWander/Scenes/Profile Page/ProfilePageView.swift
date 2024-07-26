@@ -234,7 +234,7 @@ struct ProfilePageView: View {
     }
     
     private func generateCompletedTrails(date: String) -> some View {
-        Text(viewModel.formatDateInWords(date))
+        Text(date)
             .font(.system(size: 14))
             .foregroundStyle(.black.opacity(0.55))
     }
