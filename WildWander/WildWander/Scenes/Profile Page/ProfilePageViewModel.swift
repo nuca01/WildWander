@@ -129,7 +129,7 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func deleteProfileData() {
-        UserDefaults.standard.removeObject(forKey: "profileData")
+        UserDefaults.standard.removeObject(forKey: "userDetails")
     }
     
     func userDetailsLengthInKilometres() -> Int {

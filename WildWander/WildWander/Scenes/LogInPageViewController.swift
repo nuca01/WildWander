@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class LogInPageViewController: UIViewController {
     //MARK: - Properties
@@ -17,6 +18,7 @@ class LogInPageViewController: UIViewController {
                     self?.errorLabel.text = errorMessage
                     self?.errorLabel.isHidden = false
                 } else {
+                    self?.goBackToDefault()
                     self?.errorLabel.isHidden = true
                     self?.dismiss(animated: true)
                     self?.didLogIn?()
@@ -98,6 +100,7 @@ class LogInPageViewController: UIViewController {
                 let emailEntryViewController = EmailEntryViewController()
                 emailEntryViewController.didLogIn = didLogIn
                 navigationController?.pushViewController(emailEntryViewController, animated: true)
+                goBackToDefault()
             }
         }, for: .touchUpInside)
         
@@ -121,6 +124,13 @@ class LogInPageViewController: UIViewController {
         return scrollView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
     var didLogIn: (() -> Void)?
     
     //MARK: - Initializers
@@ -140,6 +150,11 @@ class LogInPageViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
+        if let loaderView {
+            view.addSubview(loaderView)
+            loaderView.isHidden = true
+            constrainLoaderView()
+        }
         addConstrains()
         view.addGestureRecognizer(resignOnTapGesture)
     }
@@ -235,6 +250,22 @@ class LogInPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
+    }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
+    
+    private func goBackToDefault() {
+        passwordStackView.textFieldText = nil
+        emailStackView.textFieldText = nil
     }
     
     @objc func dismissKeyboard() {

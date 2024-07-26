@@ -92,6 +92,7 @@ class CodeEntryViewController: UIViewController {
         addConstrains()
         if let loaderView {
             view.addSubview(loaderView)
+            loaderView.isHidden = true
             constrainLoaderView()
         }
         view.addGestureRecognizer(resignOnTapGesture)

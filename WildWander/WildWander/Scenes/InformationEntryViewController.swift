@@ -108,6 +108,7 @@ class InformationEntryViewController: UIViewController {
                 lastName: lastNameStackView.textFieldText ?? "",
                 gender: genderStackView.textFieldText ?? ""
             )
+            loaderView?.isHidden = false
         }, for: .touchUpInside)
         
         return button
@@ -144,9 +145,9 @@ class InformationEntryViewController: UIViewController {
     init(email: String) {
         self.viewModel = InformationEntryViewModel(email: email)
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.didTryToRegister = { [weak self] errorMessage in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
+        self.viewModel.didTryToRegister = { errorMessage in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if let errorMessage {
                     self.errorLabel.text = errorMessage
                     self.errorLabel.isHidden = false
@@ -154,7 +155,10 @@ class InformationEntryViewController: UIViewController {
                     self.errorLabel.isHidden = true
                     self.didLogIn?()
                     self.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popToRootViewController(animated: true)
                 }
+                
+                loaderView?.isHidden = true
             }
         }
     }
@@ -171,6 +175,7 @@ class InformationEntryViewController: UIViewController {
         addConstraints()
         if let loaderView {
             view.addSubview(loaderView)
+            loaderView.isHidden = true
             constrainLoaderView()
         }
         view.addGestureRecognizer(resignOnTapGesture)
