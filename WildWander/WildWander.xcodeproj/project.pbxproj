@@ -21,6 +21,8 @@
 		8721055D2C4F5D8D0000C574 /* CompleteTrail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */; };
 		8721055F2C4FE2C80000C574 /* TrailDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721055E2C4FE2C80000C574 /* TrailDetails.swift */; };
 		872105612C50133A0000C574 /* TrailShownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872105602C50133A0000C574 /* TrailShownViewModel.swift */; };
+		8721DA692C53C78B0019320B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721DA682C53C78B0019320B /* TabBar.swift */; };
+		8721DA6D2C53CE810019320B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8721DA6C2C53CE810019320B /* LaunchScreen.storyboard */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
 		876A7A722C3448250022B85E /* NetworkingService in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A712C3448250022B85E /* NetworkingService */; };
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
@@ -101,6 +103,8 @@
 		8721055C2C4F5D8D0000C574 /* CompleteTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTrail.swift; sourceTree = "<group>"; };
 		8721055E2C4FE2C80000C574 /* TrailDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailDetails.swift; sourceTree = "<group>"; };
 		872105602C50133A0000C574 /* TrailShownViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailShownViewModel.swift; sourceTree = "<group>"; };
+		8721DA682C53C78B0019320B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		8721DA6C2C53CE810019320B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
 		877607A42C51BD6A00410B79 /* CompletedTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTrail.swift; sourceTree = "<group>"; };
@@ -309,6 +313,7 @@
 				87876DEF2C45A8CF00B439E7 /* ButtonsStackView.swift */,
 				87876E192C4B0DFE00B439E7 /* TextfieldAndTitleStackView.swift */,
 				87069EF82C4F225600F403DA /* LoaderView.swift */,
+				8721DA682C53C78B0019320B /* TabBar.swift */,
 			);
 			path = "Reusable Components";
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 		876A7A642C3365BD0022B85E /* Launch Page */ = {
 			isa = PBXGroup;
 			children = (
+				8721DA6C2C53CE810019320B /* LaunchScreen.storyboard */,
 			);
 			path = "Launch Page";
 			sourceTree = "<group>";
@@ -602,6 +608,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8721DA6D2C53CE810019320B /* LaunchScreen.storyboard in Resources */,
 				871C85282C332FE000F20612 /* Assets.xcassets in Resources */,
 				871C852B2C332FE000F20612 /* Base in Resources */,
 			);
@@ -655,6 +662,7 @@
 				87876E132C4ADB3900B439E7 /* ProfilePageViewController.swift in Sources */,
 				87876E182C4B069C00B439E7 /* EmailEntryViewModel.swift in Sources */,
 				87F0ED862C3F4C840092A756 /* WildWanderAlertView.swift in Sources */,
+				8721DA692C53C78B0019320B /* TabBar.swift in Sources */,
 				87F0ED882C4151520092A756 /* TrailShownViewController.swift in Sources */,
 				87876DEE2C45947100B439E7 /* String.swift in Sources */,
 				87BF718C2C3C2EC800D120C0 /* SearchBarView.swift in Sources */,
