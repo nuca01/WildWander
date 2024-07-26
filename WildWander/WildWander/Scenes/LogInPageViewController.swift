@@ -18,7 +18,6 @@ class LogInPageViewController: UIViewController {
                     self?.errorLabel.text = errorMessage
                     self?.errorLabel.isHidden = false
                 } else {
-                    self?.goBackToDefault()
                     self?.errorLabel.isHidden = true
                     self?.dismiss(animated: true)
                     self?.didLogIn?()
@@ -100,7 +99,6 @@ class LogInPageViewController: UIViewController {
                 let emailEntryViewController = EmailEntryViewController()
                 emailEntryViewController.didLogIn = didLogIn
                 navigationController?.pushViewController(emailEntryViewController, animated: true)
-                goBackToDefault()
             }
         }, for: .touchUpInside)
         
@@ -263,9 +261,12 @@ class LogInPageViewController: UIViewController {
         }
     }
     
-    private func goBackToDefault() {
-        passwordStackView.textFieldText = nil
-        emailStackView.textFieldText = nil
+    func setToDefault() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            emailStackView.textFieldText = nil
+            passwordStackView.textFieldText = nil
+        }
     }
     
     @objc func dismissKeyboard() {

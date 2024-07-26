@@ -155,7 +155,6 @@ class InformationEntryViewController: UIViewController {
                     self.errorLabel.isHidden = true
                     self.didLogIn?()
                     self.dismiss(animated: true, completion: nil)
-                    self.navigationController?.popToRootViewController(animated: true)
                 }
                 
                 loaderView?.isHidden = true
