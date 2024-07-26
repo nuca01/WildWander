@@ -63,7 +63,6 @@ extension ListsTableView: UITableViewDataSource {
             )
         }
         
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         return cell
     }
 }

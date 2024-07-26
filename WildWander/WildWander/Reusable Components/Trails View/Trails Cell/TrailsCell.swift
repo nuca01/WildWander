@@ -125,6 +125,7 @@ class TrailsCell: UITableViewCell {
         bottomStackView.addArranged(subviews: [titleLabel, locationLabel, informationLabel])
         contentView.addSubview(saveButtonView)
         setupConstraints()
+        selectionStyle = UITableViewCell.SelectionStyle.none
     }
 
     private func setupConstraints() {
