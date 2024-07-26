@@ -35,25 +35,18 @@ class ExplorePageViewController: UIViewController {
         }
         let trailsView = TrailsView(viewModel: trailsViewViewModel)
         
+        viewModel.errorDidHappen = { [weak self] (title, description) in
+            trailsView.showErrorMessage(title: title, description: description)
+        }
+        
         trailsView.didTapOnCell = { [weak self] trail in
             guard let self else { return }
             let navigatePage = self.tabBarController?.viewControllers?[1] as! TrailAddable
             navigatePage.addTrail(trail)
             self.tabBarController?.selectedIndex = 1
-            
         }
         
         configureDidTapSave(for: trailsView)
-        
-        trailsView.errorDidHappen = { [weak self] (title, message, firstButtonTitle, dismissButtonTitle, onFirstButtonTapped) in
-            self?.showLocationDisabledAlert(
-                title: title,
-                message: message,
-                firstButtonTitle: "djjdj",
-                dismissButtonTitle: dismissButtonTitle) {
-                    
-                }
-        }
         
         return trailsView
     }()
@@ -209,23 +202,6 @@ class ExplorePageViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    private func showLocationDisabledAlert(
-        title: String,
-        message: String,
-        firstButtonTitle: String?,
-        dismissButtonTitle: String,
-        onFirstButtonTapped: (() -> Void)?
-    ) {
-        let locationDisabledAlert = WildWanderAlertView(
-            title: title,
-            message: message,
-            firstButtonTitle: firstButtonTitle ?? "",
-            dismissButtonTitle: dismissButtonTitle
-        )
-        
-        locationDisabledAlert.show(in: self.view)
     }
     
     private func present(_ listsTableView: ListsTableView) {

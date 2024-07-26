@@ -9,6 +9,7 @@ import Foundation
 import NetworkingService
 
 class ExplorePageViewModel {
+    //MARK: - Properties
     private var trails: [Trail] = []
     
     private var token: String? {
@@ -18,11 +19,14 @@ class ExplorePageViewModel {
     private lazy var endPointCreator = EndPointCreator(path: "/api/trail/gettrails", method: "GET", accessToken: token ?? "")
     
     var trailsDidChange: ((_: [Trail]) -> Void)?
+    var errorDidHappen: ((_: String, _: String) -> Void)?
     
+    //MARK: - Initializer
     init(currentBounds: Bounds) {
         getTrailsWith(bounds: currentBounds)
     }
     
+    //MARK: - Methods
     func getTrailsWith(bounds: Bounds) {
         configureEndPointCreator(bounds: bounds)
         
@@ -49,7 +53,12 @@ class ExplorePageViewModel {
                 self.trails = responseModel.items ?? []
                 self.trailsDidChange?(trails)
             case .failure(let error):
-                print("Error: \(error)")
+                switch error {
+                case .noInternetConnection:
+                    errorDidHappen?("oops can't connect to the internet", "it seems like you have connection issues")
+                default:
+                    errorDidHappen?("error has occurred", "internal error has occurred try later")
+                }
             }
         }
     }
