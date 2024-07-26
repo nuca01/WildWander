@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class LogInPageViewController: UIViewController {
     //MARK: - Properties
@@ -53,6 +54,7 @@ class LogInPageViewController: UIViewController {
     
     private lazy var passwordStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
+        stackView.setTextFieldDelegate(with: self)
         stackView.setupSecureEntryOnTextfield()
         return stackView
     }()
@@ -91,9 +93,12 @@ class LogInPageViewController: UIViewController {
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton.wildWanderGrayButton(titled: "Sign up")
-        button.addAction(UIAction { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.navigationController?.pushViewController(EmailEntryViewController(), animated: true)
+        button.addAction(UIAction { _ in
+            DispatchQueue.main.async { [weak self]  in
+                guard let self else { return }
+                let emailEntryViewController = EmailEntryViewController()
+                emailEntryViewController.didLogIn = didLogIn
+                navigationController?.pushViewController(emailEntryViewController, animated: true)
             }
         }, for: .touchUpInside)
         
@@ -117,6 +122,13 @@ class LogInPageViewController: UIViewController {
         return scrollView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
     var didLogIn: (() -> Void)?
     
     //MARK: - Initializers
@@ -129,12 +141,20 @@ class LogInPageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
+        if let loaderView {
+            view.addSubview(loaderView)
+            loaderView.isHidden = true
+            constrainLoaderView()
+        }
         addConstrains()
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -228,6 +248,29 @@ class LogInPageViewController: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
+    }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
+    
+    func setToDefault() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            emailStackView.textFieldText = nil
+            passwordStackView.textFieldText = nil
+        }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

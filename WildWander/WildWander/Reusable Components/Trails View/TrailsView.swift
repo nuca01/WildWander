@@ -40,6 +40,48 @@ class TrailsView: UIViewController {
         return loaderView
     }()
     
+    private var messageLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .wildWanderGreen
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
+    private var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
+    private lazy var messageToUserView: UIStackView = {
+        let imageView = UIImageView(image: .camp)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 220),
+            imageView.widthAnchor.constraint(equalToConstant: 400),
+        ])
+        
+        let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel, descriptionLabel])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 0
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isHidden = true
+        
+        return stackView
+    }()
+    
     private var topAnchorConstantOfTableView: CGFloat
     
     private var headerLabelLeadingConstraint: NSLayoutConstraint?
@@ -59,6 +101,7 @@ class TrailsView: UIViewController {
         view.backgroundColor = .white
         configureHeaderLabel()
         configureTrailsTableView()
+        configureMessageToUserView()
         if let loaderView {
             view.addSubview(loaderView)
             constrainLoaderView()
@@ -76,10 +119,13 @@ class TrailsView: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         
-        viewModel.trailsDidChange = { [weak self] in
-            guard let self else { return }
-            DispatchQueue.main.async {
+        viewModel.trailsDidChange = {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
                 self.trailsTableView.reloadData()
+                
+                showZeroTrails(title: "No trails in the area", description: "Center the map on a location to view available trails")
+                
                 self.loaderView?.isHidden = true
                 self.headerLabel.text = " Trails: \(self.viewModel.trailCount)"
             }
@@ -95,6 +141,7 @@ class TrailsView: UIViewController {
         viewModel.trailsDidChange = { [weak self] in
             guard let self else { return }
             DispatchQueue.main.async {
+                self.showZeroTrails(title: "No trails in the list", description: "save lists to be able to see them")
                 self.trailsTableView.reloadData()
                 self.loaderView?.isHidden = true
             }
@@ -147,6 +194,16 @@ class TrailsView: UIViewController {
         }
     }
     
+    private func configureMessageToUserView() {
+        view.addSubview(messageToUserView)
+        NSLayoutConstraint.activate([
+            messageToUserView.topAnchor.constraint(greaterThanOrEqualTo: view.topAnchor, constant: 40),
+            messageToUserView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            messageToUserView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            messageToUserView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
+        ])
+    }
+    
     func changeHeaderLabel(name: String, description: String?) {
         
         let combinedAttributedString = NSMutableAttributedString()
@@ -192,6 +249,34 @@ class TrailsView: UIViewController {
     
     func trailsWillChange() {
         loaderView?.isHidden = false
+    }
+    
+    private func changeMessageLabel(title: String, description: String) {
+        messageLabel.text = title
+        descriptionLabel.text = description
+    }
+    
+    func showErrorMessage(title: String, description: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.changeMessageLabel(title: title, description: description)
+            self.messageToUserView.isHidden = false
+            self.trailsTableView.isHidden = true
+            self.loaderView?.isHidden = true
+        }
+    }
+    
+    private func showZeroTrails(title: String, description: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if self.viewModel.trailCount == 0 {
+                self.changeMessageLabel(title: title, description: description)
+                self.messageToUserView.isHidden = false
+            } else {
+                self.messageToUserView.isHidden = true
+                self.trailsTableView.isHidden = false
+            }
+        }
     }
 }
 

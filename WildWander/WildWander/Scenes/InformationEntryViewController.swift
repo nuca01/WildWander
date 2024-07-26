@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class InformationEntryViewController: UIViewController {
     //MARK: - Properties
@@ -82,6 +83,7 @@ class InformationEntryViewController: UIViewController {
     
     private lazy var passwordStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
+        stackView.setTextFieldDelegate(with: self)
         stackView.setupSecureEntryOnTextfield()
         return stackView
     }()
@@ -106,6 +108,7 @@ class InformationEntryViewController: UIViewController {
                 lastName: lastNameStackView.textFieldText ?? "",
                 gender: genderStackView.textFieldText ?? ""
             )
+            loaderView?.isHidden = false
         }, for: .touchUpInside)
         
         return button
@@ -127,20 +130,34 @@ class InformationEntryViewController: UIViewController {
         return scrollView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
+    var didLogIn: (() -> Void)?
+    
     //MARK: - Initializers
     init(email: String) {
         self.viewModel = InformationEntryViewModel(email: email)
         super.init(nibName: nil, bundle: nil)
-        self.viewModel.didTryToRegister = { [weak self] errorMessage in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
+        self.viewModel.didTryToRegister = { errorMessage in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if let errorMessage {
                     self.errorLabel.text = errorMessage
                     self.errorLabel.isHidden = false
                 } else {
                     self.errorLabel.isHidden = true
+                    self.didLogIn?()
                     self.dismiss(animated: true, completion: nil)
                 }
+                
+                loaderView?.isHidden = true
             }
         }
     }
@@ -155,6 +172,12 @@ class InformationEntryViewController: UIViewController {
         view.backgroundColor = .white
         addSubviews()
         addConstraints()
+        if let loaderView {
+            view.addSubview(loaderView)
+            loaderView.isHidden = true
+            constrainLoaderView()
+        }
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -244,6 +267,17 @@ class InformationEntryViewController: UIViewController {
         return toolbar
     }
     
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
+    
     @objc private func donePressedForDate() {
         let formattedDate = viewModel.formatted(date: datePicker.date)
         dateOfBirthStackView.textFieldText = formattedDate
@@ -252,6 +286,10 @@ class InformationEntryViewController: UIViewController {
     
     @objc private func donePressedForGender() {
         genderStackView.textFieldText = viewModel.genderFor(index: genderPicker.selectedRow(inComponent: 0))
+        view.endEditing(true)
+    }
+    
+    @objc func dismissKeyboard() {
         view.endEditing(true)
     }
 }

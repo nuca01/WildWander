@@ -9,7 +9,8 @@ import UIKit
 import SwiftUI
 
 class ProfilePageViewController: UIViewController {
-    private lazy var sheetNavigationController: UINavigationController = {
+    //MARK: - Properties
+    private lazy var logInPageViewController = {
         let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to access your profile")
         
         logInPageViewController.didLogIn = { [weak self] in
@@ -17,6 +18,11 @@ class ProfilePageViewController: UIViewController {
             self?.viewModel.getUserInformation()
             self?.showOrHideProfile(shouldUpdate: true)
         }
+        
+        return logInPageViewController
+    }()
+    
+    private lazy var sheetNavigationController: UINavigationController = {
         let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         sheetNavigationController.modalPresentationStyle = .custom
@@ -58,6 +64,7 @@ class ProfilePageViewController: UIViewController {
         }
     }
     
+    //MARK: - LifeCycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showLogInView()
@@ -65,8 +72,6 @@ class ProfilePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateLogInStatus()
-        
         showOrHideProfile(shouldUpdate: false)
     }
     
@@ -92,11 +97,17 @@ class ProfilePageViewController: UIViewController {
     private func showLogInView() {
         if viewModel.userLoggedIn {
         } else {
-            present(sheetNavigationController, animated: true)
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                logInPageViewController.setToDefault()
+                sheetNavigationController.popToRootViewController(animated: false)
+                present(sheetNavigationController, animated: true)
+            }
         }
     }
 }
 
+//MARK: - UIViewControllerTransitioningDelegate
 extension ProfilePageViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let tabSheetPresentationController = TabSheetPresentationController(presentedViewController: presented, presenting: source)

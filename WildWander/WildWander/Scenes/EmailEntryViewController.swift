@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class EmailEntryViewController: UIViewController {
     //MARK: - Properties
@@ -13,16 +14,19 @@ class EmailEntryViewController: UIViewController {
         let viewModel = EmailEntryViewModel()
         
         viewModel.didSendAnEmail = { errorMessage in
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
                 if let errorMessage {
-                    self.errorLabel.text = errorMessage
-                    self.errorLabel.isHidden = false
-                    
+                    errorLabel.text = errorMessage
+                    errorLabel.isHidden = false
                 } else {
-                    self.errorLabel.isHidden = true
-                    
-                    self.navigationController?.pushViewController(CodeEntryViewController(email: self.emailStackView.textFieldText ?? ""), animated: true)
+                    errorLabel.isHidden = true
+                    let codeEntryViewController = (CodeEntryViewController(email: emailStackView.textFieldText ?? ""))
+                    codeEntryViewController.didLogIn =  didLogIn
+                                                                
+                    navigationController?.pushViewController(codeEntryViewController, animated: true)
                 }
+                loaderView?.isHidden = true
             }
         }
         return viewModel
@@ -66,6 +70,7 @@ class EmailEntryViewController: UIViewController {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
             guard let self else { return }
+            loaderView?.isHidden = false
             viewModel.sendCodeTo(emailStackView.textFieldText ?? "")
         }, for: .touchUpInside)
         
@@ -82,12 +87,29 @@ class EmailEntryViewController: UIViewController {
         return stackView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
+    var didLogIn: (() -> Void)?
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+        if let loaderView {
+            view.addSubview(loaderView)
+            loaderView.isHidden = true
+            constrainLoaderView()
+        }
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -142,10 +164,25 @@ class EmailEntryViewController: UIViewController {
         ])
     }
 
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
+    
     private func constrainLogoImageView() {
         NSLayoutConstraint.activate([
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

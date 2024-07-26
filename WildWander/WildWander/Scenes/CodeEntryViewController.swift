@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class CodeEntryViewController: UIViewController {
     private var viewModel: CodeEntryViewModel
@@ -56,6 +57,7 @@ class CodeEntryViewController: UIViewController {
         let button = UIButton.wildWanderGreenButton(titled: "Enter")
         button.addAction(UIAction { [weak self] _ in
             self?.viewModel.validate()
+            self?.loaderView?.isHidden = false
         }, for: .touchUpInside)
         
         return button
@@ -71,31 +73,52 @@ class CodeEntryViewController: UIViewController {
         return stackView
     }()
     
+    private var loaderView: UIView? = {
+        let loaderView = UIHostingController(rootView: LoaderView()).view
+        loaderView?.translatesAutoresizingMaskIntoConstraints = false
+        loaderView?.backgroundColor = .clear
+        return loaderView
+    }()
+    
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
+    var didLogIn: (() -> Void)?
+    
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         addSubviews()
         addConstrains()
+        if let loaderView {
+            view.addSubview(loaderView)
+            loaderView.isHidden = true
+            constrainLoaderView()
+        }
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Initializers
     init(email: String) {
         viewModel = CodeEntryViewModel(email: email)
         super.init(nibName: nil, bundle: nil)
-        viewModel.didCheckCode = { [weak self] (didPassChecking, error) in
-            DispatchQueue.main.async {
+        viewModel.didCheckCode = {(didPassChecking, error) in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
                 if didPassChecking {
-                    self?.errorLabel.isHidden = true
-                    self?.navigationController?.pushViewController(InformationEntryViewController(email: email), animated: true)
+                    errorLabel.isHidden = true
+                    let informationEntryViewController = InformationEntryViewController(email: email)
+                    informationEntryViewController.didLogIn = didLogIn
+                    navigationController?.pushViewController(informationEntryViewController, animated: true)
                 } else {
                     if let error {
-                        self?.errorLabel.text = error
+                        errorLabel.text = error
                     } else {
-                        self?.errorLabel.text = "wrong code entered"
+                        errorLabel.text = "wrong code entered"
                     }
-                    self?.errorLabel.isHidden = false
+                    errorLabel.isHidden = false
                 }
+                loaderView?.isHidden = true
             }
         }
     }
@@ -164,6 +187,17 @@ class CodeEntryViewController: UIViewController {
             logoImageView.heightAnchor.constraint(equalToConstant: 160),
         ])
     }
+    
+    private func constrainLoaderView() {
+        if let loaderView {
+            NSLayoutConstraint.activate([
+                loaderView.heightAnchor.constraint(equalToConstant: 20),
+                loaderView.widthAnchor.constraint(equalToConstant: 20),
+                loaderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                loaderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ])
+        }
+    }
 
     private func generateCodeNumberTextfield(with tag: NSInteger) -> UITextField {
         let textfield = UITextField()
@@ -196,6 +230,10 @@ class CodeEntryViewController: UIViewController {
             textField.resignFirstResponder()
         }
         return nil
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

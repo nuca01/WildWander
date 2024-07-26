@@ -16,6 +16,7 @@ class SearchPageViewController: UIViewController {
             self?.loaderView?.isHidden = true
         }
     })
+    
     private lazy var searchBar: SearchBarView = {
         let searchBarView = SearchBarView()
         searchBarView.delegate = self

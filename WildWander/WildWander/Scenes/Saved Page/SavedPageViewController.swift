@@ -50,9 +50,8 @@ class SavedPageViewController: UIViewController {
         return listsTableView
     }()
     
-    private lazy var sheetNavigationController: UINavigationController = {
+    private lazy var logInPageViewController = {
         let logInPageViewController = LogInPageViewController(explanationLabelText: "Sign in to save trails")
-        let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         logInPageViewController.didLogIn = { [weak self] in
             guard let self else { return }
@@ -60,6 +59,12 @@ class SavedPageViewController: UIViewController {
                 listsTableViewModel.getSavedLists()
             }
         }
+        
+        return logInPageViewController
+    }()
+    
+    private lazy var sheetNavigationController: UINavigationController = {
+        let sheetNavigationController = UINavigationController(rootViewController: logInPageViewController)
         
         sheetNavigationController.modalPresentationStyle = .custom
         sheetNavigationController.transitioningDelegate = self
@@ -95,7 +100,12 @@ class SavedPageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !viewModel.userLoggedIn {
-            present(sheetNavigationController, animated: true)
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                logInPageViewController.setToDefault()
+                sheetNavigationController.popToRootViewController(animated: false)
+                present(sheetNavigationController, animated: true)
+            }
         }
     }
     

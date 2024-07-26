@@ -8,52 +8,17 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        let tabBarController = UITabBarController()
-        
-        let firstViewController = ExplorePageViewController()
-        let secondViewController = NavigatePageViewController()
-        let thirdViewController = UINavigationController(rootViewController: SavedPageViewController())
-        let fourthViewController = ProfilePageViewController()
-        
-        firstViewController.tabBarItem = UITabBarItem(
-            title: "Explore",
-            image: UIImage(systemName: "location.magnifyingglass"),
-            selectedImage: UIImage(systemName: "location.magnifyingglass")
-        )
-        
-        secondViewController.tabBarItem = UITabBarItem(
-            title: "Navigate",
-            image: UIImage(systemName: "location"),
-            selectedImage: UIImage(systemName: "location.fill")
-        )
-        
-        thirdViewController.tabBarItem = UITabBarItem(
-            title: "Saved",
-            image: UIImage(systemName: "bookmark"),
-            selectedImage: UIImage(systemName: "bookmark.fill")
-        )
-        
-        fourthViewController.tabBarItem = UITabBarItem(
-            title: "Profile",
-            image: UIImage(systemName: "person"),
-            selectedImage: UIImage(systemName: "person.fill")
-        )
-        
-        tabBarController.viewControllers = [
-            firstViewController,
-            secondViewController,
-            thirdViewController,
-            fourthViewController
-        ]
+        let tabBarController = TabBar()
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
+        window?.overrideUserInterfaceStyle = .light
     }
 
 }

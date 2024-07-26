@@ -66,6 +66,8 @@ final class ProfilePageViewModel: ObservableObject {
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):
                     message = errorDescription
+                case .noInternetConnection:
+                    message = "it seems like you are not connected to internet"
                 }
                 print(message)
             }
@@ -92,6 +94,8 @@ final class ProfilePageViewModel: ObservableObject {
                     message = "internal error has occurred"
                 case .unexpectedStatusCode(let errorDescription):
                     message = errorDescription
+                case .noInternetConnection:
+                    message = "it seems like you are not connected to internet"
                 }
                 print(message)
             }
@@ -125,7 +129,7 @@ final class ProfilePageViewModel: ObservableObject {
     }
     
     func deleteProfileData() {
-        UserDefaults.standard.removeObject(forKey: "profileData")
+        UserDefaults.standard.removeObject(forKey: "userDetails")
     }
     
     func userDetailsLengthInKilometres() -> Int {
