@@ -26,7 +26,14 @@ struct ProfilePageView: View {
                 Spacer()
                     .frame(height: 10)
                 
-                ageText
+                HStack {
+                    ageText
+                    
+                    Spacer()
+                        .frame(width: 110)
+                    
+                    logoutButton
+                }
                 
                 Spacer()
                     .frame(height: 25)
@@ -45,9 +52,12 @@ struct ProfilePageView: View {
                 
                 completedTrails
                 
-                Spacer()
+                if viewModel.completedTrails?.isEmpty ?? true {
+                    listIsEmptyView
+                }
                 
-                logoutButton
+                Spacer()
+                    .frame(height: 50)
             }
             .padding(.horizontal)
             .foregroundStyle(darkGreen)
@@ -170,6 +180,24 @@ struct ProfilePageView: View {
         }
     }
     
+    private var listIsEmptyView: some View {
+        HStack {
+            Spacer()
+            
+            VStack(spacing: 0) {
+                Image("camp")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 150)
+                
+                Text("you have not completed any trails yet")
+                    .font(.system(size: 15, weight: .semibold))
+            }
+            
+            Spacer()
+        }
+    }
+    
     private var logoutButton: some View {
         Button("log out") {
             viewModel.logOut()
@@ -179,7 +207,7 @@ struct ProfilePageView: View {
         .font(.system(size: 15, weight: .bold))
         .clipShape(RoundedRectangle(cornerRadius: 25))
         .padding()
-        .background(.red.opacity(0.3))
+        .background(.wildWanderExtraLightGray)
         .clipShape(RoundedRectangle(cornerRadius: 25))
     }
     
@@ -206,7 +234,7 @@ struct ProfilePageView: View {
     }
     
     private func generateCompletedTrails(date: String) -> some View {
-        Text(viewModel.formatDateInWords(date))
+        Text(date)
             .font(.system(size: 14))
             .foregroundStyle(.black.opacity(0.55))
     }

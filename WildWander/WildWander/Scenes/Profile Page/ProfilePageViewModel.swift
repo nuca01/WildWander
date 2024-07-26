@@ -136,18 +136,6 @@ final class ProfilePageViewModel: ObservableObject {
         (userDetails?.completedLength ?? 0) / 1000
     }
     
-    func formatDateInWords(_ date: String) -> String{
-        let dateFormatter = DateFormatter()
-
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        guard let date = dateFormatter.date(from: date) else {
-            return "date unavailable"
-        }
-
-        dateFormatter.dateFormat = "dd MMMM yyyy"
-        return dateFormatter.string(from: date)
-    }
-    
     func metresToKilometresInString(_ metres: Int) -> String {
         let kilometres = Double(metres) / 1000.0
         let formattedDouble = String(format: "%.1f", kilometres)
