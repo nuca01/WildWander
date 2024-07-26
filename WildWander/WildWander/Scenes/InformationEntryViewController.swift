@@ -82,6 +82,7 @@ class InformationEntryViewController: UIViewController {
     
     private lazy var passwordStackView: TextfieldAndTitleStackView = {
         let stackView = TextfieldAndTitleStackView(title: "Password", placeholder: "ex: Password123")
+        stackView.setTextFieldDelegate(with: self)
         stackView.setupSecureEntryOnTextfield()
         return stackView
     }()
@@ -127,6 +128,8 @@ class InformationEntryViewController: UIViewController {
         return scrollView
     }()
     
+    lazy var resignOnTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    
     //MARK: - Initializers
     init(email: String) {
         self.viewModel = InformationEntryViewModel(email: email)
@@ -155,6 +158,7 @@ class InformationEntryViewController: UIViewController {
         view.backgroundColor = .white
         addSubviews()
         addConstraints()
+        view.addGestureRecognizer(resignOnTapGesture)
     }
     
     //MARK: - Methods
@@ -252,6 +256,10 @@ class InformationEntryViewController: UIViewController {
     
     @objc private func donePressedForGender() {
         genderStackView.textFieldText = viewModel.genderFor(index: genderPicker.selectedRow(inComponent: 0))
+        view.endEditing(true)
+    }
+    
+    @objc func dismissKeyboard() {
         view.endEditing(true)
     }
 }

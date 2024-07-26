@@ -311,15 +311,6 @@ class TrailShownViewController: UIViewController {
         }
     }
     
-    //MARK: - SearchBar
-    private lazy var searchBar: SearchBarView = {
-        let searchBar = SearchBarView()
-        searchBar.delegate = self
-        searchBar.searchBarDelegate = self
-        
-        return searchBar
-    }()
-    
     private var activeButtonIndex: Int? {
         didSet {
             if let activeButtonIndex {
@@ -508,21 +499,6 @@ class TrailShownViewController: UIViewController {
         checkPointsScrollView.layoutIfNeeded()
         let rightOffset = CGPoint(x: self.checkPointsScrollView.contentSize.width - self.checkPointsScrollView.bounds.size.width, y: 0)
         self.checkPointsScrollView.setContentOffset(rightOffset, animated: true)
-    }
-}
-
-//MARK: - TrailShownViewController
-extension TrailShownViewController: SearchBarViewDelegate {
-    func magnifyingGlassPressed() {
-        
-    }
-}
-
-//MARK: - UITextFieldDelegate
-extension TrailShownViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }
 
