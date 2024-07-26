@@ -88,6 +88,6 @@ class SavedPageViewModel {
         body: Encodable?,
         queryItems: [URLQueryItem]?
     ) -> EndPointCreator {
-        EndPointCreator(path: path, queryItems: queryItems, method: method, body: body, accessToken: token ?? "")
+        return EndPointCreator(path: path, queryItems: queryItems, method: method, body: body, accessToken: token ?? "")
     }
 }

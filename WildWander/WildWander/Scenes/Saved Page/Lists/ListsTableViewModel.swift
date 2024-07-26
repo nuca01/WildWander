@@ -10,8 +10,15 @@ import NetworkingService
 
 class ListsTableViewModel {
     private var savedLists: [SavedList] = []
+    
+    private var lastValidToken: String?
+    
     private var token: String? {
         KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
+    
+    var tokenIsChanged: Bool {
+        lastValidToken != token
     }
     
     private lazy var endPointCreator = EndPointCreator(path: "/api/trail/GetSavedLists", method: "GET", accessToken: token ?? "")
@@ -30,6 +37,7 @@ class ListsTableViewModel {
         endPointCreator.path = "/api/trail/GetSavedLists"
         endPointCreator.method = "GET"
         endPointCreator.changeAccessToken(accessToken: token)
+        lastValidToken = token
         
         NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<AllSavedList, NetworkError>) in
             guard let self else { return }

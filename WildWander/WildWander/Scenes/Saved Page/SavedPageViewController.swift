@@ -24,6 +24,7 @@ class SavedPageViewController: UIViewController {
             DispatchQueue.main.async {
                 listsTableView.reloadData()
                 self?.loaderView?.isHidden = true
+                self?.listsTableView.isHidden = false
             }
         }
         
@@ -175,7 +176,11 @@ class SavedPageViewController: UIViewController {
     private func showListsTableView() -> Bool {
         if viewModel.userLoggedIn {
             loaderView?.isHidden = false
-            listsTableView.isHidden = false
+            if !listsTableViewModel.tokenIsChanged {
+                listsTableView.isHidden = false
+            } else {
+                listsTableView.isHidden = true
+            }
             return true
         } else {
             listsTableView.isHidden = true
