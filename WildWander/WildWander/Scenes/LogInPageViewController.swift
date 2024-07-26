@@ -92,9 +92,12 @@ class LogInPageViewController: UIViewController {
     
     private lazy var signUpButton: UIButton = {
         let button = UIButton.wildWanderGrayButton(titled: "Sign up")
-        button.addAction(UIAction { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.navigationController?.pushViewController(EmailEntryViewController(), animated: true)
+        button.addAction(UIAction { _ in
+            DispatchQueue.main.async { [weak self]  in
+                guard let self else { return }
+                let emailEntryViewController = EmailEntryViewController()
+                emailEntryViewController.didLogIn = didLogIn
+                navigationController?.pushViewController(emailEntryViewController, animated: true)
             }
         }, for: .touchUpInside)
         
