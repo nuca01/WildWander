@@ -159,6 +159,11 @@ class TrailsCell: UITableViewCell {
         ])
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+    }
+    
     func updateCellWith(
         imageUrls: [URL?],
         trailTitle: String,

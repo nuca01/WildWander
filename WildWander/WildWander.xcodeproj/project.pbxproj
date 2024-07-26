@@ -23,6 +23,8 @@
 		872105612C50133A0000C574 /* TrailShownViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872105602C50133A0000C574 /* TrailShownViewModel.swift */; };
 		8721DA692C53C78B0019320B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8721DA682C53C78B0019320B /* TabBar.swift */; };
 		8721DA6D2C53CE810019320B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8721DA6C2C53CE810019320B /* LaunchScreen.storyboard */; };
+		873521B82C5420A4008A53A7 /* ListsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873521B72C5420A4008A53A7 /* ListsTableViewController.swift */; };
+		873521BA2C542406008A53A7 /* ListsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873521B92C542406008A53A7 /* ListsTableView.swift */; };
 		876A7A6F2C3434A30022B85E /* EndPointCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876A7A6E2C3434A30022B85E /* EndPointCreator.swift */; };
 		876A7A722C3448250022B85E /* NetworkingService in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A712C3448250022B85E /* NetworkingService */; };
 		876A7A772C3468120022B85E /* MapboxCoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 876A7A762C3468120022B85E /* MapboxCoreNavigation */; };
@@ -66,7 +68,6 @@
 		87876E2D2C4C4B5200B439E7 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2C2C4C4B5200B439E7 /* Token.swift */; };
 		87876E2F2C4C57E500B439E7 /* LogInPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87876E2E2C4C57E500B439E7 /* LogInPageViewModel.swift */; };
 		87B8D0732C4C8AAF006858EE /* SavedPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B8D0722C4C8AAF006858EE /* SavedPageViewController.swift */; };
-		87B8D0752C4C8E47006858EE /* ListsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B8D0742C4C8E47006858EE /* ListsTableView.swift */; };
 		87B8D0782C4C903D006858EE /* ListsTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B8D0772C4C903D006858EE /* ListsTableViewModel.swift */; };
 		87B8D07A2C4C95D2006858EE /* SavedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B8D0792C4C95D2006858EE /* SavedList.swift */; };
 		87B8D07C2C4C9AB9006858EE /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B8D07B2C4C9AB9006858EE /* ListCell.swift */; };
@@ -105,6 +106,8 @@
 		872105602C50133A0000C574 /* TrailShownViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailShownViewModel.swift; sourceTree = "<group>"; };
 		8721DA682C53C78B0019320B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		8721DA6C2C53CE810019320B /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		873521B72C5420A4008A53A7 /* ListsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsTableViewController.swift; sourceTree = "<group>"; };
+		873521B92C542406008A53A7 /* ListsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsTableView.swift; sourceTree = "<group>"; };
 		876A7A6E2C3434A30022B85E /* EndPointCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointCreator.swift; sourceTree = "<group>"; };
 		876A7A7A2C346DA30022B85E /* WildWanderMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildWanderMapView.swift; sourceTree = "<group>"; };
 		877607A42C51BD6A00410B79 /* CompletedTrail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTrail.swift; sourceTree = "<group>"; };
@@ -145,7 +148,6 @@
 		87876E2C2C4C4B5200B439E7 /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		87876E2E2C4C57E500B439E7 /* LogInPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInPageViewModel.swift; sourceTree = "<group>"; };
 		87B8D0722C4C8AAF006858EE /* SavedPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedPageViewController.swift; sourceTree = "<group>"; };
-		87B8D0742C4C8E47006858EE /* ListsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsTableView.swift; sourceTree = "<group>"; };
 		87B8D0772C4C903D006858EE /* ListsTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsTableViewModel.swift; sourceTree = "<group>"; };
 		87B8D0792C4C95D2006858EE /* SavedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedList.swift; sourceTree = "<group>"; };
 		87B8D07B2C4C9AB9006858EE /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				871C85222C332FDE00F20612 /* ExplorePageViewController.swift */,
+				873521B92C542406008A53A7 /* ListsTableView.swift */,
 				87F0ED902C41FB580092A756 /* ExplorePageViewModel.swift */,
 				87876E042C46BC7E00B439E7 /* Extensions */,
 			);
@@ -481,10 +484,10 @@
 		87B8D0762C4C9017006858EE /* Lists */ = {
 			isa = PBXGroup;
 			children = (
-				87B8D0742C4C8E47006858EE /* ListsTableView.swift */,
 				87B8D07B2C4C9AB9006858EE /* ListCell.swift */,
 				87B8D0772C4C903D006858EE /* ListsTableViewModel.swift */,
 				8776E0232C4D7C4D007D4F95 /* CreateAListView.swift */,
+				873521B72C5420A4008A53A7 /* ListsTableViewController.swift */,
 			);
 			path = Lists;
 			sourceTree = "<group>";
@@ -636,6 +639,7 @@
 				87BF718E2C3C31F600D120C0 /* UIColor.swift in Sources */,
 				87876E242C4B3E8600B439E7 /* InformationEntryViewController.swift in Sources */,
 				87876E062C46BCA000B439E7 /* ExplorePageViewController + UIViewControllerTransitioningDelegate.swift in Sources */,
+				873521B82C5420A4008A53A7 /* ListsTableViewController.swift in Sources */,
 				87069EF32C4EF19700F403DA /* ProfilePageView.swift in Sources */,
 				87876E2F2C4C57E500B439E7 /* LogInPageViewModel.swift in Sources */,
 				87069EF52C4EF28100F403DA /* ProfilePageViewModel.swift in Sources */,
@@ -644,8 +648,8 @@
 				87876E222C4B321800B439E7 /* KeychainHelper.swift in Sources */,
 				871C851F2C332FDE00F20612 /* AppDelegate.swift in Sources */,
 				87876E032C46BA1600B439E7 /* WildWanderMapViewDelegate.swift in Sources */,
-				87B8D0752C4C8E47006858EE /* ListsTableView.swift in Sources */,
 				8721055D2C4F5D8D0000C574 /* CompleteTrail.swift in Sources */,
+				873521BA2C542406008A53A7 /* ListsTableView.swift in Sources */,
 				876A7A7B2C346DA30022B85E /* WildWanderMapView.swift in Sources */,
 				87069EF92C4F225600F403DA /* LoaderView.swift in Sources */,
 				87876E082C46BFC300B439E7 /* TrailAddable.swift in Sources */,

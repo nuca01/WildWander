@@ -9,7 +9,9 @@ import Foundation
 import NetworkingService
 
 class TrailsCellViewModel {
-    private lazy var token = KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    private var token: String? {
+        KeychainHelper.retrieveToken(forKey: "authorizationToken")
+    }
     
     private lazy var endPointCreator = EndPointCreator(path: "/api/Trail/SaveTrail", method: "POST", accessToken: token ?? "")
     
@@ -21,6 +23,8 @@ class TrailsCellViewModel {
     
     func save(saveTrailModel: SaveTrail) {
         endPointCreator.body = saveTrailModel
+        
+        endPointCreator.changeAccessToken(accessToken: token)
         
         NetworkingService.shared.sendRequest(endpoint: endPointCreator) { [weak self] (result: Result<Bool, NetworkError>) in
             switch result {

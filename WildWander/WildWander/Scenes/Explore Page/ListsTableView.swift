@@ -12,6 +12,7 @@ class ListsTableView: UITableView {
     var viewModel: ListsTableViewModel
     var didTapOnCreateNewList: (() -> Void)?
     var didTapOnList: ((_: Int, _: String, _: String?) -> Void)?
+    var willDismiss: (() -> Void)?
     
     //MARK: - Initializers
     init(
@@ -22,7 +23,6 @@ class ListsTableView: UITableView {
         self.viewModel = viewModel
         self.didTapOnCreateNewList = didTapOnCreateNewList
         self.didTapOnList = didTapOnListWithId
-        
         super.init(frame: .zero, style: .plain)
         
         rowHeight = UITableView.automaticDimension

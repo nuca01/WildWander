@@ -159,8 +159,13 @@ class ExplorePageViewController: UIViewController {
     private func configureListsTableView(for trailsView: TrailsView) -> ListsTableView {
         let listsTableViewModel = ListsTableViewModel()
         listsTableViewModel.getSavedLists()
-        
-        return ListsTableView(viewModel: listsTableViewModel)
+        let listsTableView = ListsTableView(viewModel: listsTableViewModel)
+        listsTableViewModel.listDidChange = {
+            DispatchQueue.main.async {
+                listsTableView.reloadData()
+            }
+        }
+        return listsTableView
     }
     
     private func configureDidTapOnCreateNewList(
@@ -178,6 +183,8 @@ class ExplorePageViewController: UIViewController {
                 }
                 
                 let controller = UIHostingController(rootView: createAListView)
+                controller.isModalInPresentation = true
+                
                 DispatchQueue.main.async {
                     presentedViewController.dismiss(animated: true)
                     self?.present(controller, animated: true)
@@ -207,7 +214,7 @@ class ExplorePageViewController: UIViewController {
     private func present(_ listsTableView: ListsTableView) {
         let controller = UITableViewController()
         controller.tableView = listsTableView
-        
+        controller.isModalInPresentation = true
         if let presentedViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
